@@ -7,6 +7,7 @@
 #' @details Constants are:
 #'
 #' \describe{
+#' \item{API_API_INFO}{URL to call for getting information about the (data) API}
 #' \item{API_REGISTER_TAG}{URL to call for registering a tag}
 #' \item{API_DEPLOY_TAG}{URL to call for deploying a tag}
 #' \item{API_SEARCH_TAGS}{URL to call for listing registered tags}
@@ -60,6 +61,7 @@
         API_SEARCH_TAGS  = "https://motus.org/api/tags/search"
 
         ## API entry points for the data server (URLs relative to dataServerURL)
+        API_API_INFO                            = "custom/api_info"
         API_DEVICE_ID_FOR_RECEIVER              = "custom/deviceID_for_receiver"
         API_RECEIVERS_FOR_PROJECT               = "custom/receivers_for_project"
         API_BATCHES_FOR_TAG_PROJECT             = "custom/batches_for_tag_project"
