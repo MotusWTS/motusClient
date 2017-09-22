@@ -1,0 +1,23 @@
+Package: motus
+Version: 0.1.0
+Title: fetch and use data from http://motus.org
+Description: Functions to retrieve telemetry data from motus.
+Author: John Brzustowski <jbrzusto@fastmail.fm>
+Maintainer: John Brzustowski <jbrzusto@fastmail.fm>
+Depends:
+    R (>= 3.1.0),
+    RSQLite,
+    dplyr,
+    dbplyr
+Imports:
+    RSQLite,
+    httr,
+    jsonlite,
+    lattice,
+    RCurl,
+    stringi
+License: GPL-2+
+Date: 2016-11-27
+RoxygenNote: 6.0.1
+LazyData: true
+Suggests: testthat
