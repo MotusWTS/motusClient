@@ -1,7 +1,7 @@
-Package: motus
+Package: motusClient
 Version: 0.1.0
-Title: fetch and use data from http://motus.org
-Description: Functions to retrieve telemetry data from motus.
+Title: fetch data from the motus data server
+Description: Functions to retrieve telemetry data from motus.  Allows incremental build of tag project and receiver databases.  Most users will want the `motus` package to actually work with the fetched data.
 Author: John Brzustowski <jbrzusto@fastmail.fm>
 Maintainer: John Brzustowski <jbrzusto@fastmail.fm>
 Depends:
@@ -10,14 +10,9 @@ Depends:
     dplyr,
     dbplyr
 Imports:
-    RSQLite,
-    httr,
     jsonlite,
-    lattice,
-    RCurl,
-    stringi
+    RCurl
 License: GPL-2+
-Date: 2016-11-27
+Date: 2017-09-22
 RoxygenNote: 6.0.1
 LazyData: true
-Suggests: testthat

@@ -3,7 +3,7 @@
 \docType{data}
 \name{Motus}
 \alias{Motus}
-\title{Constants and writable storage for the motus package}
+\title{Constants and writable storage for the motusClient package}
 \format{An object of class \code{environment} of length 0.}
 \usage{
 Motus
