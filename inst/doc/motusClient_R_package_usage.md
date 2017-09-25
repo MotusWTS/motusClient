@@ -1,8 +1,10 @@
 # Using the motus R package #
 
 This document outlines how to use the
-[motus R package](https://github.com/jbrzusto/motus) to obtain and
-work with your motus detection data.
+[motusClient R package](https://github.com/jbrzusto/motusClient) to obtain
+your motus detection data.  Most users should instead work with the
+[motus R package](https://github.com/jbrzusto/motus), which uses `motusClient`
+to fetch data, but also provides functions to work with it.
 
 ## Installation ##
 
@@ -15,7 +17,7 @@ You can install it from R by doing:
 
 ## Authentication ##
 
-The first time you call a function in the motus package that needs to
+The first time you call a function in the motusClient package that needs to
 authenticate you at motus.org, you will be asked for a username and
 password.  This will only happen once per R session.  You can supply
 your credentials from an R script like so:
@@ -71,7 +73,7 @@ into memory.
 
 ## R functions to create and update your tag database ##
 
-The motus packages provides one basic function to create and update
+The motusClient package provides one basic function to create and update
 tag databases of both kinds.  Here's how it works:
 
 ```R

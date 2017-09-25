@@ -242,6 +242,37 @@ tables):</p>
 as <code>batchID</code> on subsequent calls.  When there are no further batches, the API
 returns an empty list.</p>
 <h3>
+<a id="user-content-batches_for_all-batchid-authtoken---administrative-users-only" class="anchor" href="#batches_for_all-batchid-authtoken---administrative-users-only" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>batches_for_all (batchID, authToken) - administrative users only</h3>
+<pre><code>   - batchID: integer largest batchID we already have
+   - authToken: authorization token returned by authenticate_user
+
+  e.g.
+  curl --data-urlencode json='{"batchID":0, "authToken":"XXX"}' https://sgdata.motus.org/data/custom/batches_for_all
+</code></pre>
+<ul>
+<li>
+<p>return a list of all batches from any receiver, where the batchID is &gt; <code>batchID</code></p>
+</li>
+<li>
+<p>columns should include these fields (as they exist in the transfer
+tables):</p>
+<ul>
+<li>batchID</li>
+<li>deviceID</li>
+<li>monoBN</li>
+<li>tsBegin</li>
+<li>tsEnd</li>
+<li>numHits</li>
+<li>ts</li>
+</ul>
+</li>
+</ul>
+<p>Paging for this query is achieved by using the largest returned value of <code>batchID</code>
+as <code>batchID</code> on subsequent calls.  When there are no further batches, the API
+returns an empty list.</p>
+<p>This call is intended only for users who are building a database of <em>all</em>
+detections.  Currently, that means only administrative users.</p>
+<h3>
 <a id="user-content-runs_for_tag_project-projectid-batchid-runid-authtoken" class="anchor" href="#runs_for_tag_project-projectid-batchid-runid-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>runs_for_tag_project (projectID, batchID, runID, authToken)</h3>
 <pre><code>   - projectID: integer project ID
    - batchID: integer batch ID
