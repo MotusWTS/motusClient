@@ -9,7 +9,7 @@ R package to fetch telemetry data from http://motus.org
 ```
 ## Usage vignette ##
 
-A brief sketch is [here](https://github.com/jbrzusto/motusClient/blob/staging/inst/doc/motus_R_package_usage.md)
+A brief sketch is [here](https://github.com/jbrzusto/motusClient/blob/master/inst/doc/motusClient_R_package_usage.md)
 
 ## What's working so far:
 

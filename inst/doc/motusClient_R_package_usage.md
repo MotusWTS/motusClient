@@ -6,19 +6,11 @@ work with your motus detection data.
 
 ## Installation ##
 
-**Users**: the 'master' branch is what you want.  You can install it
-from R by doing:
+You can install it from R by doing:
 ```R
     install.packages("devtools")              ## if you haven't already done this
     library(devtools)
-    install_github("jbrzusto/motus@master")   ## the lastest stable version
-```
-
-**Developers**: the 'staging' branch is for work-in-progress.  Install it with
-```R
-    install.packages("devtools")               ## if you haven't already done this
-    library(devtools)
-    install_github("jbrzusto/motus@staging")   ## the development version
+    install_github("jbrzusto/motusClient")   ## the lastest stable version
 ```
 
 ## Authentication ##
@@ -29,7 +21,7 @@ password.  This will only happen once per R session.  You can supply
 your credentials from an R script like so:
 
 ```R
-   library(motus)
+   library(motusClient)
    ...
    motusLogout() ## only needed if changing login credentials during an R session
    Motus$userLogin = "username"
@@ -83,7 +75,7 @@ The motus packages provides one basic function to create and update
 tag databases of both kinds.  Here's how it works:
 
 ```R
-library(motus)
+library(motusClient)
 
 # create and open a local tag database for motus project 14 in the
 # current directory, but do not fetch any data for it.
@@ -120,7 +112,7 @@ For example, to find the first hourly detection of each tag in each hour
 by receiver and antenna, you could do this:
 
 ```R
-library(motus)
+library(motusClient)
 db = tagme(8)
 t = tbl(db, "alltags")
 hourly = t %>% mutate (hour = 3600 * round(ts / 3600, 0)) %>% distinct (serno, ant, tagID, hour)
