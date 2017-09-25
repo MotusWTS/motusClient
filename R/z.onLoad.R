@@ -15,7 +15,7 @@
 #' \item{API_DEVICE_ID_FOR_RECEIVER}{URL to call for getting the device ID for a receiver}
 #' \item{API_BATCHES_FOR_TAG_PROJECT}{URL to call for getting batches for a tag project}
 #' \item{API_BATCHES_FOR_RECEIVER}{URL to call for getting batches for a receiver}
-#' \item{API_BATCHES_FOR_RECEIVER_PROJECT}{URL to call for getting batches for a receiver project}
+#' \item{API_BATCHES_FOR_ALL}{URL to call for getting batches for any receiver}
 #' \item{API_GPS_FOR_TAG_PROJECT}{URL to call for getting GPS fixes for a tag project}
 #' \item{API_GPS_FOR_RECEIVER_PROJECT}{URL to call for getting GPS fixes for a receiver project}
 #' \item{API_METADATA_FOR_TAGS}{URL to call for getting metadata for tags}
@@ -66,6 +66,7 @@
         API_RECEIVERS_FOR_PROJECT               = "custom/receivers_for_project"
         API_BATCHES_FOR_TAG_PROJECT             = "custom/batches_for_tag_project"
         API_BATCHES_FOR_RECEIVER                = "custom/batches_for_receiver"
+        API_BATCHES_FOR_ALL                     = "custom/batches_for_all"
         API_RUNS_FOR_TAG_PROJECT                = "custom/runs_for_tag_project"
         API_RUNS_FOR_RECEIVER                   = "custom/runs_for_receiver"
         API_HITS_FOR_TAG_PROJECT                = "custom/hits_for_tag_project"

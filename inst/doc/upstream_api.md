@@ -196,6 +196,33 @@ Paging for this query is achieved by using the largest returned value of `batchI
 as `batchID` on subsequent calls.  When there are no further batches, the API
 returns an empty list.
 
+### batches_for_all (batchID, authToken) - administrative users only ###
+
+       - batchID: integer largest batchID we already have
+       - authToken: authorization token returned by authenticate_user
+
+      e.g.
+      curl --data-urlencode json='{"batchID":0, "authToken":"XXX"}' https://sgdata.motus.org/data/custom/batches_for_all
+
+   - return a list of all batches from any receiver, where the batchID is > `batchID`
+
+   - columns should include these fields (as they exist in the transfer
+     tables):
+      - batchID
+      - deviceID
+      - monoBN
+      - tsBegin
+      - tsEnd
+      - numHits
+      - ts
+
+Paging for this query is achieved by using the largest returned value of `batchID`
+as `batchID` on subsequent calls.  When there are no further batches, the API
+returns an empty list.
+
+This call is intended only for users who are building a database of *all*
+detections.  Currently, that means only administrative users.
+
 ### runs_for_tag_project (projectID, batchID, runID, authToken) ###
 
        - projectID: integer project ID
