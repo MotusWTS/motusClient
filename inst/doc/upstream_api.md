@@ -1,10 +1,10 @@
-# The motus R package upstream API #
+# The motusClient R package upstream API #
 
-The motus R package maintains your copy of a tag detection database.
-The database is built from data provided by a server, typically at
-motus.org This document describes the API calls required by the motus
-package; i.e. what requests must a server respond to if it is to work
-with this package.
+The motusClient R package maintains your copy of a tag detection
+database.  The database is built from data provided by a server,
+typically at motus.org   This document describes the API calls required
+by the motusClient package; i.e. what requests must a server respond to if
+it is to work with this package.
 
 ## API summary ##
 
@@ -81,9 +81,9 @@ The server is at [https://sgdata.motus.org](https://sgdata.motus.org) and the UR
 2. Authorization is by project: if a user has permission for a
 project, then that user can see:
 
-   - all batches, runs, and hits for receiver deployments by that project
+   - all detections from receivers deployed by that project
 
-   - all runs and hits for tag deployments by that project
+   - all detections of tags deployed by that project
 
 If an API call does not find any data for which the user is
 authorized, it will return a json object of the usual structure,
@@ -553,3 +553,38 @@ returns an empty list.
       - numHits
       - numGPS
       - numBytes: estimated uncompressed size of data transfer
+
+### project_ambiguities_for_tag_project (projectID) ###
+
+       - projectID: integer projectID
+
+      e.g.
+      curl --data-urlencode json='{"projectID":123,"authToken":"XXX"}' https://sgdata.motus.org/data/custom/project_ambiguities_for_tag_project
+
+   - return a list of project ambiguities for project `projectID`. A
+     *project ambiguity* is the set of projectIDs associated with an
+     ambiguous tag detection: if a detection could be either tag T1
+     from project P1, or tag T2 from project P2, then we assign an
+     ambiguous project ID (APID) to the detection.  The APID simply
+     represents the fact that the detection could belong to either
+     project P1 or project P2.  APIDs play the role of projectID
+     in most cases, but are negative, to distinguish them from
+     real project IDs, which are positive.  If two tags from the
+     same project are ambiguous, then their ambigProjectID has
+     only projectID1 not null.
+
+   - items in the return value are vectors:
+      - ambigProjectID: (APID) a unique negative projectID
+        representing the set {projectID1, ..., projectID6}
+      - projectID1; first real (positive) project ID in the set (not null)
+      - projectID2; second real project ID in the ambiguity set
+      - projectID3; third real project ID in the ambiguity
+      - projectID4; fourth real project ID in the ambiguity
+      - projectID5; fifth real project ID in the ambiguity
+      - projectID6; sixth real project ID in the ambiguity
+
+   - in each record, any non-NULL `projectID...` fields are in
+        increasing order (i.e. projectID1 < projectID2 < ...), and
+        non-NULL values precede NULL values (i.e. if projectID3 is
+        null, then so are projectID4... projectID6) Moreover, at least
+        projectID1 and projectID2 are not null.

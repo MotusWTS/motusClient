@@ -21,6 +21,7 @@
 #' \item{API_METADATA_FOR_TAGS}{URL to call for getting metadata for tags}
 #' \item{API_METADATA_FOR_RECEIVERS}{URL to call for getting metadata for receivers}
 #' \item{API_TAGS_FOR_AMBIGIUITIES}{URL to call for getting motus tagIDs represented by an ambiguity ID}
+#' \item{API_PROJECT_AMBIGUITIES_FOR_TAG_PROJECT}{URL to call for getting list of ambiguous project IDs for a project}
 #' \item{FLOAT_FIELDS}{list of API fieldnames requiring floating point values}
 #' \item{FLOAT_REGEX}{regex to recognize fields requiring fixups in API queries}
 #' }
@@ -78,6 +79,7 @@
         API_TAGS_FOR_AMBIGUITIES                = "custom/tags_for_ambiguities"
         API_SIZE_OF_UPDATE_FOR_TAG_PROJECT      = "custom/size_of_update_for_tag_project"
         API_SIZE_OF_UPDATE_FOR_RECEIVER         = "custom/size_of_update_for_receiver"
+        API_PROJECT_AMBIGUITIES_FOR_TAG_PROJECT = "custom/project_ambiguities_for_tag_project"
 
         ## a list of field names which must be formatted as floats so that the
         ## motus API recognizes them correctly.  This means that if they happen
