@@ -24,6 +24,9 @@ ensureDBTables = function(src, projRecv, deviceID) {
     ## function to send a single statement to the underlying connection
     sql = function(...) DBI::dbExecute(con, sprintf(...))
 
+    ## function to send a single query to the underlying connection
+    sqlq = function(...) DBI::dbGetQuery(con, sprintf(...))
+
     sql("pragma page_size=4096") ## reasonably large page size; post 2011 hard drives have 4K sectors anyway
 
     tables = src_tbls(src)
@@ -122,6 +125,7 @@ CREATE TABLE batches (
 ")
     }
 
+
     if (! "runs" %in% tables) {
         sql("
 CREATE TABLE runs (
@@ -178,6 +182,38 @@ CREATE TABLE hits (
 
     }
 
+        ## table for keeping track of which batches we already have, *by* tagDepProjectID,
+    ## and which hits we already have therein.
+    ## A single batch might require several records in this table:  an ambiguous tag
+    ## detection has (negative) tagDepProjectID, which corresponds to a unique set
+    ## of projects which might own the tag detection.
+
+    if (! "projBatch" %in% tables && is.numeric(projRecv)) {
+        sql("
+CREATE TABLE projBatch (
+    tagDepProjectID INTEGER NOT NULL, -- project ID
+    batchID INTEGER NOT NULL,         -- unique identifier for batch
+    maxHitID   INTEGER NOT NULL,      -- unique identifier for largest hit we have for this tagDepProjectID, batchID
+    PRIMARY KEY (tagDepProjectID, batchID)
+    );
+")
+        sql("
+insert
+   into projBatch
+   select
+      %d as tagDepProjectID,
+      t1.batchID,
+      max(t2.hitID)
+   from
+      batches as t1
+      join hits as t2 on t2.batchID=t1.batchID
+   group by
+      t1.batchID
+   order by
+      t1.batchID
+", projRecv)
+    }
+
     if (! "tagAmbig" %in% tables) {
         sql("
 CREATE TABLE tagAmbig (
@@ -188,9 +224,13 @@ CREATE TABLE tagAmbig (
     motusTagID3 INT,                       -- motus ID of tag in group.
     motusTagID4 INT,                       -- motus ID of tag in group.
     motusTagID5 INT,                       -- motus ID of tag in group.
-    motusTagID6 INT                        -- motus ID of tag in group.
+    motusTagID6 INT,                       -- motus ID of tag in group.
+    ambigProjectID INT                     -- negative ambiguity ID of deployment project. refers to key ambigProjectID in table projAmbig
 );
 ")
+    } else if (1 != nrow(sqlq("select * from sqlite_master where tbl_name='tagAmbig' and sql glob '*ambigProjectID*'"))) {
+        ## older version of tagAmbig table, without the ambigProjectID column, so add it
+        sql("ALTER TABLE tagAmbig ADD COLUMN ambigProjectID INTEGER")
     }
 
     if (! "projs" %in% tables) {
@@ -309,9 +349,23 @@ CREATE TABLE species (
 );
 ");
     }
+    if (! "projAmbig" %in% tables) {
+        sql("
+CREATE TABLE  projAmbig (
+    ambigProjectID INTEGER PRIMARY KEY NOT NULL,  -- identifies a set of projects which a tag detection *could* belong to; negative
+    projectID1 INT NOT NULL,              -- projectID of project in set
+    projectID2 INT,                       -- projectID of project in set
+    projectID3 INT,                       -- projectID of project in set
+    projectID4 INT,                       -- projectID of project in set
+    projectID5 INT,                       -- projectID of project in set
+    projectID6 INT                        -- projectID of project in set
+);
+")
+
+    }
     makeAlltagsView(src)
 }
 
 ## list of tables needed in the receiver database
 
-dbTableNames = c("alltags", "meta", "batches", "runs", "batchRuns", "hits", "gps", "tagAmbig", "projs", "tags", "tagDeps", "recvDeps", "antDeps", "species")
+dbTableNames = c("alltags", "meta", "batches", "runs", "batchRuns", "hits", "gps", "tagAmbig", "projs", "tags", "tagDeps", "recvDeps", "antDeps", "species", "projAmbig", "projBatch")

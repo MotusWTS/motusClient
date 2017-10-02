@@ -1,10 +1,10 @@
 <h1>
-<a id="user-content-the-motus-r-package-upstream-api" class="anchor" href="#the-motus-r-package-upstream-api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The motus R package upstream API</h1>
-<p>The motus R package maintains your copy of a tag detection database.
-The database is built from data provided by a server, typically at
-motus.org This document describes the API calls required by the motus
-package; i.e. what requests must a server respond to if it is to work
-with this package.</p>
+<a id="user-content-the-motusclient-r-package-upstream-api" class="anchor" href="#the-motusclient-r-package-upstream-api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The motusClient R package upstream API</h1>
+<p>The motusClient R package maintains your copy of a tag detection
+database.  The database is built from data provided by a server,
+typically at motus.org   This document describes the API calls required
+by the motusClient package; i.e. what requests must a server respond to if
+it is to work with this package.</p>
 <h2>
 <a id="user-content-api-summary" class="anchor" href="#api-summary" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API summary</h2>
 <h3>
@@ -100,10 +100,10 @@ curl <a href="https://sgdata.motus.org/data/custom/api_info">https://sgdata.motu
 project, then that user can see:</p>
 <ul>
 <li>
-<p>all batches, runs, and hits for receiver deployments by that project</p>
+<p>all detections from receivers deployed by that project</p>
 </li>
 <li>
-<p>all runs and hits for tag deployments by that project</p>
+<p>all detections of tags deployed by that project</p>
 </li>
 </ul>
 </li>
@@ -630,6 +630,7 @@ magnetic north</li>
 <li>motusTagID4; positive integer motus tag ID or null</li>
 <li>motusTagID5; positive integer motus tag ID or null</li>
 <li>motusTagID6; positive integer motus tag ID or null</li>
+<li>ambigProjectID; negative integer ambiguous project ID</li>
 </ul>
 <p>i.e. return what real tags each ambiguityID represents.
 If <code>motusTagIDM[i]</code> is null, then <code>motusTagIDN[i]</code> is also null for
@@ -673,5 +674,47 @@ for each ambiguity.</p>
 <li>numGPS</li>
 <li>numBytes: estimated uncompressed size of data transfer</li>
 </ul>
+</li>
+</ul>
+<h3>
+<a id="user-content-project_ambiguities_for_tag_project-projectid" class="anchor" href="#project_ambiguities_for_tag_project-projectid" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>project_ambiguities_for_tag_project (projectID)</h3>
+<pre><code>   - projectID: integer projectID
+
+  e.g.
+  curl --data-urlencode json='{"projectID":123,"authToken":"XXX"}' https://sgdata.motus.org/data/custom/project_ambiguities_for_tag_project
+</code></pre>
+<ul>
+<li>
+<p>return a list of project ambiguities for project <code>projectID</code>. A
+<em>project ambiguity</em> is the set of projectIDs associated with an
+ambiguous tag detection: if a detection could be either tag T1
+from project P1, or tag T2 from project P2, then we assign an
+ambiguous project ID (APID) to the detection.  The APID simply
+represents the fact that the detection could belong to either
+project P1 or project P2.  APIDs play the role of projectID
+in most cases, but are negative, to distinguish them from
+real project IDs, which are positive.  If two tags from the
+same project are ambiguous, then their ambigProjectID has
+only projectID1 not null.</p>
+</li>
+<li>
+<p>items in the return value are vectors:</p>
+<ul>
+<li>ambigProjectID: (APID) a unique negative projectID
+representing the set {projectID1, ..., projectID6}</li>
+<li>projectID1; first real (positive) project ID in the set (not null)</li>
+<li>projectID2; second real project ID in the ambiguity set</li>
+<li>projectID3; third real project ID in the ambiguity</li>
+<li>projectID4; fourth real project ID in the ambiguity</li>
+<li>projectID5; fifth real project ID in the ambiguity</li>
+<li>projectID6; sixth real project ID in the ambiguity</li>
+</ul>
+</li>
+<li>
+<p>in each record, any non-NULL <code>projectID...</code> fields are in
+increasing order (i.e. projectID1 &lt; projectID2 &lt; ...), and
+non-NULL values precede NULL values (i.e. if projectID3 is
+null, then so are projectID4... projectID6) Moreover, at least
+projectID1 and projectID2 are not null.</p>
 </li>
 </ul>

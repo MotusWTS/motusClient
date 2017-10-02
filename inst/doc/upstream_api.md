@@ -517,6 +517,7 @@ returns an empty list.
       - motusTagID4; positive integer motus tag ID or null
       - motusTagID5; positive integer motus tag ID or null
       - motusTagID6; positive integer motus tag ID or null
+      - ambigProjectID; negative integer ambiguous project ID
 
       i.e. return what real tags each ambiguityID represents.
       If `motusTagIDM[i]` is null, then `motusTagIDN[i]` is also null for
