@@ -32,12 +32,12 @@ motusUpdateTagDB = function(src, countOnly=FALSE, forceMeta=FALSE) {
         msg = paste0(msg, sprintf("\nand in ambiguous detection projects %s", paste(projectIDs[-1], collapse=", ")))
     cat(msg, "\n", sep="", file=stderr())
 
+    ## keep track of items we'll need metadata for
+    tagIDs = c()
+    devIDs = c()
+
     for (projectID in projectIDs) {
         batchID = sql("select ifnull(max(batchID), 0) from projBatch where tagDepProjectID=%d", projectID)[[1]]
-
-        ## keep track of items we'll need metadata for
-        tagIDs = c()
-        devIDs = c()
 
         ## ----------------------------------------------------------------------------
         ## 1. get records for all new batches
