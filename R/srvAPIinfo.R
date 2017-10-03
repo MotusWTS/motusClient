@@ -1,7 +1,6 @@
 #' get information about the motus data server API
 #'
-#' The deviceID is returned for any serial number of a receiver deployed
-#' by a project you have permissions to.
+#' The server is queried for a few details about the API.
 #'
 #' @return
 #' a list with (at least) these items:
