@@ -68,6 +68,22 @@ motusUpdateDBmetadata = function(sql, tagIDs=NULL, deviceIDs=NULL, force=FALSE) 
         dbInsertOrReplace(sql$con, "tagDeps", tmeta$tagDeps)
         dbInsertOrReplace(sql$con, "species", tmeta$species)
         dbInsertOrReplace(sql$con, "projs", tmeta$projs)
+        ## update tagDeps.fullID
+        sql("
+update
+   tagDeps
+set
+   fullID = (
+      select
+         printf('%s#%s:%.1f@%g(M.%d)', t3.label, t2.mfgID, t2.bi, t2.nomFreq, t2.tagID)
+      from
+         tags as t2
+         join projs as t3 on t3.id = tagDeps.projectID
+      where
+         t2.tagID = tagDeps.tagID
+      limit 1
+   )
+")
     }
 
     ## get metadata for receivers and their antennas
