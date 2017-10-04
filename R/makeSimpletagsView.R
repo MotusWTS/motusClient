@@ -71,7 +71,7 @@ select
    t9.id as tagProjID,
    t9.label as tagProj,
    t5.speciesID,
-   t6.serno as recv,
+   t6c.serno as recv,
    t6.name as site,
    t6.latitude as lat,
    t6.longitude as long,
@@ -94,6 +94,7 @@ from
                                     and t5b.tsStart <= t1.ts
                                     and (t5b.tsEnd is null or t5b.tsEnd >= t1.ts)
                                 )
+   left join recvs as t6c on t6c.deviceID = t3.motusDeviceID
    left join recvDeps as t6 on t6.deviceID = t3.motusDeviceID
                             and t6.tsStart =
                                (select

@@ -309,11 +309,29 @@ CREATE TABLE recvDeps (
    tsEnd REAL,
    projectID INTEGER,
    elevation REAL
-);
+)
 ")
         sql("CREATE INDEX IF NOT EXISTS recvDeps_serno on recvDeps(serno)")
         sql("CREATE INDEX IF NOT EXISTS recvDeps_deviceID on recvDeps(deviceID)")
         sql("CREATE INDEX IF NOT EXISTS recvDeps_projectID on recvDeps(projectID)")
+    }
+
+    if (! "recvs" %in% tables) {
+        sql("
+CREATE TABLE recvs (
+   deviceID INTEGER PRIMARY KEY NOT NULL,
+   serno TEXT
+)
+")
+        sql("
+INSERT OR IGNORE
+   INTO recvs
+SELECT
+   deviceID,
+   serno
+FROM
+   recvDeps
+")
     }
 
     if (! "antDeps" %in% tables) {
@@ -368,4 +386,4 @@ CREATE TABLE  projAmbig (
 
 ## list of tables needed in the receiver database
 
-dbTableNames = c("alltags", "meta", "batches", "runs", "batchRuns", "hits", "gps", "tagAmbig", "projs", "tags", "tagDeps", "recvDeps", "antDeps", "species", "projAmbig", "projBatch")
+dbTableNames = c("alltags", "meta", "batches", "runs", "batchRuns", "hits", "gps", "tagAmbig", "projs", "tags", "tagDeps", "recvDeps", "antDeps", "species", "projAmbig", "projBatch", "recvs")

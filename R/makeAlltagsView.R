@@ -148,7 +148,7 @@ SELECT
    t5.tsStartCode as startCode,
    t5.tsEndCode as endCode,
    ifnull(t5.fullID, printf('?proj?-%d#%s:%.1f', t5.projectID, t4.mfgID, t4.bi)) as fullID,
-   t6.serno as recv,
+   t6c.serno as recv,
    t6.name as site,
    t6.isMobile as isMobile,
    t6.projectID as projID,
@@ -193,6 +193,9 @@ LEFT JOIN
              AND t5b.tsStart <= t1.ts
              AND (t5b.tsEnd IS NULL OR t5b.tsEnd >= t1.ts)
          )
+LEFT JOIN
+   recvs AS t6c ON t6c.deviceID = t3.motusDeviceID
+
 LEFT JOIN
    recvDeps AS t6 ON t6.deviceID = t3.motusDeviceID AND
       t6.tsStart =

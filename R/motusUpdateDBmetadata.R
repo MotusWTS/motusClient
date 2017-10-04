@@ -90,6 +90,7 @@ set
     if (length(deviceIDs) > 0) {
         rmeta = srvMetadataForReceivers(deviceIDs)
         dbInsertOrReplace(sql$con, "recvDeps", rmeta$recvDeps)
+        dbInsertOrReplace(sql$con, "recvs", rmeta$recvDeps[,c("deviceID", "serno")])
         dbInsertOrReplace(sql$con, "antDeps", rmeta$antDeps)
         dbInsertOrReplace(sql$con, "projs", rmeta$projs)
     }
