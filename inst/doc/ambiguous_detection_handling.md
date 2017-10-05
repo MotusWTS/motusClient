@@ -100,7 +100,6 @@ ambigID     masterAmbigID  motusTagID1  motusTagID2  motusTagID3  motusTagID4  m
    5 rows of that table (from a total of 56):
 
 ```sql
-MariaDB [motus]> select * from projAmbig;
 MariaDB [motus]> select * from projAmbig where ambigProjectID in (-36, -43, -44, -50, -55);
 +----------------+------------+------------+------------+------------+------------+------------+---------+
 | ambigProjectID | projectID1 | projectID2 | projectID3 | projectID4 | projectID5 | projectID6 | tsMotus |

@@ -101,8 +101,7 @@ now supports the <code>project_ambiguities_for_tag_project</code> API entry,
 by maintaining a new <code>projAmbig</code> table. For concreteness, here are
 5 rows of that table (from a total of 56):</li>
 </ul>
-<div class="highlight highlight-source-sql"><pre>MariaDB [motus]<span class="pl-k">&gt;</span> <span class="pl-k">select</span> <span class="pl-k">*</span> <span class="pl-k">from</span> projAmbig;
-MariaDB [motus]<span class="pl-k">&gt;</span> <span class="pl-k">select</span> <span class="pl-k">*</span> <span class="pl-k">from</span> projAmbig <span class="pl-k">where</span> ambigProjectID <span class="pl-k">in</span> (<span class="pl-k">-</span><span class="pl-c1">36</span>, <span class="pl-k">-</span><span class="pl-c1">43</span>, <span class="pl-k">-</span><span class="pl-c1">44</span>, <span class="pl-k">-</span><span class="pl-c1">50</span>, <span class="pl-k">-</span><span class="pl-c1">55</span>);
+<div class="highlight highlight-source-sql"><pre>MariaDB [motus]<span class="pl-k">&gt;</span> <span class="pl-k">select</span> <span class="pl-k">*</span> <span class="pl-k">from</span> projAmbig <span class="pl-k">where</span> ambigProjectID <span class="pl-k">in</span> (<span class="pl-k">-</span><span class="pl-c1">36</span>, <span class="pl-k">-</span><span class="pl-c1">43</span>, <span class="pl-k">-</span><span class="pl-c1">44</span>, <span class="pl-k">-</span><span class="pl-c1">50</span>, <span class="pl-k">-</span><span class="pl-c1">55</span>);
 <span class="pl-k">+</span><span class="pl-c"><span class="pl-c">--</span>--------------+------------+------------+------------+------------+------------+------------+---------+</span>
 | ambigProjectID | projectID1 | projectID2 | projectID3 | projectID4 | projectID5 | projectID6 | tsMotus |
 <span class="pl-k">+</span><span class="pl-c"><span class="pl-c">--</span>--------------+------------+------------+------------+------------+------------+------------+---------+</span>
