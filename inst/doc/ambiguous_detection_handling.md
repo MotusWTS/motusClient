@@ -82,16 +82,14 @@ So far, that does nothing.  What makes it useful is these changes:
    first 5 (out of 339) lines of the augmented `tagAmbig` table:
 
 ```sql
-MariaDB [motus]> select * from tagAmbig limit 5;
-+---------+-------------+-------------+-------------+-------------+-------------+-------------+---------+----------------+
-| ambigID | motusTagID1 | motusTagID2 | motusTagID3 | motusTagID4 | motusTagID5 | motusTagID6 | tsMotus | ambigProjectID |
-+---------+-------------+-------------+-------------+-------------+-------------+-------------+---------+----------------+
-|    -339 |       25960 |       26701 |        NULL |        NULL |        NULL |        NULL |       0 |            -11 |
-|    -338 |       22323 |       24431 |        NULL |        NULL |        NULL |        NULL |       0 |             -4 |
-|    -337 |       10811 |       16011 |        NULL |        NULL |        NULL |        NULL |       0 |            -27 |
-|    -336 |       10804 |       16007 |        NULL |        NULL |        NULL |        NULL |       0 |            -27 |
-|    -335 |       22336 |       24444 |        NULL |        NULL |        NULL |        NULL |       0 |             -4 |
-+---------+-------------+-------------+-------------+-------------+-------------+-------------+---------+----------------+
+sqlite> select * from tagAmbig limit 5;
+ambigID     masterAmbigID  motusTagID1  motusTagID2  motusTagID3  motusTagID4  motusTagID5  motusTagID6  ambigProjectID
+----------  -------------  -----------  -----------  -----------  -----------  -----------  -----------  --------------
+-331         (column       19583        23094                                                            -36
+-330          obsolete)    19584        23095                                                            -36
+-329                       19595        23107                                                            -36
+-312                       15875        22607                                                            -44
+-309                       18284        20128                                                            -43
 ```
 
 #### Changes to the [motusServer](https://github.com/jbrzusto/motusServer) package ####
@@ -99,24 +97,29 @@ MariaDB [motus]> select * from tagAmbig limit 5;
  - the [dataServer()](https://github.com/jbrzusto/motusServer/blob/new_server/R/dataServer.R)
    now supports the `project_ambiguities_for_tag_project` API entry,
    by maintaining a new `projAmbig` table. For concreteness, here are
-   the first 10 rows of that table (from a total of 56):
+   5 rows of that table (from a total of 56):
 
 ```sql
 MariaDB [motus]> select * from projAmbig;
+MariaDB [motus]> select * from projAmbig where ambigProjectID in (-36, -43, -44, -50, -55);
 +----------------+------------+------------+------------+------------+------------+------------+---------+
 | ambigProjectID | projectID1 | projectID2 | projectID3 | projectID4 | projectID5 | projectID6 | tsMotus |
 +----------------+------------+------------+------------+------------+------------+------------+---------+
-|            -56 |         97 |        111 |       NULL |       NULL |       NULL |       NULL |      -1 |
 |            -55 |         92 |        103 |       NULL |       NULL |       NULL |       NULL |      -1 |
-|            -54 |          9 |        109 |       NULL |       NULL |       NULL |       NULL |      -1 |
-|            -53 |          9 |         10 |       NULL |       NULL |       NULL |       NULL |      -1 |
-|            -52 |         82 |        146 |       NULL |       NULL |       NULL |       NULL |      -1 |
-|            -51 |         78 |         91 |       NULL |       NULL |       NULL |       NULL |      -1 |
 |            -50 |         74 |       NULL |       NULL |       NULL |       NULL |       NULL |      -1 |
-|            -49 |         67 |         90 |       NULL |       NULL |       NULL |       NULL |      -1 |
-|            -48 |         65 |         78 |       NULL |       NULL |       NULL |       NULL |      -1 |
-|            -47 |         64 |       NULL |       NULL |       NULL |       NULL |       NULL |      -1 |
+|            -44 |         57 |       NULL |       NULL |       NULL |       NULL |       NULL |      -1 |
+|            -43 |         57 |         92 |       NULL |       NULL |       NULL |       NULL |      -1 |
+|            -36 |         47 |         57 |       NULL |       NULL |       NULL |       NULL |      -1 |
++----------------+------------+------------+------------+------------+------------+------------+---------+
 ```
+
+   So combining information from the above two tables, the pair of
+   ambiguous tags 19583 and 23094 must belong to the projects 47 and
+   57 because the ambiguous tag -331 is in ambiguous project -36.
+   (The 6 component ID fields in each row in these two tables are in
+   sorted order, so by themselves don't indicate whether tag 19583 is
+   in project 57 or is in project 47.  The sorted order is easier to
+   work with when building and searching these tables.)
 
    Note that some ambiguous projectIDs have only one non-null
    projectID; this represents an overlap between two or more identical
