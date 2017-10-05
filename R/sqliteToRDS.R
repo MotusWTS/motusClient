@@ -146,6 +146,10 @@ sqliteToRDS = function(con, query, bind.data=data.frame(), out, classes = NULL, 
     if (! all(names(classes) %in% col[[1]]))
         stop("You specified classes for these columns which are not in the result:\n", paste(setdiff(names(classes), col[[1]]), collapse=", "))
 
+    ## make sure column names specified in parameter 'factorQueries' exist in result:
+    if (! all(names(factorQueries) %in% col[[1]]))
+        stop("You specified factor queries for these columns which are not in the result:\n", paste(setdiff(names(factorQueries), col[[1]]), collapse=", "))
+
     n = nrow(col)
 
     ## classes for each column, indexed numerically; NULL
@@ -164,9 +168,9 @@ sqliteToRDS = function(con, query, bind.data=data.frame(), out, classes = NULL, 
 
     ## get levels for each factor column; we wrap the original query in a select distinct
     for (f in fact) {
-        if (f %in% names(factorQueries)) {
+        if (col[[1]][f] %in% names(factorQueries)) {
             ## use user-specified query
-            colLevels[[f]] = dbGetQuery(con, factorQueries[[f]])
+            colLevels[[f]] = dbGetQuery(con, factorQueries[[col[[1]][f]]])
         } else {
             ## select values from via nesting the main query (might be slow!)
             colLevels[[f]] = dbGetQuery(con, paste0("select distinct ", col[[1]][f], " from (", query, ")"), params=bind.data)[[1]]
