@@ -125,5 +125,8 @@ motusUpdateRecvDB = function(src, countOnly, forceMeta=FALSE) {
     }
 
     motusUpdateDBmetadata(sql, tagIDs, deviceID, force=forceMeta)
-    return(src)
+    rv = src
+    for (hookfun in Motus$hooks$motusUpdateRecvDB)
+        rv = hookfun(rv, src, countOnly, forceMeta)
+    return(rv)
 }

@@ -31,9 +31,6 @@ ensureDBTables = function(src, projRecv, deviceID) {
 
     tables = src_tbls(src)
 
-    if (all(dbTableNames %in% tables))
-        return()
-
     if (! "meta" %in% tables) {
         if (missing(projRecv))
             stop("you must specify a project number or receiver serial number for a new database")
@@ -228,7 +225,7 @@ CREATE TABLE tagAmbig (
     ambigProjectID INT                     -- negative ambiguity ID of deployment project. refers to key ambigProjectID in table projAmbig
 );
 ")
-    } else if (1 != nrow(sqlq("select * from sqlite_master where tbl_name='tagAmbig' and sql glob '*ambigProjectID*'"))) {
+    } else if (0 == nrow(sqlq("select * from sqlite_master where tbl_name='tagAmbig' and sql glob '*ambigProjectID*'"))) {
         ## older version of tagAmbig table, without the ambigProjectID column, so add it
         sql("ALTER TABLE tagAmbig ADD COLUMN ambigProjectID INTEGER")
     }
@@ -381,7 +378,10 @@ CREATE TABLE  projAmbig (
 ")
 
     }
-    makeAlltagsView(src)
+    rv = makeAlltagsView(src)
+    for (hookfun in Motus$hooks$ensureDBTables)
+        rv = hookfun(rv, src, projRecv, deviceID)
+    return(rv)
 }
 
 ## list of tables needed in the receiver database

@@ -94,5 +94,8 @@ set
         dbInsertOrReplace(sql$con, "antDeps", rmeta$antDeps)
         dbInsertOrReplace(sql$con, "projs", rmeta$projs)
     }
-    invisible(NULL)
+    rv = invisible(NULL)
+    for (hookfun in Motus$hooks$motusUpdateDBmetadata)
+        rv = hookfun(rv, sql, tagIDs, deviceIDs, force)
+    return(rv)
 }
