@@ -1,6 +1,9 @@
 # motus
 R package to fetch telemetry data from http://motus.org
 
+Core client for the `motus` package; most users should use the motus R package provided by motus.org,
+which uses `motusClient` to fetch data.
+
 ## Installation ##
 ```R
     install.packages("devtools")              ## if you haven't already done this
@@ -12,6 +15,13 @@ R package to fetch telemetry data from http://motus.org
 A brief sketch is [here](https://github.com/jbrzusto/motusClient/blob/master/inst/doc/motusClient_R_package_usage.md)
 
 ## What's working so far:
+
+### 2017 Oct 6
+
+- tagme(): for tag project databases, this now also downloads any
+ambiguous detections which *could* belong to the project.  These
+have negative synthetic motus tagIDs which are mapped to real motus tag IDs
+via the `tagAmbig` table.  Functions for users to deal with ambiguous detections are pending.
 
 ### 2017 Jul 28
 
