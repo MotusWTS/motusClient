@@ -33,8 +33,8 @@ called in order of installation by the `motusClient` function.
 
 The hook function `f` will be called just before the `motusClient`
 package function returns, and `f` will be passed the same parameters
-as were received by the `motusClient` function, but with new first
-parameter calld `rv`, which is the return value the `motusClient` function
+as were received by the `motusClient` function, but with a new first
+parameter called `rv`, which is the return value the `motusClient` function
 would have provided if there were no hook function.  The return value of `f`
 becomes the return value of the `motusClient` function, so normally `f`
 should simply return its `rv` parameter.  However, if the user package needs

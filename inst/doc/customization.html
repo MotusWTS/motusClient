@@ -25,8 +25,8 @@ called z.onLoad.R)</p>
 called in order of installation by the <code>motusClient</code> function.</p>
 <p>The hook function <code>f</code> will be called just before the <code>motusClient</code>
 package function returns, and <code>f</code> will be passed the same parameters
-as were received by the <code>motusClient</code> function, but with new first
-parameter calld <code>rv</code>, which is the return value the <code>motusClient</code> function
+as were received by the <code>motusClient</code> function, but with a new first
+parameter called <code>rv</code>, which is the return value the <code>motusClient</code> function
 would have provided if there were no hook function.  The return value of <code>f</code>
 becomes the return value of the <code>motusClient</code> function, so normally <code>f</code>
 should simply return its <code>rv</code> parameter.  However, if the user package needs
@@ -43,7 +43,7 @@ be added to support user needs.</p>
    }</pre></div>
 <p>In user package file <strong><code>ensureMyTables.R</code></strong>:</p>
 <div class="highlight highlight-source-r"><pre>   <span class="pl-v">ensureMyTables</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(<span class="pl-smi">rv</span>, <span class="pl-smi">src</span>, <span class="pl-smi">projRecv</span>, <span class="pl-smi">deviceID</span>) {
-      dbExecute(<span class="pl-smi">src</span><span class="pl-k">$</span><span class="pl-smi">con</span>,
+      <span class="pl-e">DBI</span><span class="pl-k">::</span>dbExecute(<span class="pl-smi">src</span><span class="pl-k">$</span><span class="pl-smi">con</span>,
          <span class="pl-s"><span class="pl-pds">"</span>CREATE TABLE IF NOT EXISTS tagLabels (</span>
 <span class="pl-s">            motusTagID INTEGER PRIMARY KEY NOT NULL,</span>
 <span class="pl-s">            label TEXT</span>
@@ -67,8 +67,8 @@ existing database table <code>tagAmbig</code>.</p>
    }</pre></div>
 <p>In user package file <strong><code>ensureMyColumns.R</code></strong>:</p>
 <div class="highlight highlight-source-r"><pre>   <span class="pl-v">ensureMyColumns</span> <span class="pl-k">=</span> <span class="pl-k">function</span>(<span class="pl-smi">rv</span>, <span class="pl-smi">src</span>, <span class="pl-smi">projRecv</span>, <span class="pl-smi">deviceID</span>) {
-      <span class="pl-k">if</span> (<span class="pl-c1">0</span> <span class="pl-k">==</span> nrow(dbGetQuery(<span class="pl-s"><span class="pl-pds">"</span>select * from sqlite_master where tbl_name='tagAmbig' and sql glob '* ambigProjectID *'<span class="pl-pds">"</span></span>))) {
-         dbExecute(<span class="pl-smi">src</span><span class="pl-k">$</span><span class="pl-smi">con</span>, <span class="pl-s"><span class="pl-pds">"</span>ALTER TABLE tagAmbig ADD COLUMN ambigProjectID INTEGER<span class="pl-pds">"</span></span>)
+      <span class="pl-k">if</span> (<span class="pl-c1">0</span> <span class="pl-k">==</span> nrow(<span class="pl-e">DBI</span><span class="pl-k">::</span>dbGetQuery(<span class="pl-s"><span class="pl-pds">"</span>select * from sqlite_master where tbl_name='tagAmbig' and sql glob '* ambigProjectID *'<span class="pl-pds">"</span></span>))) {
+         <span class="pl-e">DBI</span><span class="pl-k">::</span>dbExecute(<span class="pl-smi">src</span><span class="pl-k">$</span><span class="pl-smi">con</span>, <span class="pl-s"><span class="pl-pds">"</span>ALTER TABLE tagAmbig ADD COLUMN ambigProjectID INTEGER<span class="pl-pds">"</span></span>)
          )
       )
    <span class="pl-k">return</span>(<span class="pl-smi">rv</span>)
