@@ -6,25 +6,25 @@ typically at motus.org   This document describes the API calls required
 by the motusClient package; i.e. what requests must a server respond to if
 it is to work with this package.</p>
 <h3>
-<a id="user-content-quick-links" class="anchor" href="#quick-links" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Links</h3>
+<a id="user-content-quick-links-to-api-entries-by-topic" class="anchor" href="#quick-links-to-api-entries-by-topic" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Links to API Entries by Topic</h3>
 <ul>
 <li><a href="#api-info">API info</a></li>
 <li><a href="#authenticate-user">authentication</a></li>
-<li>size of update: <a href="#size-of-update-for-tag-project">for tag project</a>  <a href="#size-of-update-for-receiver">for receiver</a>
+<li>size of update: <a href="#size-of-update-for-tag-project">for tag project</a>; <a href="#size-of-update-for-receiver">for receiver</a>
 </li>
-<li>receivers:  <a href="#receivers-for-project">list by project</a>  <a href="#deviceid-for-receiver">lookup deviceID</a>
+<li>receivers:  <a href="#receivers-for-project">list by project</a>; <a href="#deviceid-for-receiver">lookup deviceID</a>
 </li>
-<li>batches: <a href="#batches-for-tag-project">for tag project</a>  <a href="#batches-for-receiver">for receiver</a>
+<li>batches: <a href="#batches-for-tag-project">for tag project</a>; <a href="#batches-for-receiver">for receiver</a>
 </li>
-<li>runs: <a href="#runs-for-tag-project">for tag project</a>  <a href="#runs-for-receiver">for receiver</a>
+<li>runs: <a href="#runs-for-tag-project">for tag project</a>; <a href="#runs-for-receiver">for receiver</a>
 </li>
-<li>hits: <a href="#hits-for-tag-project">for tag project</a>  <a href="#hits-for-receiver">for receiver</a>
+<li>hits: <a href="#hits-for-tag-project">for tag project</a>; <a href="#hits-for-receiver">for receiver</a>
 </li>
-<li>gps: <a href="#gps-for-tag-project">for tag project</a>  <a href="#gps-for-receiver">for receiver</a>
+<li>gps: <a href="#gps-for-tag-project">for tag project</a>; <a href="#gps-for-receiver">for receiver</a>
 </li>
-<li>metadata: <a href="#metadata-for-tags">for tags</a>  <a href="#metadata-for-receivers">for receivers</a>
+<li>metadata: <a href="#metadata-for-tags">for tags</a>; <a href="#metadata-for-receivers">for receivers</a>
 </li>
-<li>ambiguities: <a href="#tags-for-ambiguities">among tags</a>  <a href="#project-ambiguities-for-tag-project">among projects</a>
+<li>ambiguities: <a href="#tags-for-ambiguities">among tags</a>; <a href="#project-ambiguities-for-tag-project">among projects</a>
 </li>
 </ul>
 <h2>

@@ -6,18 +6,18 @@ typically at motus.org   This document describes the API calls required
 by the motusClient package; i.e. what requests must a server respond to if
 it is to work with this package.
 
-### Quick Links ###
+### Quick Links to API Entries by Topic ###
 
 - [API info](#api-info)
 - [authentication](#authenticate-user)
-- size of update: [for tag project](#size-of-update-for-tag-project)  [for receiver](#size-of-update-for-receiver)
-- receivers:  [list by project](#receivers-for-project)  [lookup deviceID](#deviceid-for-receiver)
-- batches: [for tag project](#batches-for-tag-project)  [for receiver](#batches-for-receiver)
-- runs: [for tag project](#runs-for-tag-project)  [for receiver](#runs-for-receiver)
-- hits: [for tag project](#hits-for-tag-project)  [for receiver](#hits-for-receiver)
-- gps: [for tag project](#gps-for-tag-project)  [for receiver](#gps-for-receiver)
-- metadata: [for tags](#metadata-for-tags)  [for receivers](#metadata-for-receivers)
-- ambiguities: [among tags](#tags-for-ambiguities)  [among projects](#project-ambiguities-for-tag-project)
+- size of update: [for tag project](#size-of-update-for-tag-project); [for receiver](#size-of-update-for-receiver)
+- receivers:  [list by project](#receivers-for-project); [lookup deviceID](#deviceid-for-receiver)
+- batches: [for tag project](#batches-for-tag-project); [for receiver](#batches-for-receiver)
+- runs: [for tag project](#runs-for-tag-project); [for receiver](#runs-for-receiver)
+- hits: [for tag project](#hits-for-tag-project); [for receiver](#hits-for-receiver)
+- gps: [for tag project](#gps-for-tag-project); [for receiver](#gps-for-receiver)
+- metadata: [for tags](#metadata-for-tags); [for receivers](#metadata-for-receivers)
+- ambiguities: [among tags](#tags-for-ambiguities); [among projects](#project-ambiguities-for-tag-project)
 
 ## API summary ##
 
