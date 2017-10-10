@@ -5,6 +5,28 @@ database.  The database is built from data provided by a server,
 typically at motus.org   This document describes the API calls required
 by the motusClient package; i.e. what requests must a server respond to if
 it is to work with this package.</p>
+<h3>
+<a id="user-content-quick-links" class="anchor" href="#quick-links" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Links</h3>
+<ul>
+<li><a href="#api-info">API info</a></li>
+<li><a href="#authenticate-user">authentication</a></li>
+<li>size of update: <a href="#size-of-update-for-tag-project">for tag project</a>  <a href="#size-of-update-for-receiver">for receiver</a>
+</li>
+<li>receivers:  <a href="#receivers-for-project">list by project</a>  <a href="#deviceid-for-receiver">lookup deviceID</a>
+</li>
+<li>batches: <a href="#batches-for-tag-project">for tag project</a>  <a href="#batches-for-receiver">for receiver</a>
+</li>
+<li>runs: <a href="#runs-for-tag-project">for tag project</a>  <a href="#runs-for-receiver">for receiver</a>
+</li>
+<li>hits: <a href="#hits-for-tag-project">for tag project</a>  <a href="#hits-for-receiver">for receiver</a>
+</li>
+<li>gps: <a href="#gps-for-tag-project">for tag project</a>  <a href="#gps-for-receiver">for receiver</a>
+</li>
+<li>metadata: <a href="#metadata-for-tags">for tags</a>  <a href="#metadata-for-receivers">for receivers</a>
+</li>
+<li>ambiguities: <a href="#tags-for-ambiguities">among tags</a>  <a href="#project-ambiguities-for-tag-project">among projects</a>
+</li>
+</ul>
 <h2>
 <a id="user-content-api-summary" class="anchor" href="#api-summary" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API summary</h2>
 <h3>
@@ -50,7 +72,8 @@ Bash.</p>
 <h2>
 <a id="user-content-api-calls" class="anchor" href="#api-calls" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API calls</h2>
 <h3>
-<a id="user-content-api_info-authtoken" class="anchor" href="#api_info-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>api_info (authToken)</h3>
+<a id="user-content-api-info" class="anchor" href="#api-info" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>api info</h3>
+<p>api_info (authToken)</p>
 <ul>
 <li>
 <p>return a list with these items:</p>
@@ -130,7 +153,8 @@ rebooted at least once between deployments under <strong>different</strong> proj
 </ul>
 <p>These assumptions allow for simpler, more efficient database queries.</p>
 <h3>
-<a id="user-content-deviceid_for_receiver-serno-authtoken" class="anchor" href="#deviceid_for_receiver-serno-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>deviceID_for_receiver (serno, authToken)</h3>
+<a id="user-content-deviceid-for-receiver" class="anchor" href="#deviceid-for-receiver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>deviceID for receiver</h3>
+<p>deviceID_for_receiver (serno, authToken)</p>
 <pre><code>   - serno: character vector of receiver serial number(s)
 
   e.g.
@@ -149,7 +173,8 @@ rebooted at least once between deployments under <strong>different</strong> proj
 </li>
 </ul>
 <h3>
-<a id="user-content-receivers_for_project-projectid-authtoken" class="anchor" href="#receivers_for_project-projectid-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>receivers_for_project (projectID, authToken)</h3>
+<a id="user-content-receivers-for-project" class="anchor" href="#receivers-for-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>receivers for project</h3>
+<p>receivers_for_project (projectID, authToken)</p>
 <pre><code>   - projectID: integer project ID
 
   e.g.
@@ -180,7 +205,8 @@ rebooted at least once between deployments under <strong>different</strong> proj
 </li>
 </ul>
 <h3>
-<a id="user-content-batches_for_tag_project-projectid-batchid-authtoken" class="anchor" href="#batches_for_tag_project-projectid-batchid-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>batches_for_tag_project (projectID, batchID, authToken)</h3>
+<a id="user-content-batches-for-tag-project" class="anchor" href="#batches-for-tag-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>batches for tag project</h3>
+<p>batches_for_tag_project (projectID, batchID, authToken)</p>
 <pre><code>   - projectID: integer project ID
    - batchID: integer largest batchID we already have for this project
    - authToken: authorization token returned by authenticate_user
@@ -211,7 +237,8 @@ tables):</p>
 as <code>batchID</code> on subsequent calls.  When there are no further batches, the API
 returns an empty list.</p>
 <h3>
-<a id="user-content-batches_for_receiver-deviceid-batchid-authtoken" class="anchor" href="#batches_for_receiver-deviceid-batchid-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>batches_for_receiver (deviceID, batchID, authToken)</h3>
+<a id="user-content-batches-for-receiver" class="anchor" href="#batches-for-receiver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>batches for receiver</h3>
+<p>batches_for_receiver (deviceID, batchID, authToken)</p>
 <pre><code>   - deviceID: integer motus device ID, e.g. as returned by receivers_for_project
    - batchID: integer largest batchID we already have for this project
    - authToken: authorization token returned by authenticate_user
@@ -242,7 +269,8 @@ tables):</p>
 as <code>batchID</code> on subsequent calls.  When there are no further batches, the API
 returns an empty list.</p>
 <h3>
-<a id="user-content-batches_for_all-batchid-authtoken---administrative-users-only" class="anchor" href="#batches_for_all-batchid-authtoken---administrative-users-only" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>batches_for_all (batchID, authToken) - administrative users only</h3>
+<a id="user-content-batches-for-all" class="anchor" href="#batches-for-all" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>batches for all</h3>
+<p>batches_for_all (batchID, authToken) - administrative users only</p>
 <pre><code>   - batchID: integer largest batchID we already have
    - authToken: authorization token returned by authenticate_user
 
@@ -273,7 +301,8 @@ returns an empty list.</p>
 <p>This call is intended only for users who are building a database of <em>all</em>
 detections.  Currently, that means only administrative users.</p>
 <h3>
-<a id="user-content-runs_for_tag_project-projectid-batchid-runid-authtoken" class="anchor" href="#runs_for_tag_project-projectid-batchid-runid-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>runs_for_tag_project (projectID, batchID, runID, authToken)</h3>
+<a id="user-content-runs-for-tag-project" class="anchor" href="#runs-for-tag-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>runs for tag project</h3>
+<p>runs_for_tag_project (projectID, batchID, runID, authToken)</p>
 <pre><code>   - projectID: integer project ID
    - batchID: integer batch ID
    - runID: integer largest run ID we *already* have from this batch and tag project
@@ -306,7 +335,8 @@ tables):</p>
 as <code>runID</code> on subsequent calls.  When there are no further runs, the API
 returns an empty list.</p>
 <h3>
-<a id="user-content-runs_for_receiver-batchid-runid-authtoken" class="anchor" href="#runs_for_receiver-batchid-runid-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>runs_for_receiver (batchID, runID, authToken)</h3>
+<a id="user-content-runs-for-receiver" class="anchor" href="#runs-for-receiver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>runs for receiver</h3>
+<p>runs_for_receiver (batchID, runID, authToken)</p>
 <pre><code>   - batchID: integer batch ID
    - runID: integer largest runID we *already* have from this batch
    - authToken: authorization token returned by authenticate_user
@@ -337,7 +367,8 @@ tables):</p>
 as <code>runID</code> on subsequent calls.  When there are no further runs, the API
 returns an empty list.</p>
 <h3>
-<a id="user-content-hits_for_tag_project-projectid-batchid-hitid-authtoken" class="anchor" href="#hits_for_tag_project-projectid-batchid-hitid-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>hits_for_tag_project (projectID, batchID, hitID, authToken)</h3>
+<a id="user-content-hits-for-tag-project" class="anchor" href="#hits-for-tag-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>hits for tag project</h3>
+<p>hits_for_tag_project (projectID, batchID, hitID, authToken)</p>
 <pre><code>   - projectID: integer project ID
    - batchID: integer batchID
    - hitID: integer largest hitID we *already* have from this batch
@@ -373,7 +404,8 @@ tables):</p>
 as <code>hitID</code> on subsequent calls.  When there are no further hits, the API
 returns an empty list.</p>
 <h3>
-<a id="user-content-hits_for_receiver-batchid-hitid-authtoken" class="anchor" href="#hits_for_receiver-batchid-hitid-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>hits_for_receiver (batchID, hitID, authToken)</h3>
+<a id="user-content-hits-for-receiver" class="anchor" href="#hits-for-receiver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>hits for receiver</h3>
+<p>hits_for_receiver (batchID, hitID, authToken)</p>
 <pre><code>   - batchID: integer batchID
    - hitID: integer largest hitID we *already* have from this batch
    - authToken: authorization token returned by authenticate_user
@@ -407,7 +439,8 @@ tables):</p>
 as <code>hitID</code> on subsequent calls.  When there are no further hits, the API
 returns an empty list.</p>
 <h3>
-<a id="user-content-gps_for_tag_project-projectid-batchid-ts-authtoken" class="anchor" href="#gps_for_tag_project-projectid-batchid-ts-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>gps_for_tag_project (projectID, batchID, ts, authToken)</h3>
+<a id="user-content-gps-for-tag-project" class="anchor" href="#gps-for-tag-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>gps for tag project</h3>
+<p>gps_for_tag_project (projectID, batchID, ts, authToken)</p>
 <pre><code>   - projectID; integer project ID of tags
    - batchID: integer batchID where tags from projectID were detected
    - ts: largest gps timestamp we *already* have for this batch
@@ -444,7 +477,8 @@ tables):</p>
 as <code>ts</code> on subsequent calls.  When there are no further GPS fixes, the API
 returns an empty list.</p>
 <h3>
-<a id="user-content-gps_for_receiver-batchid-ts-authtoken" class="anchor" href="#gps_for_receiver-batchid-ts-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>gps_for_receiver (batchID, ts, authToken)</h3>
+<a id="user-content-gps-for-receiver" class="anchor" href="#gps-for-receiver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>gps for receiver</h3>
+<p>gps_for_receiver (batchID, ts, authToken)</p>
 <pre><code>   - batchID: integer batchID
    - ts: largest gps timestamp we *already* have for this batch
    - authToken: authorization token returned by authenticate_user
@@ -472,8 +506,10 @@ tables):</p>
 as <code>ts</code> on subsequent calls.  When there are no further GPS fixes, the API
 returns an empty list.</p>
 <h3>
-<a id="user-content-metadata-for-tags-motustagids-authtoken" class="anchor" href="#metadata-for-tags-motustagids-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>metadata for tags (motusTagIDs, authToken)</h3>
-<pre><code>   - motusTagIDs: integer vector of motus tag IDs; tag metadata will
+<a id="user-content-metadata-for-tags" class="anchor" href="#metadata-for-tags" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>metadata for tags</h3>
+<pre><code>metadata for tags (motusTagIDs, authToken)
+
+   - motusTagIDs: integer vector of motus tag IDs; tag metadata will
      only be returned for tag deployments whose project has indicated
      their metadata are public, or tags deployments by one of the
      projects the user has permissions to.
@@ -544,8 +580,10 @@ returns an empty list.</p>
 </li>
 </ul>
 <h3>
-<a id="user-content-metadata-for-receivers-deviceids-authtoken" class="anchor" href="#metadata-for-receivers-deviceids-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>metadata for receivers (deviceIDs, authToken)</h3>
-<pre><code>   - deviceID; integer device ID; receiver metadata will only be
+<a id="user-content-metadata-for-receivers" class="anchor" href="#metadata-for-receivers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>metadata for receivers</h3>
+<pre><code>metadata for receivers (deviceIDs, authToken)
+
+   - deviceID; integer device ID; receiver metadata will only be
      returned for receivers whose project has indicated their
      metadata are public, or receivers in one of the projects the
      user has permissions to.
@@ -608,7 +646,8 @@ magnetic north</li>
 </li>
 </ul>
 <h3>
-<a id="user-content-tags-for-ambiguities-ambigids-authtoken" class="anchor" href="#tags-for-ambiguities-ambigids-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>tags for ambiguities (ambigIDs, authToken)</h3>
+<a id="user-content-tags-for-ambiguities" class="anchor" href="#tags-for-ambiguities" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>tags for ambiguities</h3>
+<p>tags for ambiguities (ambigIDs, authToken)</p>
 <pre><code>   - ambigIDs; integer tag ambiguity IDs; this a vector of negative
      integers, each representing 2 to 6 tags for which detections are
      indistinguishable over some period of time; i.e. a detection of
@@ -639,7 +678,8 @@ for each ambiguity.</p>
 </li>
 </ul>
 <h3>
-<a id="user-content-size_of_update_for_tag_project-projectid-batchid-authtoken" class="anchor" href="#size_of_update_for_tag_project-projectid-batchid-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>size_of_update_for_tag_project (projectID, batchID, authToken)</h3>
+<a id="user-content-size-of-update-for-tag-project" class="anchor" href="#size-of-update-for-tag-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>size of update for tag project</h3>
+<p>size_of_update_for_tag_project (projectID, batchID, authToken)</p>
 <pre><code>   - projectID: integer project ID
    - batchID: integer ID of largest batch client already has
 
@@ -658,7 +698,8 @@ for each ambiguity.</p>
 </li>
 </ul>
 <h3>
-<a id="user-content-size_of_update_for_receiver-deviceid-batchid-authtoken" class="anchor" href="#size_of_update_for_receiver-deviceid-batchid-authtoken" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>size_of_update_for_receiver (deviceID, batchID, authToken)</h3>
+<a id="user-content-size-of-update-for-receiver" class="anchor" href="#size-of-update-for-receiver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>size of update for receiver</h3>
+<p>size_of_update_for_receiver (deviceID, batchID, authToken)</p>
 <pre><code>   - deviceID: integer motus device ID
    - batchID: integer ID of largest batch client already has
 
@@ -677,7 +718,8 @@ for each ambiguity.</p>
 </li>
 </ul>
 <h3>
-<a id="user-content-project_ambiguities_for_tag_project-projectid" class="anchor" href="#project_ambiguities_for_tag_project-projectid" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>project_ambiguities_for_tag_project (projectID)</h3>
+<a id="user-content-project-ambiguities-for-tag-project" class="anchor" href="#project-ambiguities-for-tag-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>project ambiguities for tag project</h3>
+<p>project_ambiguities_for_tag_project (projectID)</p>
 <pre><code>   - projectID: integer projectID
 
   e.g.

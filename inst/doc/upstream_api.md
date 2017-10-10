@@ -6,6 +6,19 @@ typically at motus.org   This document describes the API calls required
 by the motusClient package; i.e. what requests must a server respond to if
 it is to work with this package.
 
+### Quick Links ###
+
+- [API info](#api-info)
+- [authentication](#authenticate-user)
+- size of update: [for tag project](#size-of-update-for-tag-project)  [for receiver](#size-of-update-for-receiver)
+- receivers:  [list by project](#receivers-for-project)  [lookup deviceID](#deviceid-for-receiver)
+- batches: [for tag project](#batches-for-tag-project)  [for receiver](#batches-for-receiver)
+- runs: [for tag project](#runs-for-tag-project)  [for receiver](#runs-for-receiver)
+- hits: [for tag project](#hits-for-tag-project)  [for receiver](#hits-for-receiver)
+- gps: [for tag project](#gps-for-tag-project)  [for receiver](#gps-for-receiver)
+- metadata: [for tags](#metadata-for-tags)  [for receivers](#metadata-for-receivers)
+- ambiguities: [among tags](#tags-for-ambiguities)  [among projects](#project-ambiguities-for-tag-project)
+
 ## API summary ##
 
 ### Request ###
@@ -42,7 +55,9 @@ The server is at [https://sgdata.motus.org](https://sgdata.motus.org) and the UR
 
 ## API calls ##
 
-### api_info (authToken) ###
+### api info ###
+
+   api_info (authToken)
 
    - return a list with these items:
 
@@ -106,7 +121,9 @@ rebooted at least once between deployments under **different** projects.
 
 These assumptions allow for simpler, more efficient database queries.
 
-### deviceID_for_receiver (serno, authToken) ###
+### deviceID for receiver ###
+
+   deviceID_for_receiver (serno, authToken)
 
        - serno: character vector of receiver serial number(s)
 
@@ -119,7 +136,9 @@ These assumptions allow for simpler, more efficient database queries.
       - serno character serial number, as specified
       - deviceID integer motus device ID, or NA where the serial number was not found
 
-### receivers_for_project (projectID, authToken) ###
+### receivers for project ###
+
+   receivers_for_project (projectID, authToken)
 
        - projectID: integer project ID
 
@@ -144,7 +163,9 @@ These assumptions allow for simpler, more efficient database queries.
       - projectID integer; motus project ID owning deployment
       - elevation numeric; metres above sea level
 
-### batches_for_tag_project (projectID, batchID, authToken) ###
+### batches for tag project ###
+
+   batches_for_tag_project (projectID, batchID, authToken)
 
        - projectID: integer project ID
        - batchID: integer largest batchID we already have for this project
@@ -170,7 +191,9 @@ Paging for this query is achieved by using the largest returned value of `batchI
 as `batchID` on subsequent calls.  When there are no further batches, the API
 returns an empty list.
 
-### batches_for_receiver (deviceID, batchID, authToken) ###
+### batches for receiver ###
+
+   batches_for_receiver (deviceID, batchID, authToken)
 
        - deviceID: integer motus device ID, e.g. as returned by receivers_for_project
        - batchID: integer largest batchID we already have for this project
@@ -196,7 +219,9 @@ Paging for this query is achieved by using the largest returned value of `batchI
 as `batchID` on subsequent calls.  When there are no further batches, the API
 returns an empty list.
 
-### batches_for_all (batchID, authToken) - administrative users only ###
+### batches for all ###
+
+   batches_for_all (batchID, authToken) - administrative users only
 
        - batchID: integer largest batchID we already have
        - authToken: authorization token returned by authenticate_user
@@ -223,7 +248,9 @@ returns an empty list.
 This call is intended only for users who are building a database of *all*
 detections.  Currently, that means only administrative users.
 
-### runs_for_tag_project (projectID, batchID, runID, authToken) ###
+### runs for tag project ###
+
+   runs_for_tag_project (projectID, batchID, runID, authToken)
 
        - projectID: integer project ID
        - batchID: integer batch ID
@@ -251,7 +278,9 @@ Paging for this query is achieved by using the last returned value of `runID`
 as `runID` on subsequent calls.  When there are no further runs, the API
 returns an empty list.
 
-### runs_for_receiver (batchID, runID, authToken) ###
+### runs for receiver ###
+
+   runs_for_receiver (batchID, runID, authToken)
 
        - batchID: integer batch ID
        - runID: integer largest runID we *already* have from this batch
@@ -277,7 +306,9 @@ Paging for this query is achieved by using the last returned value of `runID`
 as `runID` on subsequent calls.  When there are no further runs, the API
 returns an empty list.
 
-### hits_for_tag_project (projectID, batchID, hitID, authToken) ###
+### hits for tag project ###
+
+   hits_for_tag_project (projectID, batchID, hitID, authToken)
 
        - projectID: integer project ID
        - batchID: integer batchID
@@ -308,7 +339,9 @@ Paging for this query is achieved by using the last returned value of `hitID`
 as `hitID` on subsequent calls.  When there are no further hits, the API
 returns an empty list.
 
-### hits_for_receiver (batchID, hitID, authToken) ###
+### hits for receiver ###
+
+   hits_for_receiver (batchID, hitID, authToken)
 
        - batchID: integer batchID
        - hitID: integer largest hitID we *already* have from this batch
@@ -337,7 +370,9 @@ Paging for this query is achieved by using the last returned value of `hitID`
 as `hitID` on subsequent calls.  When there are no further hits, the API
 returns an empty list.
 
-### gps_for_tag_project (projectID, batchID, ts, authToken) ###
+### gps for tag project ###
+
+   gps_for_tag_project (projectID, batchID, ts, authToken)
 
        - projectID; integer project ID of tags
        - batchID: integer batchID where tags from projectID were detected
@@ -369,7 +404,9 @@ Paging for this query is achieved by using the last returned value of `ts`
 as `ts` on subsequent calls.  When there are no further GPS fixes, the API
 returns an empty list.
 
-### gps_for_receiver (batchID, ts, authToken) ###
+### gps for receiver ###
+
+   gps_for_receiver (batchID, ts, authToken)
 
        - batchID: integer batchID
        - ts: largest gps timestamp we *already* have for this batch
@@ -392,7 +429,9 @@ Paging for this query is achieved by using the last returned value of `ts`
 as `ts` on subsequent calls.  When there are no further GPS fixes, the API
 returns an empty list.
 
-### metadata for tags (motusTagIDs, authToken) ###
+### metadata for tags ###
+
+    metadata for tags (motusTagIDs, authToken)
 
        - motusTagIDs: integer vector of motus tag IDs; tag metadata will
          only be returned for tag deployments whose project has indicated
@@ -447,7 +486,9 @@ returns an empty list.
          - label; character short label for motus project; e.g. for use in plots
 );
 
-### metadata for receivers (deviceIDs, authToken) ###
+### metadata for receivers ###
+
+    metadata for receivers (deviceIDs, authToken)
 
        - deviceID; integer device ID; receiver metadata will only be
          returned for receivers whose project has indicated their
@@ -497,7 +538,9 @@ returns an empty list.
          - name; character full name of motus project
          - label; character short label for motus project; e.g. for use in plots
 
-### tags for ambiguities (ambigIDs, authToken) ###
+### tags for ambiguities ###
+
+   tags for ambiguities (ambigIDs, authToken)
 
        - ambigIDs; integer tag ambiguity IDs; this a vector of negative
          integers, each representing 2 to 6 tags for which detections are
@@ -525,7 +568,9 @@ returns an empty list.
       for each ambiguity.
 
 
-### size_of_update_for_tag_project (projectID, batchID, authToken) ###
+### size of update for tag project ###
+
+   size_of_update_for_tag_project (projectID, batchID, authToken)
 
        - projectID: integer project ID
        - batchID: integer ID of largest batch client already has
@@ -540,7 +585,9 @@ returns an empty list.
       - numGPS
       - numBytes: estimated uncompressed size of data transfer
 
-### size_of_update_for_receiver (deviceID, batchID, authToken) ###
+### size of update for receiver ###
+
+   size_of_update_for_receiver (deviceID, batchID, authToken)
 
        - deviceID: integer motus device ID
        - batchID: integer ID of largest batch client already has
@@ -555,7 +602,9 @@ returns an empty list.
       - numGPS
       - numBytes: estimated uncompressed size of data transfer
 
-### project_ambiguities_for_tag_project (projectID) ###
+### project ambiguities for tag project ###
+
+   project_ambiguities_for_tag_project (projectID)
 
        - projectID: integer projectID
 
