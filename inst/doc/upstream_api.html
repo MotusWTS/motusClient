@@ -8,23 +8,34 @@ it is to work with this package.</p>
 <h3>
 <a id="user-content-quick-links-to-api-entries-by-topic" class="anchor" href="#quick-links-to-api-entries-by-topic" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Quick Links to API Entries by Topic</h3>
 <ul>
-<li><a href="#api-info">API info</a></li>
-<li><a href="#authenticate-user">authentication</a></li>
-<li>size of update: <a href="#size-of-update-for-tag-project">for tag project</a>; <a href="#size-of-update-for-receiver">for receiver</a>
+<li><strong><a href="#api-info">API info</a></strong></li>
+<li><strong><a href="#authenticate-user">authentication</a></strong></li>
+<li>
+<strong>size of update</strong>: <a href="#size-of-update-for-tag-project">for tag project</a>; <a href="#size-of-update-for-receiver">for receiver</a>
 </li>
-<li>receivers:  <a href="#receivers-for-project">list by project</a>; <a href="#deviceid-for-receiver">lookup deviceID</a>
+<li>
+<strong>receivers:</strong>  <a href="#receivers-for-project">list by project</a>; <a href="#deviceid-for-receiver">lookup deviceID</a>
 </li>
-<li>batches: <a href="#batches-for-tag-project">for tag project</a>; <a href="#batches-for-receiver">for receiver</a>
+<li>
+<strong>batches:</strong> <a href="#batches-for-tag-project">for tag project</a>; <a href="#batches-for-receiver">for receiver</a>
 </li>
-<li>runs: <a href="#runs-for-tag-project">for tag project</a>; <a href="#runs-for-receiver">for receiver</a>
+<li>
+<strong>runs:</strong> <a href="#runs-for-tag-project">for tag project</a>; <a href="#runs-for-receiver">for receiver</a>
 </li>
-<li>hits: <a href="#hits-for-tag-project">for tag project</a>; <a href="#hits-for-receiver">for receiver</a>
+<li>
+<strong>hits:</strong> <a href="#hits-for-tag-project">for tag project</a>; <a href="#hits-for-receiver">for receiver</a>
 </li>
-<li>gps: <a href="#gps-for-tag-project">for tag project</a>; <a href="#gps-for-receiver">for receiver</a>
+<li>
+<strong>gps:</strong> <a href="#gps-for-tag-project">for tag project</a>; <a href="#gps-for-receiver">for receiver</a>
 </li>
-<li>metadata: <a href="#metadata-for-tags">for tags</a>; <a href="#metadata-for-receivers">for receivers</a>
+<li>
+<strong>pulse counts:</strong> <a href="#pulse-counts-for-receiver">for_receiver</a>
 </li>
-<li>ambiguities: <a href="#tags-for-ambiguities">among tags</a>; <a href="#project-ambiguities-for-tag-project">among projects</a>
+<li>
+<strong>metadata:</strong> <a href="#metadata-for-tags">for tags</a>; <a href="#metadata-for-receivers">for receivers</a>
+</li>
+<li>
+<strong>ambiguities:</strong> <a href="#tags-for-ambiguities">among tags</a>; <a href="#project-ambiguities-for-tag-project">among projects</a>
 </li>
 </ul>
 <h2>
@@ -84,8 +95,8 @@ Bash.</p>
 curl <a href="https://sgdata.motus.org/data/custom/api_info">https://sgdata.motus.org/data/custom/api_info</a></p>
 </li>
 </ul>
-<h2>
-<a id="user-content-authenticate-user" class="anchor" href="#authenticate-user" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>authenticate user</h2>
+<h3>
+<a id="user-content-authenticate-user" class="anchor" href="#authenticate-user" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>authenticate user</h3>
 <p>authenticate_user (user, password)</p>
 <pre><code>  - user: username
   - password: password (in cleartext)
@@ -756,7 +767,45 @@ representing the set {projectID1, ..., projectID6}</li>
 <p>in each record, any non-NULL <code>projectID...</code> fields are in
 increasing order (i.e. projectID1 &lt; projectID2 &lt; ...), and
 non-NULL values precede NULL values (i.e. if projectID3 is
-null, then so are projectID4... projectID6) Moreover, at least
-projectID1 and projectID2 are not null.</p>
+null, then so are projectID4... projectID6).  Moreover, at least
+projectID1 is not null (it is possible to have a record
+with a single non-null projectID; this represents detections which
+are ambiguous among tags within the <em>same</em> project)</p>
 </li>
 </ul>
+<h3>
+<a id="user-content-pulse-counts-for-receiver" class="anchor" href="#pulse-counts-for-receiver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>pulse counts for receiver</h3>
+<p>pulse_counts_for_receiver (batchID, ant, hourBin, authToken)</p>
+<pre><code>   - batchID: integer batchID
+   - ant: integer; antenna number
+   - hourBin: numeric; the hourBin is defined as floor(timestamp / 3600), where timestamp is the usual
+     "seconds since 1 Jan 1970 GMT" unix timestamp.
+   - authToken: authorization token returned by authenticate_user
+
+  e.g.
+  curl --data-urlencode json='{"batchID":111,"ant": 0,"hourBin":0,"authToken":"XXX"}' https://sgdata.motus.org/data/custom/pulse_counts_for_receiver
+</code></pre>
+<ul>
+<li>
+<p>return hourly pulse records from batch <code>batchID</code> which haven't already
+been obtained.  These give, for each antenna, the number of pulses
+detected on that antenna during the time period <code>[hour * 3600, (hour + 1) * 3600)</code>.  The pair (ant, hourBin) is for the latest
+record already obtained, when sorted by hourBin <em>within</em> ant.
+The first call for a given batch should use <code>hourBin=0</code>, which
+indicates <em>no</em> pulse counts have been obtained for that batch
+yet.  In that case, <code>ant</code> is ignored.</p>
+</li>
+<li>
+<p>columns will include these fields:</p>
+<ul>
+<li>batchID; integer same as passed parameter</li>
+<li>hourBin; floor(timestamp / 3600) for pulses represented by this bin</li>
+<li>ant; tiny integer; antenna number</li>
+<li>count integer; number of pulses on this antenna during this hourBin</li>
+</ul>
+</li>
+</ul>
+<p>Paging for this query is achieved by using the last returned values of
+<code>ant</code> and <code>hourBin</code> as <code>ant</code> and <code>hourBin</code> on subsequent calls.  When
+there are no further pulse counts, the API returns an empty list.</p>
+<p>Note that this API returns pulses sorted by hourBin within antenna for each batch.</p>

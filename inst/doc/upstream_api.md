@@ -8,16 +8,17 @@ it is to work with this package.
 
 ### Quick Links to API Entries by Topic ###
 
-- [API info](#api-info)
-- [authentication](#authenticate-user)
-- size of update: [for tag project](#size-of-update-for-tag-project); [for receiver](#size-of-update-for-receiver)
-- receivers:  [list by project](#receivers-for-project); [lookup deviceID](#deviceid-for-receiver)
-- batches: [for tag project](#batches-for-tag-project); [for receiver](#batches-for-receiver)
-- runs: [for tag project](#runs-for-tag-project); [for receiver](#runs-for-receiver)
-- hits: [for tag project](#hits-for-tag-project); [for receiver](#hits-for-receiver)
-- gps: [for tag project](#gps-for-tag-project); [for receiver](#gps-for-receiver)
-- metadata: [for tags](#metadata-for-tags); [for receivers](#metadata-for-receivers)
-- ambiguities: [among tags](#tags-for-ambiguities); [among projects](#project-ambiguities-for-tag-project)
+- **[API info](#api-info)**
+- **[authentication](#authenticate-user)**
+- **size of update**: [for tag project](#size-of-update-for-tag-project); [for receiver](#size-of-update-for-receiver)
+- **receivers:**  [list by project](#receivers-for-project); [lookup deviceID](#deviceid-for-receiver)
+- **batches:** [for tag project](#batches-for-tag-project); [for receiver](#batches-for-receiver)
+- **runs:** [for tag project](#runs-for-tag-project); [for receiver](#runs-for-receiver)
+- **hits:** [for tag project](#hits-for-tag-project); [for receiver](#hits-for-receiver)
+- **gps:** [for tag project](#gps-for-tag-project); [for receiver](#gps-for-receiver)
+- **pulse counts:** [for_receiver](#pulse-counts-for-receiver)
+- **metadata:** [for tags](#metadata-for-tags); [for receivers](#metadata-for-receivers)
+- **ambiguities:** [among tags](#tags-for-ambiguities); [among projects](#project-ambiguities-for-tag-project)
 
 ## API summary ##
 
@@ -67,7 +68,7 @@ The server is at [https://sgdata.motus.org](https://sgdata.motus.org) and the UR
       curl https://sgdata.motus.org/data/custom/api_info
 
 
-## authenticate user ##
+### authenticate user ###
 
    authenticate_user (user, password)
 
@@ -636,5 +637,42 @@ returns an empty list.
    - in each record, any non-NULL `projectID...` fields are in
         increasing order (i.e. projectID1 < projectID2 < ...), and
         non-NULL values precede NULL values (i.e. if projectID3 is
-        null, then so are projectID4... projectID6) Moreover, at least
-        projectID1 and projectID2 are not null.
+        null, then so are projectID4... projectID6).  Moreover, at least
+        projectID1 is not null (it is possible to have a record
+        with a single non-null projectID; this represents detections which
+        are ambiguous among tags within the *same* project)
+
+### pulse counts for receiver ###
+
+   pulse_counts_for_receiver (batchID, ant, hourBin, authToken)
+
+       - batchID: integer batchID
+       - ant: integer; antenna number
+       - hourBin: numeric; the hourBin is defined as floor(timestamp / 3600), where timestamp is the usual
+         "seconds since 1 Jan 1970 GMT" unix timestamp.
+       - authToken: authorization token returned by authenticate_user
+
+      e.g.
+      curl --data-urlencode json='{"batchID":111,"ant": 0,"hourBin":0,"authToken":"XXX"}' https://sgdata.motus.org/data/custom/pulse_counts_for_receiver
+
+   - return hourly pulse records from batch `batchID` which haven't already
+     been obtained.  These give, for each antenna, the number of pulses
+     detected on that antenna during the time period `[hour * 3600,
+     (hour + 1) * 3600)`.  The pair (ant, hourBin) is for the latest
+     record already obtained, when sorted by hourBin *within* ant.
+     The first call for a given batch should use `hourBin=0`, which
+     indicates *no* pulse counts have been obtained for that batch
+     yet.  In that case, `ant` is ignored.
+
+
+   - columns will include these fields:
+     - batchID; integer same as passed parameter
+     - hourBin; floor(timestamp / 3600) for pulses represented by this bin
+     - ant; tiny integer; antenna number
+     - count integer; number of pulses on this antenna during this hourBin
+
+Paging for this query is achieved by using the last returned values of
+`ant` and `hourBin` as `ant` and `hourBin` on subsequent calls.  When
+there are no further pulse counts, the API returns an empty list.
+
+Note that this API returns pulses sorted by hourBin within antenna for each batch.
