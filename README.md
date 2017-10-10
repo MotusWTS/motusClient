@@ -16,6 +16,10 @@ A brief sketch is [here](https://github.com/jbrzusto/motusClient/blob/master/ins
 
 ## What's working so far:
 
+### 2017 Oct 10
+
+- tagme(): now downloads hourly pulse counts when updating a receiver database
+
 ### 2017 Oct 6
 
 - tagme(): for tag project databases, this now also downloads any

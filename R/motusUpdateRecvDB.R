@@ -109,7 +109,32 @@ motusUpdateRecvDB = function(src, countOnly, forceMeta=FALSE) {
             }
 
             ## ----------------------------------------------------------------------------
-            ## 5. write the record for this batch
+            ## 5. get pulse counts for this batch
+            ## Start after the largest ant, hourBin for which we already have pulseCounts
+            ## from this batch.
+            ## ----------------------------------------------------------------------------
+
+            info = sql("select ant, hourBin from pulseCounts where batchID=%d order by ant desc, hourBin desc limit 1", batchID)
+            if (nrow(info) == 1) {
+                ant = info[[1]]
+                hourBin = info[[2]]
+            } else {
+                ant = 0
+                hourBin = 0
+            }
+
+            repeat {
+                pc = srvPulseCountsforReceiver(batchID=batchID, ant=ant, hourBin=hourBin)
+                if (! isTRUE(nrow(pc) > 0))
+                    break
+                cat(sprintf("Got %d pulse counts for batch %d                \r", nrow(pc), batchID), file=stderr())
+                dbInsertOrReplace(sql$con, "pulseCounts", pc[, c("batchID", "ant", "hourBin", "count")])
+                ant = tail(pc$ant, 1)
+                hourBin = tail(pc$hourBin, 1)
+            }
+
+            ## ----------------------------------------------------------------------------
+            ## 6. write the record for this batch
             ## This marks the transfers for this batch as complete.
             ## ----------------------------------------------------------------------------
 

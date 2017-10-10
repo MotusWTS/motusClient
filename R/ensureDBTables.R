@@ -31,6 +31,8 @@ ensureDBTables = function(src, projRecv, deviceID) {
 
     tables = src_tbls(src)
 
+    isRecvDB = is.character(projRecv)
+
     if (! "meta" %in% tables) {
         if (missing(projRecv))
             stop("you must specify a project number or receiver serial number for a new database")
@@ -40,7 +42,7 @@ key  character not null unique primary key, -- name of key for meta data
 val  character                              -- character string giving meta data; might be in JSON format
 )
 ");
-        if (is.character(projRecv))  {
+        if (isRecvDB)  {
             if (missing(deviceID) || ! isTRUE(is.numeric(deviceID))) {
                 stop("must specify deviceID for new receiver database")
             }
@@ -185,7 +187,7 @@ CREATE TABLE hits (
     ## detection has (negative) tagDepProjectID, which corresponds to a unique set
     ## of projects which might own the tag detection.
 
-    if (! "projBatch" %in% tables && is.numeric(projRecv)) {
+    if (! "projBatch" %in% tables && ! isRecvDB) {
         sql("
 CREATE TABLE projBatch (
     tagDepProjectID INTEGER NOT NULL, -- project ID
@@ -367,23 +369,31 @@ CREATE TABLE species (
     if (! "projAmbig" %in% tables) {
         sql("
 CREATE TABLE  projAmbig (
-    ambigProjectID INTEGER PRIMARY KEY NOT NULL,  -- identifies a set of projects which a tag detection *could* belong to; negative
-    projectID1 INT NOT NULL,              -- projectID of project in set
-    projectID2 INT,                       -- projectID of project in set
-    projectID3 INT,                       -- projectID of project in set
-    projectID4 INT,                       -- projectID of project in set
-    projectID5 INT,                       -- projectID of project in set
-    projectID6 INT                        -- projectID of project in set
+   ambigProjectID INTEGER PRIMARY KEY NOT NULL,  -- identifies a set of projects which a tag detection *could* belong to; negative
+   projectID1 INT NOT NULL,              -- projectID of project in set
+   projectID2 INT,                       -- projectID of project in set
+   projectID3 INT,                       -- projectID of project in set
+   projectID4 INT,                       -- projectID of project in set
+   projectID5 INT,                       -- projectID of project in set
+   projectID6 INT                        -- projectID of project in set
 );
 ")
 
+    }
+
+    if (! "pulseCounts" %in% tables && isRecvDB) {
+        sql("
+CREATE TABLE pulseCounts (
+   batchID INTEGER NOT NULL,             -- batchID that generated this record
+   ant TINYINT NOT NULL,                 -- antenna
+   hourBin INTEGER,                      -- hour bin for this count; this is round(ts/3600)
+   count   INTEGER,                      -- number of pulses for given pcode in this file
+   PRIMARY KEY (batchID, ant, hourBin)   -- a single count for each batchID, antenna, and hourBin
+);
+")
     }
     rv = makeAlltagsView(src)
     for (hookfun in Motus$hooks$ensureDBTables)
         rv = hookfun(rv, src, projRecv, deviceID)
     return(rv)
 }
-
-## list of tables needed in the receiver database
-
-dbTableNames = c("alltags", "meta", "batches", "runs", "batchRuns", "hits", "gps", "tagAmbig", "projs", "tags", "tagDeps", "recvDeps", "antDeps", "species", "projAmbig", "projBatch", "recvs")

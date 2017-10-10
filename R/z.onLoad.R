@@ -17,7 +17,8 @@
 #' \item{API_BATCHES_FOR_RECEIVER}{URL to call for getting batches for a receiver}
 #' \item{API_BATCHES_FOR_ALL}{URL to call for getting batches for any receiver}
 #' \item{API_GPS_FOR_TAG_PROJECT}{URL to call for getting GPS fixes for a tag project}
-#' \item{API_GPS_FOR_RECEIVER_PROJECT}{URL to call for getting GPS fixes for a receiver project}
+#' \item{API_GPS_FOR_RECEIVER}{URL to call for getting GPS fixes for a receiver project}
+#' \item{API_PULSE_COUNTS_FOR_RECEIVER}{URL to call for getting antenna pulse counts for a receiver}
 #' \item{API_METADATA_FOR_TAGS}{URL to call for getting metadata for tags}
 #' \item{API_METADATA_FOR_RECEIVERS}{URL to call for getting metadata for receivers}
 #' \item{API_TAGS_FOR_AMBIGIUITIES}{URL to call for getting motus tagIDs represented by an ambiguity ID}
@@ -75,6 +76,7 @@
         API_HITS_FOR_RECEIVER                   = "custom/hits_for_receiver"
         API_GPS_FOR_TAG_PROJECT                 = "custom/gps_for_tag_project"
         API_GPS_FOR_RECEIVER                    = "custom/gps_for_receiver"
+        API_PULSE_COUNTS_FOR_RECEIVER           = "custom/pulse_counts_for_receiver"
         API_METADATA_FOR_TAGS                   = "custom/metadata_for_tags"
         API_METADATA_FOR_RECEIVERS              = "custom/metadata_for_receivers"
         API_TAGS_FOR_AMBIGUITIES                = "custom/tags_for_ambiguities"
