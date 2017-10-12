@@ -19,7 +19,7 @@ motusUpdateTagDB = function(src, countOnly=FALSE, forceMeta=FALSE) {
     sql = safeSQL(src)
 
     projectID = sql("select val from meta where key='tagProject'")[[1]] %>% as.integer
-
+    batchID = sql("select max(batchID) from projBatch where tagDepProjectID=%d", projectID)
     if (countOnly)
         return (srvSizeOfUpdateForTagProject(projectID=projectID, batchID=batchID))
 
