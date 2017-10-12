@@ -165,3 +165,16 @@ have a database for it, use the <code>new</code> parameter:</p>
 <div class="highlight highlight-source-r"><pre>tellme(<span class="pl-c1">8</span>, <span class="pl-v">new</span><span class="pl-k">=</span><span class="pl-c1">TRUE</span>)</pre></div>
 <p>Otherwise, <code>tellme</code> will return an error saying it doesn't know where your existing
 database is.</p>
+<h3>
+<a id="user-content-ambiguous-detections" class="anchor" href="#ambiguous-detections" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ambiguous detections</h3>
+<p>As of Oct. 7, 2017, the tagme() function automatically downloads ambiguous detections.  The nature
+of the ambiguity is discussed in detail <a href="https://github.com/jbrzusto/motusClient/blob/master/inst/doc/ambiguous_detection_handling.md">here</a></p>
+<p>The new function <code>motusClient::clarify()</code> is available for users to manage these detections.
+Calling it like this:</p>
+<div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">motusClient</span>)
+<span class="pl-v">s</span> <span class="pl-k">=</span> tagme(<span class="pl-c1">57</span>)           <span class="pl-c"><span class="pl-c">#</span># connect to the local copy of the tag database for project 57</span>
+clarify(<span class="pl-smi">s</span>)              <span class="pl-c"><span class="pl-c">#</span># summarize ambiguous detections in this database</span></pre></div>
+<p>prints a summary of all ambiguous detections in the project.  This is a table of each
+unique ambiguous ID (negative motus tag ID) and what possible real tags it could be.</p>
+<p>You can also use <code>clarify()</code> to claim ambiguous detections as your own.
+Do <code>?clarify</code> from an R session for details.</p>

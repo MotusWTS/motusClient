@@ -187,3 +187,23 @@ tellme(8, new=TRUE)
 ```
 Otherwise, `tellme` will return an error saying it doesn't know where your existing
 database is.
+
+### Ambiguous detections ###
+
+As of Oct. 7, 2017, the tagme() function automatically downloads ambiguous detections.  The nature
+of the ambiguity is discussed in detail [here](https://github.com/jbrzusto/motusClient/blob/master/inst/doc/ambiguous_detection_handling.md)
+
+The new function `motusClient::clarify()` is available for users to manage these detections.
+Calling it like this:
+
+``` R
+library(motusClient)
+s = tagme(57)           ## connect to the local copy of the tag database for project 57
+clarify(s)              ## summarize ambiguous detections in this database
+```
+
+prints a summary of all ambiguous detections in the project.  This is a table of each
+unique ambiguous ID (negative motus tag ID) and what possible real tags it could be.
+
+You can also use `clarify()` to claim ambiguous detections as your own.
+Do `?clarify` from an R session for details.
