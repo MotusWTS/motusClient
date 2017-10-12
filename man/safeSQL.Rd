@@ -8,8 +8,8 @@ safeSQL(con, busyTimeout = 300)
 }
 \arguments{
 \item{con}{RSQLite connection to database, as returned by
-dbConnect(SQLite(), ...), or character scalar giving path to
-SQLite database, or MySQLConnection, or dplyr::src}
+dbConnect(SQLite(), ...), or character scalar giving path
+to SQLite database, or MySQLConnection, or dplyr::src}
 
 \item{busyTimeout}{how many total seconds to wait while retrying a
 locked database.  Default: 300 (5 minutes).  Uses \code{pragma busy_timeout}
@@ -68,8 +68,9 @@ Without using \link{\code{DBI::SQL}}, the resulting query would be the incorrect
 }
 }
 \description{
-This uses dbGetQuery's `bind.data` (for RSQLite and ":" parameters) or
-dbQuoteStrings (for MySQL or RSQLite "%" parameters).  It should
+This uses the `params` parameter for \code{\link{DBI::dbGetQuery}}
+and \code{\link{DBI::dbExecute}} (for RSQLite and ":" parameters)
+or dbQuoteStrings (for MySQL or RSQLite "%" parameters).  It should
 prevent e.g. SQL injection attacks.
 }
 \note{

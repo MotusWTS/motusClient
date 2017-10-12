@@ -1,12 +1,13 @@
 #' Return a function that safely performs sql queries on a connection.
 #'
-#' This uses dbGetQuery's `bind.data` (for RSQLite and ":" parameters) or
-#' dbQuoteStrings (for MySQL or RSQLite "%" parameters).  It should
+#' This uses the `params` parameter for \code{\link{DBI::dbGetQuery}}
+#' and \code{\link{DBI::dbExecute}} (for RSQLite and ":" parameters)
+#' or dbQuoteStrings (for MySQL or RSQLite "%" parameters).  It should
 #' prevent e.g. SQL injection attacks.
 #'
 #' @param con RSQLite connection to database, as returned by
-#'     dbConnect(SQLite(), ...), or character scalar giving path to
-#'     SQLite database, or MySQLConnection, or dplyr::src
+#'     dbConnect(SQLite(), ...), or character scalar giving path
+#'     to SQLite database, or MySQLConnection, or dplyr::src
 #'
 #' @param busyTimeout how many total seconds to wait while retrying a
 #'     locked database.  Default: 300 (5 minutes).  Uses \code{pragma busy_timeout}
@@ -101,11 +102,11 @@ safeSQL = function(con, busyTimeout = 300) {
 
         ########## RSQLite ##########
 
-        DBI::dbExecute(con, paste0("pragma busy_timeout=", round(busyTimeout * 1000)))
+        dbGetQuery(con, sprintf("pragma busy_timeout=%d", round(busyTimeout * 1000)))
         structure(
-            function(query, ..., .CLOSE=FALSE, .QUOTE=TRUE) {
+            function(query, ..., .CLOSE=FALSE, .QUOTE) {
                 if (! missing(.QUOTE))
-                    stop(".QUOTE is only for RMySQL connections; for RSQLite connections, safeSQL uses bind.data, which doesn't require quoting")
+                    stop(".QUOTE is only for RMySQL connections; for RSQLite connections, safeSQL uses `params`, which doesn't require quoting")
                 if (.CLOSE) {
                     dbDisconnect(con)
                     return(con <<- NULL)
