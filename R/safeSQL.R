@@ -1,6 +1,6 @@
 #' Return a function that safely performs sql queries on a connection.
 #'
-#' This uses dbGetPreparedQuery (for RSQLite and ":" parameters) or
+#' This uses dbGetQuery's `bind.data` (for RSQLite and ":" parameters) or
 #' dbQuoteStrings (for MySQL or RSQLite "%" parameters).  It should
 #' prevent e.g. SQL injection attacks.
 #'
@@ -105,12 +105,12 @@ safeSQL = function(con, busyTimeout = 300) {
         structure(
             function(query, ..., .CLOSE=FALSE, .QUOTE=TRUE) {
                 if (! missing(.QUOTE))
-                    stop(".QUOTE is only for RMySQL connections; for RSQLite connections, safeSQL uses a prepared query that doesn't require quoting")
+                    stop(".QUOTE is only for RMySQL connections; for RSQLite connections, safeSQL uses bind.data, which doesn't require quoting")
                 if (.CLOSE) {
                     dbDisconnect(con)
                     return(con <<- NULL)
                 }
-                queryFun = if(grepl("(?i)^[[:space:]]*select", query, perl=TRUE)) dbGetQuery else dbSendQuery
+                queryFun = if(grepl("(?i)^[[:space:]]*select", query, perl=TRUE)) dbGetQuery else DBI::dbExecute
                 repeat {
                     tryCatch({
                         a = list(...)
@@ -149,7 +149,7 @@ safeSQL = function(con, busyTimeout = 300) {
                     dbDisconnect(con)
                     return(con <<- NULL)
                 }
-                queryFun = if(grepl("(?i)^[[:space:]]*select", query, perl=TRUE)) dbGetQuery else dbSendQuery
+                queryFun = if(grepl("(?i)^[[:space:]]*select", query, perl=TRUE)) dbGetQuery else DBI::dbExecute
                 a = list(...)
                 if (length(a) > 1 && .QUOTE) {
                     ## there are some parameters to the query, so escape those which are strings

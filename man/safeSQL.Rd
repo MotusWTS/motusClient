@@ -68,7 +68,7 @@ Without using \link{\code{DBI::SQL}}, the resulting query would be the incorrect
 }
 }
 \description{
-This uses dbGetPreparedQuery (for RSQLite and ":" parameters) or
+This uses dbGetQuery's `bind.data` (for RSQLite and ":" parameters) or
 dbQuoteStrings (for MySQL or RSQLite "%" parameters).  It should
 prevent e.g. SQL injection attacks.
 }
