@@ -16,6 +16,10 @@ A brief sketch is [here](https://github.com/jbrzusto/motusClient/blob/master/ins
 
 ## What's working so far:
 
+### 2017 Oct 13 - version 0.1.2
+
+- fix the clarify() function (closes jbrzusto/motusClient#6 )
+
 ### 2017 Oct 10
 
 - tagme(): now downloads hourly pulse counts when updating a receiver database

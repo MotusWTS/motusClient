@@ -392,6 +392,18 @@ CREATE TABLE pulseCounts (
 );
 ")
     }
+    if (! "clarified" %in% tables) {
+        sql("
+CREATE TABLE clarified (
+   ambigID INTEGER,
+   tagID INTEGER,
+   tsStart REAL,
+   tsEnd REAL)
+")
+        sql("
+CREATE INDEX IF NOT EXISTS clarified_ambigID_tsStart ON clarified(ambigID, tsStart)
+")
+    }
     rv = makeAlltagsView(src)
     for (hookfun in Motus$hooks$ensureDBTables)
         rv = hookfun(rv, src, projRecv, deviceID)

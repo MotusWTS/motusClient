@@ -88,18 +88,9 @@
 #' @author John Brzustowski \email{jbrzusto@@REMOVE_THIS_PART_fastmail.fm}
 
 clarify = function(s, id, from, to, all.mine=FALSE) {
-    sql("
-create table if not exists clarified (
-   ambigID integer,
-   tagID integer,
-   tsStart real,
-   tsEnd real)
-")
-    sql("create index if not exists clarified_ambigID_tsStart on clarified(ambigID, tsStart)")
-
+    sql = safeSQL(s$con)
     if (missing(id) && ! all.mine) {
         ## report on ambiguities
-        sql = safeSQL(s$con)
 
         ## detections by ambiguous tag
         ambig = sql("
