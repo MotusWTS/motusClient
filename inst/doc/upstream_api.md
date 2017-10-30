@@ -103,7 +103,7 @@ project, then that user can see:
 
 If an API call does not find any data for which the user is
 authorized, it will return a json object of the usual structure,
-except that column arrays will have length zero.  This represents an R
+except that arrays will have length zero.  This represents an R
 data.frame with the correct column names but zero rows.
 
 The API doesn't currently provide a way to tell whether there are additional data
@@ -178,8 +178,7 @@ These assumptions allow for simpler, more efficient database queries.
    - return a list of all batches with detections of tags in project `projectID`,
      where the batchID is > `batchID`
 
-   - fields in the returned object are arrays (as they exist in the transfer
-     tables):
+   - fields in the returned object are arrays:
       - batchID
       - deviceID
       - monoBN
@@ -206,15 +205,14 @@ returns an empty list.
    - return a list of all batches from deployments of the device by
      project projectID, where the batchID is > `batchID`
 
-   - columns should include these fields (as they exist in the transfer
-     tables):
-      - batchID
-      - deviceID
-      - monoBN
-      - tsBegin
-      - tsEnd
-      - numHits
-      - ts
+   - the returned object has these array fields:
+      - batchID: integer;
+      - deviceID: integer; motus device ID
+      - monoBN: integer; corrected boot count for device (where available)
+      - tsBegin: double; unix timestamp (seconds since 1 Jan 1970 GMT) for start of raw data processed in this batch
+      - tsEnd: double; unix timestamp for end of raw data processed in this batch
+      - numHits: integer; count of detections on all antennas in this batch
+      - ts: double; unix timestamp at which processing of this batch completed
 
 Paging for this query is achieved by using the largest returned value of `batchID`
 as `batchID` on subsequent calls.  When there are no further batches, the API
@@ -232,8 +230,7 @@ returns an empty list.
 
    - return a list of all batches from any receiver, where the batchID is > `batchID`
 
-   - columns should include these fields (as they exist in the transfer
-     tables):
+   - fields in the returned object are arrays:
       - batchID
       - deviceID
       - monoBN
@@ -264,8 +261,7 @@ detections.  Currently, that means only administrative users.
    - return a list of all runs of a tag in project `projectID`, from batch
      `batchID` and with run ID > `runID`
 
-   - columns should include these fields (as they exist in the transfer
-     tables):
+   - fields in the returned object are arrays:
       - runID
       - batchIDbegin
       - tsBegin
@@ -292,8 +288,7 @@ returns an empty list.
 
    - return a list of all runs from batch `batchID` with run ID > `runID`
 
-   - columns should include these fields (as they exist in the transfer
-     tables):
+   - fields in the returned object are arrays:
       - runID
       - batchIDbegin
       - tsBegin
@@ -322,8 +317,7 @@ returns an empty list.
    - return a list of all hits on tags in project `projectID` which are in batch `batchID`,
      and whose hit ID is > `hitID`
 
-   - columns should include these fields (as they exist in the transfer
-     tables):
+   - fields in the returned object are arrays:
       - hitID
       - runID
       - batchID
@@ -353,8 +347,7 @@ returns an empty list.
 
    - return a list of all hits in batch `batchID` whose hit ID is > `hitID`
 
-   - columns should include these fields (as they exist in the transfer
-     tables):
+   - fields in the returned object are arrays:
       - hitID
       - runID
       - batchID
@@ -393,8 +386,7 @@ returns an empty list.
      detected, if a batch has a few early and a few late detections of
      the project's tags.
 
-   - columns should include these fields (as they exist in the transfer
-     tables):
+   - fields in the returned object are arrays:
      - ts
      - batchID (optional; this is just batchID)
      - lat
@@ -418,8 +410,7 @@ returns an empty list.
 
    - return all GPS fixes from batch batchID which are later than timestamp ts
 
-   - columns should include these fields (as they exist in the transfer
-     tables):
+   - fields in the returned object are arrays:
      - ts
      - batchID (optional; this is just batchID)
      - lat
