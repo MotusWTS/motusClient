@@ -134,8 +134,8 @@ These assumptions allow for simpler, more efficient database queries.
    - return a list of receiver device IDs for the given serial numbers
 
    - fields in the return value are arrays:
-      - serno string; serial number, as specified
-      - deviceID integer; motus device ID, or NA where the serial number was not found
+      - serno: string; serial number, as specified
+      - deviceID: integer; motus device ID, or NA where the serial number was not found
 
 ### receivers for project ###
 
@@ -149,20 +149,20 @@ These assumptions allow for simpler, more efficient database queries.
    - return a list of receiver deployments belonging to project `projectID`
 
    - fields in the returned object are arrays:
-      - serno string; serial number; e.g. SG-1234BBBK9876, Lotek-149
-      - receiverType string; "LOTEK" or "SENSORGNOME"
-      - deviceID integer; motus device ID
-      - status string;
-      - deployID integer; motus device deployment ID
-      - name string; short name for this deployment; typically a site name
-      - fixtureType string; e.g. "PopTower"
-      - latitude double; decimal degrees North (at start of deployment if mobile)
-      - longitude double; decimal degrees East (at start of deployment if mobile)
+      - serno: string; serial number; e.g. SG-1234BBBK9876, Lotek-149
+      - receiverType: string; "LOTEK" or "SENSORGNOME"
+      - deviceID: integer; motus device ID
+      - status: string;
+      - deployID: integer; motus device deployment ID
+      - name: string; short name for this deployment; typically a site name
+      - fixtureType: string; e.g. "PopTower"
+      - latitude: double; decimal degrees North (at start of deployment if mobile)
+      - longitude: double; decimal degrees East (at start of deployment if mobile)
       - isMobile logical; is this a mobile deployment
-      - tsStart double; unix timestamp of start of deployment
-      - tsEnd double; unix timestamp of end of deployment, or null if still deployed
-      - projectID integer; motus project ID owning deployment
-      - elevation double; metres above sea level
+      - tsStart: double; unix timestamp of start of deployment
+      - tsEnd: double; unix timestamp of end of deployment, or null if still deployed
+      - projectID: integer; motus project ID owning deployment
+      - elevation: double; metres above sea level
 
 ### batches for tag project ###
 
@@ -375,7 +375,7 @@ returns an empty list.
 
    gps_for_tag_project (projectID, batchID, ts, authToken)
 
-       - projectID; integer; project ID of tags
+       - projectID: integer; project ID of tags
        - batchID: integer; batchID where tags from projectID were detected
        - ts: largest gps timestamp we *already* have for this batch
        - authToken: authorization token returned by authenticate_user
@@ -446,43 +446,43 @@ returns an empty list.
    - return an object with these fields:
 
       - tags; a object with these array fields:
-         - tagID; integer; tag ID
-         - projectID; integer; motus ID of project which *registered* tag
+         - tagID: integer; tag ID
+         - projectID: integer; motus ID of project which *registered* tag
          - mfgID; string; manufacturer tag ID
          - type; string;  "ID" or "BEEPER"
          - codeSet; string; e.g. "Lotek3", "Lotek4"
          - manufacturer; string; e.g. "Lotek"
          - model; string; e.g. "NTQB-3-1"
-         - lifeSpan; integer; estimated tag lifeSpan, in days
-         - nomFreq; double; nominal frequency of tag, in MHz
-         - offsetFreq; double; estimated offset frequency of tag, in kHz
-         - bi; double; burst interval or period of tag, in seconds
-         - pulseLen; double; length of tag pulses, in ms (not applicable to all tags)
+         - lifeSpan: integer; estimated tag lifeSpan, in days
+         - nomFreq: double; nominal frequency of tag, in MHz
+         - offsetFreq: double; estimated offset frequency of tag, in kHz
+         - bi: double; burst interval or period of tag, in seconds
+         - pulseLen: double; length of tag pulses, in ms (not applicable to all tags)
 
       - tagDeps; a object with these array fields:
-         - tagID; integer; motus tagID
-         - deployID; integer; tag deployment ID (internal to motus)
-         - projectID; integer; motus ID of project which *deployed* tag
-         - tsStart; double; timestamp of start of deployment
-         - tsEnd; double; timestamp of end of deployment
-         - deferSec; integer; deferred activation period, in seconds (0 for most tags).
-         - speciesID; integer; motus species ID code
+         - tagID: integer; motus tagID
+         - deployID: integer; tag deployment ID (internal to motus)
+         - projectID: integer; motus ID of project which *deployed* tag
+         - tsStart: double; timestamp of start of deployment
+         - tsEnd: double; timestamp of end of deployment
+         - deferSec: integer; deferred activation period, in seconds (0 for most tags).
+         - speciesID: integer; motus species ID code
          - markerType; string; type of marker on organism; e.g. leg band
          - markerNumber; string; details of marker; e.g. leg band code
-         - latitude; double; deployment location, degrees N (negative is S)
-         - longitude; double; deployment location, degrees E (negative is W)
-         - elevation; double; deployment location, metres ASL
+         - latitude: double; deployment location, degrees N (negative is S)
+         - longitude: double; deployment location, degrees E (negative is W)
+         - elevation: double; deployment location, metres ASL
          - comments; string; possibly JSON-formatted list of additional metadata
 
       - species; a object with these array fields:
-         - id; integer; species ID,
+         - id: integer; species ID,
          - english; string; English species name
          - french; string; French species name
          - scientific; string; scientific species name
          - group; string; higher-level taxon
 
       - projs; a object with these array fields:
-         - id; integer; motus project id
+         - id: integer; motus project id
          - name; string; full name of motus project
          - label; string; short label for motus project; e.g. for use in plots
 );
@@ -491,7 +491,7 @@ returns an empty list.
 
     metadata for receivers (deviceIDs, authToken)
 
-       - deviceID; integer; device ID; receiver metadata will only be
+       - deviceID: integer; device ID; receiver metadata will only be
          returned for receivers whose project has indicated their
          metadata are public, or receivers in one of the projects the
          user has permissions to.
@@ -503,39 +503,39 @@ returns an empty list.
    - return an object with these fields:
 
       - recvDeps; a object with these array fields:
-         - deployID; integer; deployment ID (internal to motus, but links to antDeps)
-         - projectID; integer; ID of project that deployed the receiver
+         - deployID: integer; deployment ID (internal to motus, but links to antDeps)
+         - projectID: integer; ID of project that deployed the receiver
          - serno; string; serial number, e.g. "SG-1214BBBK3999", "Lotek-8681"
          - receiverType; string; "SENSORGNOME" or "LOTEK"
-         - deviceID; integer; device ID (internal to motus)
+         - deviceID: integer; device ID (internal to motus)
          - status; string; deployment status
          - name; string; typically a site name
          - fixtureType; string; what is the receiver mounted on?
-         - latitude; double; (initial) location, degrees North
-         - longitude; double; (initial) location, degrees East
-         - elevation; double; (initial) location, metres ASL
-         - isMobile; integer; non-zero means a mobile deployment
-         - tsStart; double; timestamp of deployment start
-         - tsEnd; double; timestamp of deployment end, or NA if ongoing
+         - latitude: double; (initial) location, degrees North
+         - longitude: double; (initial) location, degrees East
+         - elevation: double; (initial) location, metres ASL
+         - isMobile: integer; non-zero means a mobile deployment
+         - tsStart: double; timestamp of deployment start
+         - tsEnd: double; timestamp of deployment end, or NA if ongoing
 
       - antDeps; a object with these array fields:
-         - deployID; integer, links to deployID in recvDeps table
-         - port; integer, which receiver port (USB for SGs, BNC for
+         - deployID: integer, links to deployID in recvDeps table
+         - port: integer, which receiver port (USB for SGs, BNC for
            Lotek) the antenna is connected to
          - antennaType; string; e.g. "Yagi-5", "omni"
-         - bearing; double; compass angle at which antenna is pointing; degrees clockwise from
+         - bearing: double; compass angle at which antenna is pointing; degrees clockwise from
            magnetic north
-         - heightMeters; double; height of main antenna element above ground
-         - cableLengthMeters; double; length of coaxial cable from antenna to receiver, in metres
+         - heightMeters: double; height of main antenna element above ground
+         - cableLengthMeters: double; length of coaxial cable from antenna to receiver, in metres
          - cableType: string; type of cable; e.g. "RG-58"
-         - mountDistanceMeters; double; distance of mounting point from receiver, in metres
-         - mountBearing; double; compass angle from receiver to antenna mount; degrees clockwise from
+         - mountDistanceMeters: double; distance of mounting point from receiver, in metres
+         - mountBearing: double; compass angle from receiver to antenna mount; degrees clockwise from
            magnetic north
-         - polarization2; double; angle giving tilt from "normal" position, in degrees
-         - polarization1; double; angle giving rotation of antenna about own axis, in degrees.
+         - polarization2: double; angle giving tilt from "normal" position, in degrees
+         - polarization1: double; angle giving rotation of antenna about own axis, in degrees.
 
       - projs; a object with these array fields:
-         - id; integer; motus project id
+         - id: integer; motus project id
          - name; string; full name of motus project
          - label; string; short label for motus project; e.g. for use in plots
 
@@ -543,7 +543,7 @@ returns an empty list.
 
    tags for ambiguities (ambigIDs, authToken)
 
-       - ambigIDs; integer; tag ambiguity IDs; this is an array of negative
+       - ambigIDs: integer; tag ambiguity IDs; this is an array of negative
          integers, each representing 2 to 6 tags for which detections are
          indistinguishable over some period of time; i.e. a detection of
          the given ambigID could represent any of the motus tagIDs.  (6 is
@@ -665,10 +665,10 @@ returns an empty list.
      yet.  In that case, `ant` is ignored.
 
    - the returned object has these array fields:
-     - batchID; integer; same as passed parameter
-     - hourBin; double; floor(timestamp / 3600) for pulses represented by this bin
-     - ant; integer; antenna number
-     - count integer; number of pulses on this antenna during this hourBin
+     - batchID: integer; same as passed parameter
+     - hourBin: double; floor(timestamp / 3600) for pulses represented by this bin
+     - ant: integer; antenna number
+     - count: integer; number of pulses on this antenna during this hourBin
 
 Paging for this query is achieved by using the last returned values of
 `ant` and `hourBin` as `ant` and `hourBin` on subsequent calls.  When
