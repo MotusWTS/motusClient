@@ -33,7 +33,7 @@ it is to work with this package.
 ### Reply ###
  - is a json object: header `Content-Type = application/json`
  - is bzip2-compressed: header `Content-Encoding = bzip2`
- - most return values are lists of vectors of
+ - most return values are lists of arrays of
    equal length, which is the natural JSON encoding of an R data.frame
  - errors are indicated by including a field called `error` in the reply; other
    fields might be present, giving additional information.  If no field `error`
@@ -60,7 +60,7 @@ The server is at [https://sgdata.motus.org](https://sgdata.motus.org) and the UR
 
    api_info (authToken)
 
-   - return a list with these items:
+   - return an object with these items:
 
       - maxRows: integer, maximum number of rows returned by a query
 
@@ -78,12 +78,12 @@ The server is at [https://sgdata.motus.org](https://sgdata.motus.org) and the UR
       e.g.
       curl --data-urlencode json='{"user":"someone","password":"bigsecret"}' https://sgdata.motus.org/data/custom/authenticate_user
 
-   - returns a list with these items:
+   - returns an object with these fields:
       - authToken: character string; 264 random bits, base64-encoded
       - expiry: numeric timestamp of expiry for token
       - userID: integer motus ID for user
-      - projects: integer vector of project #s user is allowed to request tag detections for
-      - receivers: character vector of serial #s of receivers user is allowed to request tag detections for
+      - projects: array of integer project #s user is allowed to request tag detections for
+      - receivers: array of character serial #s of receivers user is allowed to request tag detections for
 
    or
 
@@ -126,14 +126,14 @@ These assumptions allow for simpler, more efficient database queries.
 
    deviceID_for_receiver (serno, authToken)
 
-       - serno: character vector of receiver serial number(s)
+       - serno: array of character receiver serial number(s)
 
       e.g.
       curl --data-urlencode json='{"serno":"SG-1234BBBK5678","authToken":"XXX"}' https://sgdata.motus.org/data/custom/deviceID_for_receiver
 
    - return a list of receiver device IDs for the given serial numbers
 
-   - items in the return value are vectors:
+   - items in the return value are arrays:
       - serno character serial number, as specified
       - deviceID integer motus device ID, or NA where the serial number was not found
 
@@ -148,7 +148,7 @@ These assumptions allow for simpler, more efficient database queries.
 
    - return a list of receiver deployments belonging to project `projectID`
 
-   - items in the return value are vectors:
+   - items in the return value are arrays:
       - serno character serial number; e.g. SG-1234BBBK9876, Lotek-149
       - receiverType character; "LOTEK" or "SENSORGNOME"
       - deviceID integer motus device ID
@@ -178,7 +178,7 @@ These assumptions allow for simpler, more efficient database queries.
    - return a list of all batches with detections of tags in project `projectID`,
      where the batchID is > `batchID`
 
-   - items in the return value are vectors (as they exist in the transfer
+   - items in the return value are arrays (as they exist in the transfer
      tables):
       - batchID
       - deviceID
@@ -434,7 +434,7 @@ returns an empty list.
 
     metadata for tags (motusTagIDs, authToken)
 
-       - motusTagIDs: integer vector of motus tag IDs; tag metadata will
+       - motusTagIDs: array of integer motus tag IDs; tag metadata will
          only be returned for tag deployments whose project has indicated
          their metadata are public, or tags deployments by one of the
          projects the user has permissions to.
@@ -443,9 +443,9 @@ returns an empty list.
       e.g.
       curl --data-urlencode json='{"motusTagIDs":[12345,12346,12347],"authToken":"XXX"}' https://sgdata.motus.org/data/custom/metadata_for_tags
 
-   - return a list with these items:
+   - return an object with these fields:
 
-      - tags; a list with these columns:
+      - tags; a object with these array fields:
          - tagID; integer tag ID
          - projectID; integer motus ID of project which *registered* tag
          - mfgID; character manufacturer tag ID
@@ -459,7 +459,7 @@ returns an empty list.
          - bi; numeric burst interval or period of tag, in seconds
          - pulseLen; numeric length of tag pulses, in ms (not applicable to all tags)
 
-      - tagDeps; a list with these columns:
+      - tagDeps; a object with these array fields:
          - tagID; integer motus tagID
          - deployID; integer tag deployment ID (internal to motus)
          - projectID; integer motus ID of project which *deployed* tag
@@ -474,14 +474,14 @@ returns an empty list.
          - elevation; numeric deployment location, metres ASL
          - comments; character possibly JSON-formatted list of additional metadata
 
-      - species; a list with these columns:
+      - species; a object with these array fields:
          - id; integer species ID,
          - english; character; English species name
          - french; character; French species name
          - scientific; character; scientific species name
          - group; character; higher-level taxon
 
-      - projs; a list with these columns:
+      - projs; a object with these array fields:
          - id; integer motus project id
          - name; character full name of motus project
          - label; character short label for motus project; e.g. for use in plots
@@ -500,9 +500,9 @@ returns an empty list.
       e.g.
       curl --data-urlencode json='{"deviceIDs":[123,124,125],"authToken":"XXX"}' https://sgdata.motus.org/data/custom/metadata_for_receivers
 
-   - return a list with these items:
+   - return an object with these fields:
 
-      - recvDeps; a list with these columns:
+      - recvDeps; a object with these array fields:
          - deployID; integer deployment ID (internal to motus, but links to antDeps)
          - projectID; integer ID of project that deployed the receiver
          - serno; character serial number, e.g. "SG-1214BBBK3999", "Lotek-8681"
@@ -518,7 +518,7 @@ returns an empty list.
          - tsStart; numeric; timestamp of deployment start
          - tsEnd; numeric; timestamp of deployment end, or NA if ongoing
 
-      - antDeps; a list with these columns:
+      - antDeps; a object with these array fields:
          - deployID; integer, links to deployID in recvDeps table
          - port; integer, which receiver port (USB for SGs, BNC for
            Lotek) the antenna is connected to
@@ -534,7 +534,7 @@ returns an empty list.
          - polarization2; numeric angle giving tilt from "normal" position, in degrees
          - polarization1; numeric angle giving rotation of antenna about own axis, in degrees.
 
-      - projs; a list with these columns:
+      - projs; a object with these array fields:
          - id; integer motus project id
          - name; character full name of motus project
          - label; character short label for motus project; e.g. for use in plots
@@ -543,7 +543,7 @@ returns an empty list.
 
    tags for ambiguities (ambigIDs, authToken)
 
-       - ambigIDs; integer tag ambiguity IDs; this a vector of negative
+       - ambigIDs; integer tag ambiguity IDs; this is an array of negative
          integers, each representing 2 to 6 tags for which detections are
          indistinguishable over some period of time; i.e. a detection of
          the given ambigID could represent any of the motus tagIDs.  (6 is
@@ -553,7 +553,7 @@ returns an empty list.
       e.g.
       curl --data-urlencode json='{"ambigIDs":[-3,-4,-5],"authToken":"XXX"}' https://sgdata.motus.org/data/custom/tags_for_ambiguities
 
-   - return a list with these vector items:
+   - return an object with these arrays:
       - ambigID; negative integer tag ambiguity ID
       - motusTagID1; positive integer motus tag ID
       - motusTagID2; positive integer motus tag ID
@@ -624,7 +624,7 @@ returns an empty list.
      same project are ambiguous, then their ambigProjectID has
      only projectID1 not null.
 
-   - items in the return value are vectors:
+   - items in the return value are arrays:
       - ambigProjectID: (APID) a unique negative projectID
         representing the set {projectID1, ..., projectID6}
       - projectID1; first real (positive) project ID in the set (not null)
