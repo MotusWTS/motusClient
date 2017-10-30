@@ -148,7 +148,7 @@ These assumptions allow for simpler, more efficient database queries.
 
    - return a list of receiver deployments belonging to project `projectID`
 
-   - items in the return value are arrays:
+   - fields in the returned object are arrays:
       - serno string; serial number; e.g. SG-1234BBBK9876, Lotek-149
       - receiverType string; "LOTEK" or "SENSORGNOME"
       - deviceID integer; motus device ID
@@ -178,7 +178,7 @@ These assumptions allow for simpler, more efficient database queries.
    - return a list of all batches with detections of tags in project `projectID`,
      where the batchID is > `batchID`
 
-   - items in the return value are arrays (as they exist in the transfer
+   - fields in the returned object are arrays (as they exist in the transfer
      tables):
       - batchID
       - deviceID
@@ -624,7 +624,7 @@ returns an empty list.
      same project are ambiguous, then their ambigProjectID has
      only projectID1 not null.
 
-   - items in the return value are arrays:
+   - fields in the returned object are arrays:
       - ambigProjectID: integer; (APID) a unique negative projectID
         representing the set {projectID1, ..., projectID6}
       - projectID1: integer; first real (positive) project ID in the set (not null)
