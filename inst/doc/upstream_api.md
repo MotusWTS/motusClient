@@ -33,7 +33,7 @@ it is to work with this package.
 ### Reply ###
  - is a json object: header `Content-Type = application/json`
  - is bzip2-compressed: header `Content-Encoding = bzip2`
- - most return values are lists of arrays of
+ - most return values are an object whose fields are arrays of
    equal length, which is the natural JSON encoding of an R data.frame
  - errors are indicated by including a field called `error` in the reply; other
    fields might be present, giving additional information.  If no field `error`
@@ -79,11 +79,11 @@ The server is at [https://sgdata.motus.org](https://sgdata.motus.org) and the UR
       curl --data-urlencode json='{"user":"someone","password":"bigsecret"}' https://sgdata.motus.org/data/custom/authenticate_user
 
    - returns an object with these fields:
-      - authToken: character string; 264 random bits, base64-encoded
-      - expiry: numeric timestamp of expiry for token
-      - userID: integer motus ID for user
-      - projects: array of integer project #s user is allowed to request tag detections for
-      - receivers: array of character serial #s of receivers user is allowed to request tag detections for
+      - authToken: string; 264 random bits, base64-encoded
+      - expiry: double timestamp of expiry for token
+      - userID: integer; motus ID for user
+      - projects: array of integer; project #s user is allowed to request tag detections for
+      - receivers: array of string; serial #s of receivers user is allowed to request tag detections for
 
    or
 
@@ -126,22 +126,22 @@ These assumptions allow for simpler, more efficient database queries.
 
    deviceID_for_receiver (serno, authToken)
 
-       - serno: array of character receiver serial number(s)
+       - serno: array of string; receiver serial number(s)
 
       e.g.
       curl --data-urlencode json='{"serno":"SG-1234BBBK5678","authToken":"XXX"}' https://sgdata.motus.org/data/custom/deviceID_for_receiver
 
    - return a list of receiver device IDs for the given serial numbers
 
-   - items in the return value are arrays:
-      - serno character serial number, as specified
-      - deviceID integer motus device ID, or NA where the serial number was not found
+   - fields in the return value are arrays:
+      - serno string; serial number, as specified
+      - deviceID integer; motus device ID, or NA where the serial number was not found
 
 ### receivers for project ###
 
    receivers_for_project (projectID, authToken)
 
-       - projectID: integer project ID
+       - projectID: integer; project ID
 
       e.g.
       curl --data-urlencode json='{"projectID":123,"authToken":"XXX"}' https://sgdata.motus.org/data/custom/receivers_for_project
@@ -149,27 +149,27 @@ These assumptions allow for simpler, more efficient database queries.
    - return a list of receiver deployments belonging to project `projectID`
 
    - items in the return value are arrays:
-      - serno character serial number; e.g. SG-1234BBBK9876, Lotek-149
-      - receiverType character; "LOTEK" or "SENSORGNOME"
-      - deviceID integer motus device ID
-      - status character,
+      - serno string; serial number; e.g. SG-1234BBBK9876, Lotek-149
+      - receiverType string; "LOTEK" or "SENSORGNOME"
+      - deviceID integer; motus device ID
+      - status string;
       - deployID integer; motus device deployment ID
-      - name character; short name for this deployment; typically a site name
-      - fixtureType character; e.g. "PopTower"
-      - latitude numeric; decimal degrees North (at start of deployment if mobile)
-      - longitude numeric; decimal degrees East (at start of deployment if mobile)
+      - name string; short name for this deployment; typically a site name
+      - fixtureType string; e.g. "PopTower"
+      - latitude double; decimal degrees North (at start of deployment if mobile)
+      - longitude double; decimal degrees East (at start of deployment if mobile)
       - isMobile logical; is this a mobile deployment
-      - tsStart numeric; unix timestamp of start of deployment
-      - tsEnd numeric; unix timestamp of end of deployment, or null if still deployed
+      - tsStart double; unix timestamp of start of deployment
+      - tsEnd double; unix timestamp of end of deployment, or null if still deployed
       - projectID integer; motus project ID owning deployment
-      - elevation numeric; metres above sea level
+      - elevation double; metres above sea level
 
 ### batches for tag project ###
 
    batches_for_tag_project (projectID, batchID, authToken)
 
-       - projectID: integer project ID
-       - batchID: integer largest batchID we already have for this project
+       - projectID: integer; project ID
+       - batchID: integer; largest batchID we already have for this project
        - authToken: authorization token returned by authenticate_user
 
       e.g.
@@ -196,8 +196,8 @@ returns an empty list.
 
    batches_for_receiver (deviceID, batchID, authToken)
 
-       - deviceID: integer motus device ID, e.g. as returned by receivers_for_project
-       - batchID: integer largest batchID we already have for this project
+       - deviceID: integer; motus device ID, e.g. as returned by receivers_for_project
+       - batchID: integer; largest batchID we already have for this project
        - authToken: authorization token returned by authenticate_user
 
       e.g.
@@ -224,7 +224,7 @@ returns an empty list.
 
    batches_for_all (batchID, authToken) - administrative users only
 
-       - batchID: integer largest batchID we already have
+       - batchID: integer; largest batchID we already have
        - authToken: authorization token returned by authenticate_user
 
       e.g.
@@ -253,9 +253,9 @@ detections.  Currently, that means only administrative users.
 
    runs_for_tag_project (projectID, batchID, runID, authToken)
 
-       - projectID: integer project ID
-       - batchID: integer batch ID
-       - runID: integer largest run ID we *already* have from this batch and tag project
+       - projectID: integer; project ID
+       - batchID: integer; batch ID
+       - runID: integer; largest run ID we *already* have from this batch and tag project
        - authToken: authorization token returned by authenticate_user
 
       e.g.
@@ -283,8 +283,8 @@ returns an empty list.
 
    runs_for_receiver (batchID, runID, authToken)
 
-       - batchID: integer batch ID
-       - runID: integer largest runID we *already* have from this batch
+       - batchID: integer; batch ID
+       - runID: integer; largest runID we *already* have from this batch
        - authToken: authorization token returned by authenticate_user
 
       e.g.
@@ -311,9 +311,9 @@ returns an empty list.
 
    hits_for_tag_project (projectID, batchID, hitID, authToken)
 
-       - projectID: integer project ID
-       - batchID: integer batchID
-       - hitID: integer largest hitID we *already* have from this batch
+       - projectID: integer; project ID
+       - batchID: integer; batchID
+       - hitID: integer; largest hitID we *already* have from this batch
        - authToken: authorization token returned by authenticate_user
 
       e.g.
@@ -344,8 +344,8 @@ returns an empty list.
 
    hits_for_receiver (batchID, hitID, authToken)
 
-       - batchID: integer batchID
-       - hitID: integer largest hitID we *already* have from this batch
+       - batchID: integer; batchID
+       - hitID: integer; largest hitID we *already* have from this batch
        - authToken: authorization token returned by authenticate_user
 
       e.g.
@@ -375,8 +375,8 @@ returns an empty list.
 
    gps_for_tag_project (projectID, batchID, ts, authToken)
 
-       - projectID; integer project ID of tags
-       - batchID: integer batchID where tags from projectID were detected
+       - projectID; integer; project ID of tags
+       - batchID: integer; batchID where tags from projectID were detected
        - ts: largest gps timestamp we *already* have for this batch
        - authToken: authorization token returned by authenticate_user
 
@@ -409,7 +409,7 @@ returns an empty list.
 
    gps_for_receiver (batchID, ts, authToken)
 
-       - batchID: integer batchID
+       - batchID: integer; batchID
        - ts: largest gps timestamp we *already* have for this batch
        - authToken: authorization token returned by authenticate_user
 
@@ -434,7 +434,7 @@ returns an empty list.
 
     metadata for tags (motusTagIDs, authToken)
 
-       - motusTagIDs: array of integer motus tag IDs; tag metadata will
+       - motusTagIDs: integer array; motus tag IDs; tag metadata will
          only be returned for tag deployments whose project has indicated
          their metadata are public, or tags deployments by one of the
          projects the user has permissions to.
@@ -446,52 +446,52 @@ returns an empty list.
    - return an object with these fields:
 
       - tags; a object with these array fields:
-         - tagID; integer tag ID
-         - projectID; integer motus ID of project which *registered* tag
-         - mfgID; character manufacturer tag ID
-         - type; character  "ID" or "BEEPER"
-         - codeSet; character e.g. "Lotek3", "Lotek4"
-         - manufacturer; character e.g. "Lotek"
-         - model; character e.g. "NTQB-3-1"
-         - lifeSpan; integer estimated tag lifeSpan, in days
-         - nomFreq; numeric nominal frequency of tag, in MHz
-         - offsetFreq; numeric estimated offset frequency of tag, in kHz
-         - bi; numeric burst interval or period of tag, in seconds
-         - pulseLen; numeric length of tag pulses, in ms (not applicable to all tags)
+         - tagID; integer; tag ID
+         - projectID; integer; motus ID of project which *registered* tag
+         - mfgID; string; manufacturer tag ID
+         - type; string;  "ID" or "BEEPER"
+         - codeSet; string; e.g. "Lotek3", "Lotek4"
+         - manufacturer; string; e.g. "Lotek"
+         - model; string; e.g. "NTQB-3-1"
+         - lifeSpan; integer; estimated tag lifeSpan, in days
+         - nomFreq; double; nominal frequency of tag, in MHz
+         - offsetFreq; double; estimated offset frequency of tag, in kHz
+         - bi; double; burst interval or period of tag, in seconds
+         - pulseLen; double; length of tag pulses, in ms (not applicable to all tags)
 
       - tagDeps; a object with these array fields:
-         - tagID; integer motus tagID
-         - deployID; integer tag deployment ID (internal to motus)
-         - projectID; integer motus ID of project which *deployed* tag
-         - tsStart; numeric timestamp of start of deployment
-         - tsEnd; numeric timestamp of end of deployment
-         - deferSec; integer deferred activation period, in seconds (0 for most tags).
-         - speciesID; integer motus species ID code
-         - markerType; character type of marker on organism; e.g. leg band
-         - markerNumber; character details of marker; e.g. leg band code
-         - latitude; numeric deployment location, degrees N (negative is S)
-         - longitude; numeric deployment location, degrees E (negative is W)
-         - elevation; numeric deployment location, metres ASL
-         - comments; character possibly JSON-formatted list of additional metadata
+         - tagID; integer; motus tagID
+         - deployID; integer; tag deployment ID (internal to motus)
+         - projectID; integer; motus ID of project which *deployed* tag
+         - tsStart; double; timestamp of start of deployment
+         - tsEnd; double; timestamp of end of deployment
+         - deferSec; integer; deferred activation period, in seconds (0 for most tags).
+         - speciesID; integer; motus species ID code
+         - markerType; string; type of marker on organism; e.g. leg band
+         - markerNumber; string; details of marker; e.g. leg band code
+         - latitude; double; deployment location, degrees N (negative is S)
+         - longitude; double; deployment location, degrees E (negative is W)
+         - elevation; double; deployment location, metres ASL
+         - comments; string; possibly JSON-formatted list of additional metadata
 
       - species; a object with these array fields:
-         - id; integer species ID,
-         - english; character; English species name
-         - french; character; French species name
-         - scientific; character; scientific species name
-         - group; character; higher-level taxon
+         - id; integer; species ID,
+         - english; string; English species name
+         - french; string; French species name
+         - scientific; string; scientific species name
+         - group; string; higher-level taxon
 
       - projs; a object with these array fields:
-         - id; integer motus project id
-         - name; character full name of motus project
-         - label; character short label for motus project; e.g. for use in plots
+         - id; integer; motus project id
+         - name; string; full name of motus project
+         - label; string; short label for motus project; e.g. for use in plots
 );
 
 ### metadata for receivers ###
 
     metadata for receivers (deviceIDs, authToken)
 
-       - deviceID; integer device ID; receiver metadata will only be
+       - deviceID; integer; device ID; receiver metadata will only be
          returned for receivers whose project has indicated their
          metadata are public, or receivers in one of the projects the
          user has permissions to.
@@ -503,47 +503,47 @@ returns an empty list.
    - return an object with these fields:
 
       - recvDeps; a object with these array fields:
-         - deployID; integer deployment ID (internal to motus, but links to antDeps)
-         - projectID; integer ID of project that deployed the receiver
-         - serno; character serial number, e.g. "SG-1214BBBK3999", "Lotek-8681"
-         - receiverType; character "SENSORGNOME" or "LOTEK"
-         - deviceID; integer device ID (internal to motus)
-         - status; character deployment status
-         - name; character; typically a site name
-         - fixtureType; character; what is the receiver mounted on?
-         - latitude; numeric (initial) location, degrees North
-         - longitude; numeric (initial) location, degrees East
-         - elevation; numeric (initial) location, metres ASL
-         - isMobile; integer non-zero means a mobile deployment
-         - tsStart; numeric; timestamp of deployment start
-         - tsEnd; numeric; timestamp of deployment end, or NA if ongoing
+         - deployID; integer; deployment ID (internal to motus, but links to antDeps)
+         - projectID; integer; ID of project that deployed the receiver
+         - serno; string; serial number, e.g. "SG-1214BBBK3999", "Lotek-8681"
+         - receiverType; string; "SENSORGNOME" or "LOTEK"
+         - deviceID; integer; device ID (internal to motus)
+         - status; string; deployment status
+         - name; string; typically a site name
+         - fixtureType; string; what is the receiver mounted on?
+         - latitude; double; (initial) location, degrees North
+         - longitude; double; (initial) location, degrees East
+         - elevation; double; (initial) location, metres ASL
+         - isMobile; integer; non-zero means a mobile deployment
+         - tsStart; double; timestamp of deployment start
+         - tsEnd; double; timestamp of deployment end, or NA if ongoing
 
       - antDeps; a object with these array fields:
          - deployID; integer, links to deployID in recvDeps table
          - port; integer, which receiver port (USB for SGs, BNC for
            Lotek) the antenna is connected to
-         - antennaType; character; e.g. "Yagi-5", "omni"
-         - bearing; numeric compass angle at which antenna is pointing; degrees clockwise from
+         - antennaType; string; e.g. "Yagi-5", "omni"
+         - bearing; double; compass angle at which antenna is pointing; degrees clockwise from
            magnetic north
-         - heightMeters; numeric height of main antenna element above ground
-         - cableLengthMeters; numeric length of coaxial cable from antenna to receiver, in metres
-         - cableType: character; type of cable; e.g. "RG-58"
-         - mountDistanceMeters; numeric distance of mounting point from receiver, in metres
-         - mountBearing; numeric compass angle from receiver to antenna mount; degrees clockwise from
+         - heightMeters; double; height of main antenna element above ground
+         - cableLengthMeters; double; length of coaxial cable from antenna to receiver, in metres
+         - cableType: string; type of cable; e.g. "RG-58"
+         - mountDistanceMeters; double; distance of mounting point from receiver, in metres
+         - mountBearing; double; compass angle from receiver to antenna mount; degrees clockwise from
            magnetic north
-         - polarization2; numeric angle giving tilt from "normal" position, in degrees
-         - polarization1; numeric angle giving rotation of antenna about own axis, in degrees.
+         - polarization2; double; angle giving tilt from "normal" position, in degrees
+         - polarization1; double; angle giving rotation of antenna about own axis, in degrees.
 
       - projs; a object with these array fields:
-         - id; integer motus project id
-         - name; character full name of motus project
-         - label; character short label for motus project; e.g. for use in plots
+         - id; integer; motus project id
+         - name; string; full name of motus project
+         - label; string; short label for motus project; e.g. for use in plots
 
 ### tags for ambiguities ###
 
    tags for ambiguities (ambigIDs, authToken)
 
-       - ambigIDs; integer tag ambiguity IDs; this is an array of negative
+       - ambigIDs; integer; tag ambiguity IDs; this is an array of negative
          integers, each representing 2 to 6 tags for which detections are
          indistinguishable over some period of time; i.e. a detection of
          the given ambigID could represent any of the motus tagIDs.  (6 is
@@ -554,14 +554,14 @@ returns an empty list.
       curl --data-urlencode json='{"ambigIDs":[-3,-4,-5],"authToken":"XXX"}' https://sgdata.motus.org/data/custom/tags_for_ambiguities
 
    - return an object with these arrays:
-      - ambigID; negative integer tag ambiguity ID
-      - motusTagID1; positive integer motus tag ID
-      - motusTagID2; positive integer motus tag ID
-      - motusTagID3; positive integer motus tag ID or null
-      - motusTagID4; positive integer motus tag ID or null
-      - motusTagID5; positive integer motus tag ID or null
-      - motusTagID6; positive integer motus tag ID or null
-      - ambigProjectID; negative integer ambiguous project ID
+      - ambigID; negative integer; tag ambiguity ID
+      - motusTagID1; positive integer; motus tag ID
+      - motusTagID2; positive integer; motus tag ID
+      - motusTagID3; positive integer; motus tag ID or null
+      - motusTagID4; positive integer; motus tag ID or null
+      - motusTagID5; positive integer; motus tag ID or null
+      - motusTagID6; positive integer; motus tag ID or null
+      - ambigProjectID; negative integer; ambiguous project ID
 
       i.e. return what real tags each ambiguityID represents.
       If `motusTagIDM[i]` is null, then `motusTagIDN[i]` is also null for
@@ -573,8 +573,8 @@ returns an empty list.
 
    size_of_update_for_tag_project (projectID, batchID, authToken)
 
-       - projectID: integer project ID
-       - batchID: integer ID of largest batch client already has
+       - projectID: integer; project ID
+       - batchID: integer; ID of largest batch client already has
 
       e.g.
       curl --data-urlencode json='{"projectID":123,"batchID":15538,"authToken":"XXX"}' https://sgdata.motus.org/data/custom/size_of_update_for_tag_project
@@ -590,8 +590,8 @@ returns an empty list.
 
    size_of_update_for_receiver (deviceID, batchID, authToken)
 
-       - deviceID: integer motus device ID
-       - batchID: integer ID of largest batch client already has
+       - deviceID: integer; motus device ID
+       - batchID: integer; ID of largest batch client already has
 
       e.g.
       curl --data-urlencode json='{"deviceID":221,"batchID":15538,"authToken":"XXX"}' https://sgdata.motus.org/data/custom/size_of_update_for_receiver
@@ -607,7 +607,7 @@ returns an empty list.
 
    project_ambiguities_for_tag_project (projectID)
 
-       - projectID: integer projectID
+       - projectID: integer; projectID
 
       e.g.
       curl --data-urlencode json='{"projectID":123,"authToken":"XXX"}' https://sgdata.motus.org/data/custom/project_ambiguities_for_tag_project
@@ -625,14 +625,14 @@ returns an empty list.
      only projectID1 not null.
 
    - items in the return value are arrays:
-      - ambigProjectID: (APID) a unique negative projectID
+      - ambigProjectID: integer; (APID) a unique negative projectID
         representing the set {projectID1, ..., projectID6}
-      - projectID1; first real (positive) project ID in the set (not null)
-      - projectID2; second real project ID in the ambiguity set
-      - projectID3; third real project ID in the ambiguity
-      - projectID4; fourth real project ID in the ambiguity
-      - projectID5; fifth real project ID in the ambiguity
-      - projectID6; sixth real project ID in the ambiguity
+      - projectID1: integer; first real (positive) project ID in the set (not null)
+      - projectID2: integer; second real project ID in the ambiguity set
+      - projectID3: integer; third real project ID in the ambiguity
+      - projectID4: integer; fourth real project ID in the ambiguity
+      - projectID5: integer; fifth real project ID in the ambiguity
+      - projectID6: integer; sixth real project ID in the ambiguity
 
    - in each record, any non-NULL `projectID...` fields are in
         increasing order (i.e. projectID1 < projectID2 < ...), and
@@ -646,9 +646,9 @@ returns an empty list.
 
    pulse_counts_for_receiver (batchID, ant, hourBin, authToken)
 
-       - batchID: integer batchID
+       - batchID: integer; batchID
        - ant: integer; antenna number
-       - hourBin: numeric; the hourBin is defined as floor(timestamp / 3600), where timestamp is the usual
+       - hourBin: double; the hourBin is defined as floor(timestamp / 3600), where timestamp is the usual
          "seconds since 1 Jan 1970 GMT" unix timestamp.
        - authToken: authorization token returned by authenticate_user
 
@@ -664,11 +664,10 @@ returns an empty list.
      indicates *no* pulse counts have been obtained for that batch
      yet.  In that case, `ant` is ignored.
 
-
-   - columns will include these fields:
-     - batchID; integer same as passed parameter
-     - hourBin; floor(timestamp / 3600) for pulses represented by this bin
-     - ant; tiny integer; antenna number
+   - the returned object has these array fields:
+     - batchID; integer; same as passed parameter
+     - hourBin; double; floor(timestamp / 3600) for pulses represented by this bin
+     - ant; integer; antenna number
      - count integer; number of pulses on this antenna during this hourBin
 
 Paging for this query is achieved by using the last returned values of

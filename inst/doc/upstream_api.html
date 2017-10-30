@@ -60,7 +60,7 @@ to <code>authenticate_user</code>
 </li>
 <li>is bzip2-compressed: header <code>Content-Encoding = bzip2</code>
 </li>
-<li>most return values are lists of arrays of
+<li>most return values are an object whose fields are arrays of
 equal length, which is the natural JSON encoding of an R data.frame</li>
 <li>errors are indicated by including a field called <code>error</code> in the reply; other
 fields might be present, giving additional information.  If no field <code>error</code>
@@ -107,11 +107,11 @@ curl <a href="https://sgdata.motus.org/data/custom/api_info">https://sgdata.motu
 <ul>
 <li>returns an object with these fields:
 <ul>
-<li>authToken: character string; 264 random bits, base64-encoded</li>
-<li>expiry: numeric timestamp of expiry for token</li>
-<li>userID: integer motus ID for user</li>
-<li>projects: array of integer project #s user is allowed to request tag detections for</li>
-<li>receivers: array of character serial #s of receivers user is allowed to request tag detections for</li>
+<li>authToken: string; 264 random bits, base64-encoded</li>
+<li>expiry: double timestamp of expiry for token</li>
+<li>userID: integer; motus ID for user</li>
+<li>projects: array of integer; project #s user is allowed to request tag detections for</li>
+<li>receivers: array of string; serial #s of receivers user is allowed to request tag detections for</li>
 </ul>
 </li>
 </ul>
@@ -166,7 +166,7 @@ rebooted at least once between deployments under <strong>different</strong> proj
 <h3>
 <a id="user-content-deviceid-for-receiver" class="anchor" href="#deviceid-for-receiver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>deviceID for receiver</h3>
 <p>deviceID_for_receiver (serno, authToken)</p>
-<pre><code>   - serno: array of character receiver serial number(s)
+<pre><code>   - serno: array of string; receiver serial number(s)
 
   e.g.
   curl --data-urlencode json='{"serno":"SG-1234BBBK5678","authToken":"XXX"}' https://sgdata.motus.org/data/custom/deviceID_for_receiver
@@ -176,17 +176,17 @@ rebooted at least once between deployments under <strong>different</strong> proj
 <p>return a list of receiver device IDs for the given serial numbers</p>
 </li>
 <li>
-<p>items in the return value are arrays:</p>
+<p>fields in the return value are arrays:</p>
 <ul>
-<li>serno character serial number, as specified</li>
-<li>deviceID integer motus device ID, or NA where the serial number was not found</li>
+<li>serno string; serial number, as specified</li>
+<li>deviceID integer; motus device ID, or NA where the serial number was not found</li>
 </ul>
 </li>
 </ul>
 <h3>
 <a id="user-content-receivers-for-project" class="anchor" href="#receivers-for-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>receivers for project</h3>
 <p>receivers_for_project (projectID, authToken)</p>
-<pre><code>   - projectID: integer project ID
+<pre><code>   - projectID: integer; project ID
 
   e.g.
   curl --data-urlencode json='{"projectID":123,"authToken":"XXX"}' https://sgdata.motus.org/data/custom/receivers_for_project
@@ -198,28 +198,28 @@ rebooted at least once between deployments under <strong>different</strong> proj
 <li>
 <p>items in the return value are arrays:</p>
 <ul>
-<li>serno character serial number; e.g. SG-1234BBBK9876, Lotek-149</li>
-<li>receiverType character; "LOTEK" or "SENSORGNOME"</li>
-<li>deviceID integer motus device ID</li>
-<li>status character,</li>
+<li>serno string; serial number; e.g. SG-1234BBBK9876, Lotek-149</li>
+<li>receiverType string; "LOTEK" or "SENSORGNOME"</li>
+<li>deviceID integer; motus device ID</li>
+<li>status string;</li>
 <li>deployID integer; motus device deployment ID</li>
-<li>name character; short name for this deployment; typically a site name</li>
-<li>fixtureType character; e.g. "PopTower"</li>
-<li>latitude numeric; decimal degrees North (at start of deployment if mobile)</li>
-<li>longitude numeric; decimal degrees East (at start of deployment if mobile)</li>
+<li>name string; short name for this deployment; typically a site name</li>
+<li>fixtureType string; e.g. "PopTower"</li>
+<li>latitude double; decimal degrees North (at start of deployment if mobile)</li>
+<li>longitude double; decimal degrees East (at start of deployment if mobile)</li>
 <li>isMobile logical; is this a mobile deployment</li>
-<li>tsStart numeric; unix timestamp of start of deployment</li>
-<li>tsEnd numeric; unix timestamp of end of deployment, or null if still deployed</li>
+<li>tsStart double; unix timestamp of start of deployment</li>
+<li>tsEnd double; unix timestamp of end of deployment, or null if still deployed</li>
 <li>projectID integer; motus project ID owning deployment</li>
-<li>elevation numeric; metres above sea level</li>
+<li>elevation double; metres above sea level</li>
 </ul>
 </li>
 </ul>
 <h3>
 <a id="user-content-batches-for-tag-project" class="anchor" href="#batches-for-tag-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>batches for tag project</h3>
 <p>batches_for_tag_project (projectID, batchID, authToken)</p>
-<pre><code>   - projectID: integer project ID
-   - batchID: integer largest batchID we already have for this project
+<pre><code>   - projectID: integer; project ID
+   - batchID: integer; largest batchID we already have for this project
    - authToken: authorization token returned by authenticate_user
 
   e.g.
@@ -250,8 +250,8 @@ returns an empty list.</p>
 <h3>
 <a id="user-content-batches-for-receiver" class="anchor" href="#batches-for-receiver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>batches for receiver</h3>
 <p>batches_for_receiver (deviceID, batchID, authToken)</p>
-<pre><code>   - deviceID: integer motus device ID, e.g. as returned by receivers_for_project
-   - batchID: integer largest batchID we already have for this project
+<pre><code>   - deviceID: integer; motus device ID, e.g. as returned by receivers_for_project
+   - batchID: integer; largest batchID we already have for this project
    - authToken: authorization token returned by authenticate_user
 
   e.g.
@@ -282,7 +282,7 @@ returns an empty list.</p>
 <h3>
 <a id="user-content-batches-for-all" class="anchor" href="#batches-for-all" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>batches for all</h3>
 <p>batches_for_all (batchID, authToken) - administrative users only</p>
-<pre><code>   - batchID: integer largest batchID we already have
+<pre><code>   - batchID: integer; largest batchID we already have
    - authToken: authorization token returned by authenticate_user
 
   e.g.
@@ -314,9 +314,9 @@ detections.  Currently, that means only administrative users.</p>
 <h3>
 <a id="user-content-runs-for-tag-project" class="anchor" href="#runs-for-tag-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>runs for tag project</h3>
 <p>runs_for_tag_project (projectID, batchID, runID, authToken)</p>
-<pre><code>   - projectID: integer project ID
-   - batchID: integer batch ID
-   - runID: integer largest run ID we *already* have from this batch and tag project
+<pre><code>   - projectID: integer; project ID
+   - batchID: integer; batch ID
+   - runID: integer; largest run ID we *already* have from this batch and tag project
    - authToken: authorization token returned by authenticate_user
 
   e.g.
@@ -348,8 +348,8 @@ returns an empty list.</p>
 <h3>
 <a id="user-content-runs-for-receiver" class="anchor" href="#runs-for-receiver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>runs for receiver</h3>
 <p>runs_for_receiver (batchID, runID, authToken)</p>
-<pre><code>   - batchID: integer batch ID
-   - runID: integer largest runID we *already* have from this batch
+<pre><code>   - batchID: integer; batch ID
+   - runID: integer; largest runID we *already* have from this batch
    - authToken: authorization token returned by authenticate_user
 
   e.g.
@@ -380,9 +380,9 @@ returns an empty list.</p>
 <h3>
 <a id="user-content-hits-for-tag-project" class="anchor" href="#hits-for-tag-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>hits for tag project</h3>
 <p>hits_for_tag_project (projectID, batchID, hitID, authToken)</p>
-<pre><code>   - projectID: integer project ID
-   - batchID: integer batchID
-   - hitID: integer largest hitID we *already* have from this batch
+<pre><code>   - projectID: integer; project ID
+   - batchID: integer; batchID
+   - hitID: integer; largest hitID we *already* have from this batch
    - authToken: authorization token returned by authenticate_user
 
   e.g.
@@ -417,8 +417,8 @@ returns an empty list.</p>
 <h3>
 <a id="user-content-hits-for-receiver" class="anchor" href="#hits-for-receiver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>hits for receiver</h3>
 <p>hits_for_receiver (batchID, hitID, authToken)</p>
-<pre><code>   - batchID: integer batchID
-   - hitID: integer largest hitID we *already* have from this batch
+<pre><code>   - batchID: integer; batchID
+   - hitID: integer; largest hitID we *already* have from this batch
    - authToken: authorization token returned by authenticate_user
 
   e.g.
@@ -452,8 +452,8 @@ returns an empty list.</p>
 <h3>
 <a id="user-content-gps-for-tag-project" class="anchor" href="#gps-for-tag-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>gps for tag project</h3>
 <p>gps_for_tag_project (projectID, batchID, ts, authToken)</p>
-<pre><code>   - projectID; integer project ID of tags
-   - batchID: integer batchID where tags from projectID were detected
+<pre><code>   - projectID; integer; project ID of tags
+   - batchID: integer; batchID where tags from projectID were detected
    - ts: largest gps timestamp we *already* have for this batch
    - authToken: authorization token returned by authenticate_user
 
@@ -490,7 +490,7 @@ returns an empty list.</p>
 <h3>
 <a id="user-content-gps-for-receiver" class="anchor" href="#gps-for-receiver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>gps for receiver</h3>
 <p>gps_for_receiver (batchID, ts, authToken)</p>
-<pre><code>   - batchID: integer batchID
+<pre><code>   - batchID: integer; batchID
    - ts: largest gps timestamp we *already* have for this batch
    - authToken: authorization token returned by authenticate_user
 
@@ -520,7 +520,7 @@ returns an empty list.</p>
 <a id="user-content-metadata-for-tags" class="anchor" href="#metadata-for-tags" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>metadata for tags</h3>
 <pre><code>metadata for tags (motusTagIDs, authToken)
 
-   - motusTagIDs: array of integer motus tag IDs; tag metadata will
+   - motusTagIDs: integer array; motus tag IDs; tag metadata will
      only be returned for tag deployments whose project has indicated
      their metadata are public, or tags deployments by one of the
      projects the user has permissions to.
@@ -536,54 +536,54 @@ returns an empty list.</p>
 <li>
 <p>tags; a object with these array fields:</p>
 <ul>
-<li>tagID; integer tag ID</li>
-<li>projectID; integer motus ID of project which <em>registered</em> tag</li>
-<li>mfgID; character manufacturer tag ID</li>
-<li>type; character  "ID" or "BEEPER"</li>
-<li>codeSet; character e.g. "Lotek3", "Lotek4"</li>
-<li>manufacturer; character e.g. "Lotek"</li>
-<li>model; character e.g. "NTQB-3-1"</li>
-<li>lifeSpan; integer estimated tag lifeSpan, in days</li>
-<li>nomFreq; numeric nominal frequency of tag, in MHz</li>
-<li>offsetFreq; numeric estimated offset frequency of tag, in kHz</li>
-<li>bi; numeric burst interval or period of tag, in seconds</li>
-<li>pulseLen; numeric length of tag pulses, in ms (not applicable to all tags)</li>
+<li>tagID; integer; tag ID</li>
+<li>projectID; integer; motus ID of project which <em>registered</em> tag</li>
+<li>mfgID; string; manufacturer tag ID</li>
+<li>type; string;  "ID" or "BEEPER"</li>
+<li>codeSet; string; e.g. "Lotek3", "Lotek4"</li>
+<li>manufacturer; string; e.g. "Lotek"</li>
+<li>model; string; e.g. "NTQB-3-1"</li>
+<li>lifeSpan; integer; estimated tag lifeSpan, in days</li>
+<li>nomFreq; double; nominal frequency of tag, in MHz</li>
+<li>offsetFreq; double; estimated offset frequency of tag, in kHz</li>
+<li>bi; double; burst interval or period of tag, in seconds</li>
+<li>pulseLen; double; length of tag pulses, in ms (not applicable to all tags)</li>
 </ul>
 </li>
 <li>
 <p>tagDeps; a object with these array fields:</p>
 <ul>
-<li>tagID; integer motus tagID</li>
-<li>deployID; integer tag deployment ID (internal to motus)</li>
-<li>projectID; integer motus ID of project which <em>deployed</em> tag</li>
-<li>tsStart; numeric timestamp of start of deployment</li>
-<li>tsEnd; numeric timestamp of end of deployment</li>
-<li>deferSec; integer deferred activation period, in seconds (0 for most tags).</li>
-<li>speciesID; integer motus species ID code</li>
-<li>markerType; character type of marker on organism; e.g. leg band</li>
-<li>markerNumber; character details of marker; e.g. leg band code</li>
-<li>latitude; numeric deployment location, degrees N (negative is S)</li>
-<li>longitude; numeric deployment location, degrees E (negative is W)</li>
-<li>elevation; numeric deployment location, metres ASL</li>
-<li>comments; character possibly JSON-formatted list of additional metadata</li>
+<li>tagID; integer; motus tagID</li>
+<li>deployID; integer; tag deployment ID (internal to motus)</li>
+<li>projectID; integer; motus ID of project which <em>deployed</em> tag</li>
+<li>tsStart; double; timestamp of start of deployment</li>
+<li>tsEnd; double; timestamp of end of deployment</li>
+<li>deferSec; integer; deferred activation period, in seconds (0 for most tags).</li>
+<li>speciesID; integer; motus species ID code</li>
+<li>markerType; string; type of marker on organism; e.g. leg band</li>
+<li>markerNumber; string; details of marker; e.g. leg band code</li>
+<li>latitude; double; deployment location, degrees N (negative is S)</li>
+<li>longitude; double; deployment location, degrees E (negative is W)</li>
+<li>elevation; double; deployment location, metres ASL</li>
+<li>comments; string; possibly JSON-formatted list of additional metadata</li>
 </ul>
 </li>
 <li>
 <p>species; a object with these array fields:</p>
 <ul>
-<li>id; integer species ID,</li>
-<li>english; character; English species name</li>
-<li>french; character; French species name</li>
-<li>scientific; character; scientific species name</li>
-<li>group; character; higher-level taxon</li>
+<li>id; integer; species ID,</li>
+<li>english; string; English species name</li>
+<li>french; string; French species name</li>
+<li>scientific; string; scientific species name</li>
+<li>group; string; higher-level taxon</li>
 </ul>
 </li>
 <li>
 <p>projs; a object with these array fields:</p>
 <ul>
-<li>id; integer motus project id</li>
-<li>name; character full name of motus project</li>
-<li>label; character short label for motus project; e.g. for use in plots
+<li>id; integer; motus project id</li>
+<li>name; string; full name of motus project</li>
+<li>label; string; short label for motus project; e.g. for use in plots
 );</li>
 </ul>
 </li>
@@ -594,7 +594,7 @@ returns an empty list.</p>
 <a id="user-content-metadata-for-receivers" class="anchor" href="#metadata-for-receivers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>metadata for receivers</h3>
 <pre><code>metadata for receivers (deviceIDs, authToken)
 
-   - deviceID; integer device ID; receiver metadata will only be
+   - deviceID; integer; device ID; receiver metadata will only be
      returned for receivers whose project has indicated their
      metadata are public, or receivers in one of the projects the
      user has permissions to.
@@ -610,20 +610,20 @@ returns an empty list.</p>
 <li>
 <p>recvDeps; a object with these array fields:</p>
 <ul>
-<li>deployID; integer deployment ID (internal to motus, but links to antDeps)</li>
-<li>projectID; integer ID of project that deployed the receiver</li>
-<li>serno; character serial number, e.g. "SG-1214BBBK3999", "Lotek-8681"</li>
-<li>receiverType; character "SENSORGNOME" or "LOTEK"</li>
-<li>deviceID; integer device ID (internal to motus)</li>
-<li>status; character deployment status</li>
-<li>name; character; typically a site name</li>
-<li>fixtureType; character; what is the receiver mounted on?</li>
-<li>latitude; numeric (initial) location, degrees North</li>
-<li>longitude; numeric (initial) location, degrees East</li>
-<li>elevation; numeric (initial) location, metres ASL</li>
-<li>isMobile; integer non-zero means a mobile deployment</li>
-<li>tsStart; numeric; timestamp of deployment start</li>
-<li>tsEnd; numeric; timestamp of deployment end, or NA if ongoing</li>
+<li>deployID; integer; deployment ID (internal to motus, but links to antDeps)</li>
+<li>projectID; integer; ID of project that deployed the receiver</li>
+<li>serno; string; serial number, e.g. "SG-1214BBBK3999", "Lotek-8681"</li>
+<li>receiverType; string; "SENSORGNOME" or "LOTEK"</li>
+<li>deviceID; integer; device ID (internal to motus)</li>
+<li>status; string; deployment status</li>
+<li>name; string; typically a site name</li>
+<li>fixtureType; string; what is the receiver mounted on?</li>
+<li>latitude; double; (initial) location, degrees North</li>
+<li>longitude; double; (initial) location, degrees East</li>
+<li>elevation; double; (initial) location, metres ASL</li>
+<li>isMobile; integer; non-zero means a mobile deployment</li>
+<li>tsStart; double; timestamp of deployment start</li>
+<li>tsEnd; double; timestamp of deployment end, or NA if ongoing</li>
 </ul>
 </li>
 <li>
@@ -632,25 +632,25 @@ returns an empty list.</p>
 <li>deployID; integer, links to deployID in recvDeps table</li>
 <li>port; integer, which receiver port (USB for SGs, BNC for
 Lotek) the antenna is connected to</li>
-<li>antennaType; character; e.g. "Yagi-5", "omni"</li>
-<li>bearing; numeric compass angle at which antenna is pointing; degrees clockwise from
+<li>antennaType; string; e.g. "Yagi-5", "omni"</li>
+<li>bearing; double; compass angle at which antenna is pointing; degrees clockwise from
 magnetic north</li>
-<li>heightMeters; numeric height of main antenna element above ground</li>
-<li>cableLengthMeters; numeric length of coaxial cable from antenna to receiver, in metres</li>
-<li>cableType: character; type of cable; e.g. "RG-58"</li>
-<li>mountDistanceMeters; numeric distance of mounting point from receiver, in metres</li>
-<li>mountBearing; numeric compass angle from receiver to antenna mount; degrees clockwise from
+<li>heightMeters; double; height of main antenna element above ground</li>
+<li>cableLengthMeters; double; length of coaxial cable from antenna to receiver, in metres</li>
+<li>cableType: string; type of cable; e.g. "RG-58"</li>
+<li>mountDistanceMeters; double; distance of mounting point from receiver, in metres</li>
+<li>mountBearing; double; compass angle from receiver to antenna mount; degrees clockwise from
 magnetic north</li>
-<li>polarization2; numeric angle giving tilt from "normal" position, in degrees</li>
-<li>polarization1; numeric angle giving rotation of antenna about own axis, in degrees.</li>
+<li>polarization2; double; angle giving tilt from "normal" position, in degrees</li>
+<li>polarization1; double; angle giving rotation of antenna about own axis, in degrees.</li>
 </ul>
 </li>
 <li>
 <p>projs; a object with these array fields:</p>
 <ul>
-<li>id; integer motus project id</li>
-<li>name; character full name of motus project</li>
-<li>label; character short label for motus project; e.g. for use in plots</li>
+<li>id; integer; motus project id</li>
+<li>name; string; full name of motus project</li>
+<li>label; string; short label for motus project; e.g. for use in plots</li>
 </ul>
 </li>
 </ul>
@@ -659,7 +659,7 @@ magnetic north</li>
 <h3>
 <a id="user-content-tags-for-ambiguities" class="anchor" href="#tags-for-ambiguities" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>tags for ambiguities</h3>
 <p>tags for ambiguities (ambigIDs, authToken)</p>
-<pre><code>   - ambigIDs; integer tag ambiguity IDs; this is an array of negative
+<pre><code>   - ambigIDs; integer; tag ambiguity IDs; this is an array of negative
      integers, each representing 2 to 6 tags for which detections are
      indistinguishable over some period of time; i.e. a detection of
      the given ambigID could represent any of the motus tagIDs.  (6 is
@@ -673,14 +673,14 @@ magnetic north</li>
 <li>
 <p>return an object with these arrays:</p>
 <ul>
-<li>ambigID; negative integer tag ambiguity ID</li>
-<li>motusTagID1; positive integer motus tag ID</li>
-<li>motusTagID2; positive integer motus tag ID</li>
-<li>motusTagID3; positive integer motus tag ID or null</li>
-<li>motusTagID4; positive integer motus tag ID or null</li>
-<li>motusTagID5; positive integer motus tag ID or null</li>
-<li>motusTagID6; positive integer motus tag ID or null</li>
-<li>ambigProjectID; negative integer ambiguous project ID</li>
+<li>ambigID; negative integer; tag ambiguity ID</li>
+<li>motusTagID1; positive integer; motus tag ID</li>
+<li>motusTagID2; positive integer; motus tag ID</li>
+<li>motusTagID3; positive integer; motus tag ID or null</li>
+<li>motusTagID4; positive integer; motus tag ID or null</li>
+<li>motusTagID5; positive integer; motus tag ID or null</li>
+<li>motusTagID6; positive integer; motus tag ID or null</li>
+<li>ambigProjectID; negative integer; ambiguous project ID</li>
 </ul>
 <p>i.e. return what real tags each ambiguityID represents.
 If <code>motusTagIDM[i]</code> is null, then <code>motusTagIDN[i]</code> is also null for
@@ -691,8 +691,8 @@ for each ambiguity.</p>
 <h3>
 <a id="user-content-size-of-update-for-tag-project" class="anchor" href="#size-of-update-for-tag-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>size of update for tag project</h3>
 <p>size_of_update_for_tag_project (projectID, batchID, authToken)</p>
-<pre><code>   - projectID: integer project ID
-   - batchID: integer ID of largest batch client already has
+<pre><code>   - projectID: integer; project ID
+   - batchID: integer; ID of largest batch client already has
 
   e.g.
   curl --data-urlencode json='{"projectID":123,"batchID":15538,"authToken":"XXX"}' https://sgdata.motus.org/data/custom/size_of_update_for_tag_project
@@ -711,8 +711,8 @@ for each ambiguity.</p>
 <h3>
 <a id="user-content-size-of-update-for-receiver" class="anchor" href="#size-of-update-for-receiver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>size of update for receiver</h3>
 <p>size_of_update_for_receiver (deviceID, batchID, authToken)</p>
-<pre><code>   - deviceID: integer motus device ID
-   - batchID: integer ID of largest batch client already has
+<pre><code>   - deviceID: integer; motus device ID
+   - batchID: integer; ID of largest batch client already has
 
   e.g.
   curl --data-urlencode json='{"deviceID":221,"batchID":15538,"authToken":"XXX"}' https://sgdata.motus.org/data/custom/size_of_update_for_receiver
@@ -731,7 +731,7 @@ for each ambiguity.</p>
 <h3>
 <a id="user-content-project-ambiguities-for-tag-project" class="anchor" href="#project-ambiguities-for-tag-project" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>project ambiguities for tag project</h3>
 <p>project_ambiguities_for_tag_project (projectID)</p>
-<pre><code>   - projectID: integer projectID
+<pre><code>   - projectID: integer; projectID
 
   e.g.
   curl --data-urlencode json='{"projectID":123,"authToken":"XXX"}' https://sgdata.motus.org/data/custom/project_ambiguities_for_tag_project
@@ -753,14 +753,14 @@ only projectID1 not null.</p>
 <li>
 <p>items in the return value are arrays:</p>
 <ul>
-<li>ambigProjectID: (APID) a unique negative projectID
+<li>ambigProjectID: integer; (APID) a unique negative projectID
 representing the set {projectID1, ..., projectID6}</li>
-<li>projectID1; first real (positive) project ID in the set (not null)</li>
-<li>projectID2; second real project ID in the ambiguity set</li>
-<li>projectID3; third real project ID in the ambiguity</li>
-<li>projectID4; fourth real project ID in the ambiguity</li>
-<li>projectID5; fifth real project ID in the ambiguity</li>
-<li>projectID6; sixth real project ID in the ambiguity</li>
+<li>projectID1: integer; first real (positive) project ID in the set (not null)</li>
+<li>projectID2: integer; second real project ID in the ambiguity set</li>
+<li>projectID3: integer; third real project ID in the ambiguity</li>
+<li>projectID4: integer; fourth real project ID in the ambiguity</li>
+<li>projectID5: integer; fifth real project ID in the ambiguity</li>
+<li>projectID6: integer; sixth real project ID in the ambiguity</li>
 </ul>
 </li>
 <li>
@@ -776,9 +776,9 @@ are ambiguous among tags within the <em>same</em> project)</p>
 <h3>
 <a id="user-content-pulse-counts-for-receiver" class="anchor" href="#pulse-counts-for-receiver" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>pulse counts for receiver</h3>
 <p>pulse_counts_for_receiver (batchID, ant, hourBin, authToken)</p>
-<pre><code>   - batchID: integer batchID
+<pre><code>   - batchID: integer; batchID
    - ant: integer; antenna number
-   - hourBin: numeric; the hourBin is defined as floor(timestamp / 3600), where timestamp is the usual
+   - hourBin: double; the hourBin is defined as floor(timestamp / 3600), where timestamp is the usual
      "seconds since 1 Jan 1970 GMT" unix timestamp.
    - authToken: authorization token returned by authenticate_user
 
@@ -796,11 +796,11 @@ indicates <em>no</em> pulse counts have been obtained for that batch
 yet.  In that case, <code>ant</code> is ignored.</p>
 </li>
 <li>
-<p>columns will include these fields:</p>
+<p>the returned object has these array fields:</p>
 <ul>
-<li>batchID; integer same as passed parameter</li>
-<li>hourBin; floor(timestamp / 3600) for pulses represented by this bin</li>
-<li>ant; tiny integer; antenna number</li>
+<li>batchID; integer; same as passed parameter</li>
+<li>hourBin; double; floor(timestamp / 3600) for pulses represented by this bin</li>
+<li>ant; integer; antenna number</li>
 <li>count integer; number of pulses on this antenna during this hourBin</li>
 </ul>
 </li>
