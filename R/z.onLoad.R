@@ -47,7 +47,8 @@
 .onLoad = function(...) {
     ## interim location of unprotected local data server
 
-    dataServerURL = "https://sgdata.motus.org/data"
+    dataServerURL = "https://sandbox.motus.org/api/sgdata"
+    
 
     ## Assign constants
 
