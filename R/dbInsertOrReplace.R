@@ -30,7 +30,7 @@ dbInsertOrReplace = function(con, name, df) {
     ## dealt with elsewhere
 
     fields = query("PRAGMA table_info(%s)", name)
-    df <- df[fields]
+    df[names(df) %in% fields$name]
 
     tmp = basename(tempfile("zztmp"))
 

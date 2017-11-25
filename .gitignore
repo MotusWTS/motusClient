@@ -1,3 +1,7 @@
 *~
 *.so
 nohup.out
+.Rproj.user
+.Rhistory
+.Rbuildignore
+*.Rproj
