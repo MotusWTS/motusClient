@@ -23,6 +23,14 @@ dbInsertOrReplace = function(con, name, df) {
         return()
 
     sql = function(...) DBI::dbExecute(con, sprintf(...))
+    query = function(...) DBI::dbGetQuery(con, sprintf(...))
+
+    ## remove fields from df that are not in the database
+    ## An alternative would be to add them, but this may best
+    ## dealt with elsewhere
+
+    fields = query("PRAGMA table_info(%s)", name)
+    df <- df[fields]
 
     tmp = basename(tempfile("zztmp"))
 

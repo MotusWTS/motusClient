@@ -254,6 +254,7 @@ CREATE TABLE tagDeps (
    tsEnd REAL,
    deferSec INTEGER,
    speciesID INTEGER,
+   bandNumber TEXT,
    markerNumber TEXT,
    markerType TEXT,
    latitude REAL,
