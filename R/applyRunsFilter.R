@@ -21,12 +21,12 @@
 #'
 #' @author Denis Lepage, Bird Studies Canada
 
-applyRunFilter <- function(src, filterName, motusProjID=NA, p.min=0, where.stmt=NA) {
+applyRunsFilter <- function(src, filterName, motusProjID=NA, p.min=0, where.stmt=NA) {
 
   sqlq = function(...) DBI::dbGetQuery(src$con, sprintf(...))
   
   # determines the filterID
-  filterID = getRunFilterID(src, filterName, motusProjID)
+  filterID = getRunsFilterID(src, filterName, motusProjID)
   if (!is.null(filterID)) {
 
     if (is.na(where.stmt)) where.stmt = ""

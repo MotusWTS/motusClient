@@ -8,7 +8,7 @@
 #'
 #' @author Denis Lepage, Bird Studies Canada
 
-getRunFilters <- function(src, filterName, motusProjID=NA) {
+getRunsFilters <- function(src, filterName, motusProjID=NA) {
   
   sqlq = function(...) DBI::dbGetQuery(src$con, sprintf(...))
   

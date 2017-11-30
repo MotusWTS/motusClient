@@ -15,12 +15,12 @@
 #'
 #' @author Denis Lepage, Bird Studies Canada
 
-deleteRunFilter <- function(src, filterName, motusProjID=NA, clearOnly=FALSE) {
+deleteRunsFilter <- function(src, filterName, motusProjID=NA, clearOnly=FALSE) {
 
-  sql = function(...) DBI::dbExecute(con, sprintf(...))
+  sql = function(...) DBI::dbExecute(src$con, sprintf(...))
 
   # determines the filterID
-  filterID = getRunFilterID(src, filterName, motusProjID)
+  filterID = getRunsFilterID(src, filterName, motusProjID)
   if (!is.null(filterID)) {
 
     sql("delete from runFilters where filterID = '%d'", filterID)

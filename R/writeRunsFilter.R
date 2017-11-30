@@ -21,15 +21,15 @@
 #'
 #' @author Denis Lepage, Bird Studies Canada
 
-writeRunFilter <- function(src, filterName, motusProjID=NA, df, overwrite=TRUE, delete=FALSE) {
+writeRunsFilter <- function(src, filterName, motusProjID=NA, df, overwrite=TRUE, delete=FALSE) {
 
-  sql = function(...) DBI::dbExecute(con, sprintf(...))
+  sql = function(...) DBI::dbExecute(src$con, sprintf(...))
   
   # determines the filterID
-  filterID = getRunFilterID(src, filterName, motusProjID)
+  filterID = getRunsFilterID(src, filterName, motusProjID)
   if (!is.null(filterID)) {
     if (delete) {
-      deleteRunFilter(src, filterName, motusProjID, clearOnly = TRUE)
+      deleteRunsFilter(src, filterName, motusProjID, clearOnly = TRUE)
     }
     df$filterID = filterID
 

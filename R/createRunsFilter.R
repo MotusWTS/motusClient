@@ -14,7 +14,7 @@
 #'
 #' @author Denis Lepage, Bird Studies Canada
 
-createRunFilter <- function(src, filterName, motusProjID=NA, descr=NA) {
+createRunsFilter <- function(src, filterName, motusProjID=NA, descr=NA) {
 
   sqlq = function(...) DBI::dbGetQuery(src$con, sprintf(...))
 
