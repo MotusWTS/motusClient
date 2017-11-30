@@ -405,6 +405,39 @@ CREATE TABLE clarified (
 CREATE INDEX IF NOT EXISTS clarified_ambigID_tsStart ON clarified(ambigID, tsStart)
 ")
     }
+    if (! "filters" %in% tables) {
+      sql("
+CREATE TABLE filters (
+   filterID INTEGER PRIMARY KEY,            -- locally unique filterID
+   userLogin TEXT NOT NULL,                 -- motus login of the user who created the filter
+   filterName TEXT NOT NULL,                -- short name used to refer to the filter by the user
+   motusProjID INTEGER NOT NULL,                -- optional project ID when the filter needs to be shared with other users of a project
+   descr TEXT,                              -- longer description of what the filter contains
+   lastModified TEXT NOT NULL               -- date when the filter was last modified
+);
+");
+      sql("
+CREATE UNIQUE INDEX IF NOT EXISTS filters_filterName_motusProjID ON filters (filterName,motusProjID);
+")
+      
+    }
+    
+    if (! "runFilters" %in% tables) {
+      sql("
+CREATE TABLE runFilters (
+   filterID INTEGER NOT NULL,               -- locally unique filterID
+   runID INTEGER NOT NULL,                  -- unique ID of the run record to which the filter applies
+   probability REAL NOT NULL,               -- probability (normally between 0 and 1) attached to the run record
+   PRIMARY KEY(filterID,runID)
+);
+");
+      sql("
+CREATE UNIQUE INDEX IF NOT EXISTS runFilters_filterID_runID ON runFilters (filterID, runID);
+")
+      
+    }
+    
+    rv = makeAllambigsView(src)
     rv = makeAlltagsView(src)
     for (hookfun in Motus$hooks$ensureDBTables)
         rv = hookfun(rv, src, projRecv, deviceID)

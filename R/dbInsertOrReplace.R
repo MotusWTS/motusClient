@@ -10,7 +10,9 @@
 #'
 #' @param name name of table to insert or replace records into
 #'
-#' @param df data from from which to write data.
+#' @param df data from which to write data.
+#'
+#' @param replace boolean that determines whether existing records are replaced or ignored.
 #'
 #' @return no return value
 #'
@@ -18,7 +20,7 @@
 #'
 #' @author John Brzustowski \email{jbrzusto@@REMOVE_THIS_PART_fastmail.fm}
 
-dbInsertOrReplace = function(con, name, df) {
+dbInsertOrReplace = function(con, name, df, replace=TRUE) {
     if (nrow(df) == 0)
         return()
 
@@ -49,7 +51,8 @@ dbInsertOrReplace = function(con, name, df) {
     ## replace/insert records from the temporary table
     ## into the target
 
-    sql("replace into %s select * from %s", name, tmp)
+    if (replace) sql("replace into %s select * from %s", name, tmp)
+    else sql("insert or ignore into %s select * from %s", name, tmp)
 
     ## drop the temporary table
 

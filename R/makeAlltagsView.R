@@ -17,20 +17,21 @@
 #'    \item{batchID} unique motus ID for the processing batch this detection came from
 #'    \item{ts} timestamp, in seconds since 1 Jan, 1970 GMT
 #'    \item{sig} signal strength, in dB (max) for SG; raw value for Lotek receiver
-#'    \item{sigSD} sd among pulses of signal strength (SG); NA for Lotek
+#'    \item{sigsd} sd among pulses of signal strength (SG); NA for Lotek
 #'    \item{noise} noise strength, in dB (max) for SG; NA for Lotek
 #'    \item{freq} offset in kHz from listening frequency for SG; NA for Lotek
-#'    \item{freqSD} sd among pulses of offset in kHz from listening frequency for SG; NA for Lotek
+#'    \item{freqsd} sd among pulses of offset in kHz from listening frequency for SG; NA for Lotek
 #'    \item{slop} total absolute difference (milliseconds) in intrer-pulse gaps between registration and detection for SG; NA for Lotek
 #'    \item{burstSlop} signed difference (seconds) between detection and registration burst intervals
 #'    \item{done} logical: is run finished?
 #'    \item{motusTagID} unique motus ID for this physical tag
+#'    \item{ambigID} unique ID linking ambiguous tag detections
 #'    \item{ant} antenna number
 #'    \item{runLen} length of run (# of bursts detected)
 #'    \item{bootnum} boot session of receiver for SG; NA for Lotek
 #'    \item{tagProjID} unique motus ID for project tag was deployed by
-#'    \item{id} manufacturer ID
-#'    \item{tagType}
+#'    \item{mfgID} manufacturer ID printed on the tag
+#'    \item{tagType} type of tag
 #'    \item{codeSet} for coded ID tags, the name of the codeset
 #'    \item{mfg} tag manufacturer
 #'    \item{tagModel} manufacturer's model name for tag
@@ -38,20 +39,26 @@
 #'    \item{nomFreq} nominal tag frequency (MHz)
 #'    \item{tagBI} tag burst interval (seconds)
 #'    \item{pulseLen} tag pulse length (milliseconds) if applicable
+#'    \item{tagDeployID} unique motusID for tag deployment
 #'    \item{speciesID} unique motusID for species tag was deployed on
 #'    \item{markerNumber} number for additional marker placed on organism (e.g. bird band #)
 #'    \item{markerType} type of additional marker
-#'    \item{depLat} latitude of tag deployment, in decimal degrees N
-#'    \item{depLon} longitude of tag deployment, in decimal degrees E
-#'    \item{depAlt} altitude of tag deployment, in metres ASL
-#'    \item{comments} additional comments or unclassified metadata for tag (often in JSON format)
+#'    \item{tagDepLat} latitude of tag deployment, in decimal degrees N
+#'    \item{tagDepLon} longitude of tag deployment, in decimal degrees E
+#'    \item{tagDepAlt} altitude of tag deployment, in metres ASL
+#'    \item{tagDepComments} additional comments or unclassified metadata for tag (often in JSON format)
 #'    \item{startCode} integer code giving method for determining tag deployment start timestamp
 #'    \item{endCode} integer code giving method for determining tag deployment end timestamp
 #'    \item{fullID} full tag ID as PROJECT#MFGID:BI@NOMFREQ (but this is not necessarily unique over time; see motusTagID for a unique tag id)
+#'    \item{deviceID} unique motusID for the device (normally matches with a unique receiver serial number)
+#'    \item{recvDeployID} unique motusID for the receiver deployment
+#'    \item{recvDeployLat} latitude of receiver deployment, in decimal degrees
+#'    \item{recvDeployLon} longitude of receiver deployment, in decimal degrees
+#'    \item{recvDeployAlt} altitude of receiver deployment, in metres ASL
 #'    \item{recv} serial number of receiver; e.g. SG-1234BBBK5678 or Lotek-12345
-#'    \item{site} short name for receiver deployment location
-#'    \item{isMobile} logical; was this a mobile receiver deployment?
-#'    \item{projectID} integer; unique motus ID for the project that deployed this receiver
+#'    \item{recvDepName} name assigned to the receiver deployment
+#'    \item{isRecvMobile} whether the receiver is mobile or not
+#'    \item{recvProjID} unique motus ID for project receiver was deployed by
 #'    \item{antType} character; antenna type; e.g. "omni", "yagi-5", ...
 #'    \item{antBearing} numeric; direction antenna main axis points in; degrees clockwise from local magnetic north
 #'    \item{antHeight} numeric; height (metres) of antenna main axis above ground
@@ -61,15 +68,15 @@
 #'    \item{mountBearing} numeric; bearing from receiver to base of antenna mounting, in degrees clockwise from local magnetic north
 #'    \item{polarization1} numeric; antenna polarization angle: azimuth component (degrees clockwise from local magnetic north)
 #'    \item{polarization2} numeric; antenna polarization angle: elevation component (degrees above horizon)
-#'    \item{spEN} species name in english
-#'    \item{spFR} species name in french
-#'    \item{spSci} species scientific name
-#'    \item{spGroup} species group
-#'    \item{tagProj} short label of project that deployed tag
-#'    \item{proj} short label of project that deployed receiver
-#'    \item{lat} latitude of receiver at tag detection time (degrees North)
-#'    \item{lon} longitude of receiver at tag detection time (degrees East)
-#'    \item{alt} altitude of receiver at tag detection time (metres)
+#'    \item{speciesEN} species name in english
+#'    \item{speciesFR} species name in french
+#'    \item{speciesSci} species scientific name
+#'    \item{speciesGroup} species group
+#'    \item{tagProjName} short label of project that deployed tag
+#'    \item{recvProjName} short label of project that deployed receiver
+#'    \item{gpsLat} latitude of receiver at tag detection time (decimal degrees)
+#'    \item{gpsLon} longitude of receiver at tag detection time (decimal degrees)
+#'    \item{gpsAlt} altitude of receiver at tag detection time (metres)
 #' }
 #'
 #' @note The new virtual table replaces any previous virtual table by the same
@@ -124,12 +131,13 @@ SELECT
    t1.slop as slop,
    t1.burstSlop as burstSlop,
    t2.done as done,
-   t2.motusTagID as motusTagID,
+   CASE WHEN t12.motusTagID is null then t2.motusTagID else t12.motusTagID end as motusTagID,
+   t12.ambigID as ambigID,
    t2.ant as ant,
    t2.len as runLen,
    t3.monoBN as bootnum,
    t4.projectID as tagProjID,
-   t4.mfgID as id,
+   t4.mfgID as mfgID,
    t4.type as tagType,
    t4.codeSet as codeSet,
    t4.manufacturer as mfg,
@@ -138,20 +146,26 @@ SELECT
    t4.nomFreq as nomFreq,
    t4.bi as tagBI,
    t4.pulseLen as pulseLen,
+   t5.deployID as tagDeployID,
    t5.speciesID as speciesID,
    t5.markerNumber as markerNumber,
    t5.markerType as markerType,
-   t5.latitude as depLat,
-   t5.longitude as depLon,
-   t5.elevation as depAlt,
-   t5.comments as comments,
+   t5.latitude as tagDepLat,
+   t5.longitude as tagDepLon,
+   t5.elevation as tagDepAlt,
+   t5.comments as tagDepComments,
    t5.tsStartCode as startCode,
    t5.tsEndCode as endCode,
    ifnull(t5.fullID, printf('?proj?-%d#%s:%.1f', t5.projectID, t4.mfgID, t4.bi)) as fullID,
-   t6c.serno as recv,
-   t6.name as site,
-   t6.isMobile as isMobile,
-   t6.projectID as projID,
+   t6a.deviceID as deviceID,
+   t6.deployID as recvDeployID,
+   t6.latitude as recvDeployLat,
+   t6.longitude as recvDeployLon,
+   t6.elevation as recvDeployAlt,
+   t6a.serno as recv,
+   t6.name as recvDepName,
+   t6.isMobile as isRecvMobile,
+   t6.projectID as recvProjID,
    t7.antennaType as antType,
    t7.bearing as antBearing,
    t7.heightMeters as antHeight,
@@ -161,41 +175,42 @@ SELECT
    t7.mountBearing as mountBearing,
    t7.polarization1 as polarization1,
    t7.polarization2 as polarization2,
-   t8.english as spEN,
-   t8.french as spFR,
-   t8.scientific as spSci,
-   t8.`group` as spGroup,
-   t9.label as tagProj,
-   t10.label as proj,
-   ifnull(t11.lat, t6.latitude) as lat,
-   ifnull(t11.lon, t6.longitude) as lon,
-   ifnull(t11.alt, t6.elevation) as alt
+   t8.english as speciesEN,
+   t8.french as speciesFR,
+   t8.scientific as speciesSci,
+   t8.`group` as speciesGroup,
+   t9.label as tagProjName,
+   t10.label as recvProjName,
+   t11.lat as gpsLat,
+   t11.lon as gpsLon,
+   t11.alt as gpsAlt
 FROM
    hits AS t1
 LEFT JOIN
    runs AS t2 ON t1.runID = t2.runID
 
+left join allambigs t12 on t2.motusTagID = t12.ambigID
+
 LEFT JOIN
    batches AS t3 ON t3.batchID = t1.batchID
 
 LEFT JOIN
-   tags AS t4 ON t4.tagID = t2.motusTagID
+   tags AS t4 ON t4.tagID = CASE WHEN t12.motusTagID is null then t2.motusTagID else t12.motusTagID end
 
 LEFT JOIN
-   tagDeps AS t5 ON t5.tagID = t2.motusTagID
+   tagDeps AS t5 ON t5.tagID = CASE WHEN t12.motusTagID is null then t2.motusTagID else t12.motusTagID end
       AND t5.tsStart =
          (SELECT
              max(t5b.tsStart)
           FROM
              tagDeps AS t5b
           WHERE
-             t5b.tagID = t2.motusTagID
+             t5b.tagID = CASE WHEN t12.motusTagID is null then t2.motusTagID else t12.motusTagID end
              AND t5b.tsStart <= t1.ts
              AND (t5b.tsEnd IS NULL OR t5b.tsEnd >= t1.ts)
          )
 LEFT JOIN
-   recvs AS t6c ON t6c.deviceID = t3.motusDeviceID
-
+   recvs as t6a on t6a.deviceID =t3.motusDeviceID
 LEFT JOIN
    recvDeps AS t6 ON t6.deviceID = t3.motusDeviceID AND
       t6.tsStart =
