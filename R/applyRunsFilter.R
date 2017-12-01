@@ -33,7 +33,7 @@ applyRunsFilter <- function(src, filterName, motusProjID=NA, p.min=0, where.stmt
     else where.stmt = paste(" AND ", where.stmt, sep="")
     
     return (sqlq("select * from (select a.*, (SELECT probability from runsFilters b where a.runID = 
-        b.runID and a.motusTagID = b.motusTagID and filterID = %d) as probability from alltags a) tbl where IFNULL(probability,0) >= %d %s", 
+        b.runID and a.motusTagID = b.motusTagID and filterID = %d) as probability from alltags a) tbl where IFNULL(probability,1) >= %d %s", 
         filterID, p.min, where.stmt))
                                  
   }
