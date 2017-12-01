@@ -23,7 +23,7 @@ deleteRunsFilter <- function(src, filterName, motusProjID=NA, clearOnly=FALSE) {
   filterID = getRunsFilterID(src, filterName, motusProjID)
   if (!is.null(filterID)) {
 
-    sql("delete from runFilters where filterID = '%d'", filterID)
+    sql("delete from runsFilters where filterID = '%d'", filterID)
     if (!clearOnly) 
       sql("delete from filters where filterID = '%d'", filterID)
     
