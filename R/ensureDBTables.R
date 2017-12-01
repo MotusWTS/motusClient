@@ -301,6 +301,7 @@ CREATE TABLE recvDeps (
    macAddress TEXT,
    status TEXT,
    name TEXT,
+   siteName TEXT,
    fixtureType TEXT,
    latitude REAL,
    longitude REAL,
@@ -422,17 +423,18 @@ CREATE UNIQUE INDEX IF NOT EXISTS filters_filterName_motusProjID ON filters (fil
       
     }
     
-    if (! "runFilters" %in% tables) {
+    if (! "runsFilters" %in% tables) {
       sql("
-CREATE TABLE runFilters (
+CREATE TABLE runsFilters (
    filterID INTEGER NOT NULL,               -- locally unique filterID
    runID INTEGER NOT NULL,                  -- unique ID of the run record to which the filter applies
+   motusTagID INTEGER NOT NULL,             -- unique ID of the Motus tag. Should match the actual motusTagID, not the negative ambigID in the case of ambiguous runs. 
    probability REAL NOT NULL,               -- probability (normally between 0 and 1) attached to the run record
    PRIMARY KEY(filterID,runID)
 );
 ");
       sql("
-CREATE UNIQUE INDEX IF NOT EXISTS runFilters_filterID_runID ON runFilters (filterID, runID);
+CREATE UNIQUE INDEX IF NOT EXISTS runsFilters_filterID_runID_motusTagID ON runsFilters (filterID, runID, motusTagID);
 ")
       
     }

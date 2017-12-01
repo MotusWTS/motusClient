@@ -6,7 +6,7 @@
 #'
 #' @param motusProjID optional project ID attached to the filter in order to share with other users of the same project.
 #'
-#' @param df dataframe containing the runID and probability values to save in the local database
+#' @param df dataframe containing the runID, the motusTagID and probability values to save in the local database
 #'
 #' @param overwrite boolean. When TRUE ensures that existing records matching the same filterName 
 #' and runID get replaced
@@ -33,7 +33,7 @@ writeRunsFilter <- function(src, filterName, motusProjID=NA, df, overwrite=TRUE,
     }
     df$filterID = filterID
 
-    dbInsertOrReplace(src$con, "runFilers", df, replace=overwrite)
+    dbInsertOrReplace(src$con, "runsFilters", df, replace=overwrite)
   }
   
   return(filterID)

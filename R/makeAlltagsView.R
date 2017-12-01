@@ -26,7 +26,7 @@
 #'    \item{done} logical: is run finished?
 #'    \item{motusTagID} unique motus ID for this physical tag
 #'    \item{ambigID} unique ID linking ambiguous tag detections
-#'    \item{ant} antenna number
+#'    \item{port} antenna port number
 #'    \item{runLen} length of run (# of bursts detected)
 #'    \item{bootnum} boot session of receiver for SG; NA for Lotek
 #'    \item{tagProjID} unique motus ID for project tag was deployed by
@@ -47,8 +47,6 @@
 #'    \item{tagDepLon} longitude of tag deployment, in decimal degrees E
 #'    \item{tagDepAlt} altitude of tag deployment, in metres ASL
 #'    \item{tagDepComments} additional comments or unclassified metadata for tag (often in JSON format)
-#'    \item{startCode} integer code giving method for determining tag deployment start timestamp
-#'    \item{endCode} integer code giving method for determining tag deployment end timestamp
 #'    \item{fullID} full tag ID as PROJECT#MFGID:BI@NOMFREQ (but this is not necessarily unique over time; see motusTagID for a unique tag id)
 #'    \item{deviceID} unique motusID for the device (normally matches with a unique receiver serial number)
 #'    \item{recvDeployID} unique motusID for the receiver deployment
@@ -57,17 +55,12 @@
 #'    \item{recvDeployAlt} altitude of receiver deployment, in metres ASL
 #'    \item{recv} serial number of receiver; e.g. SG-1234BBBK5678 or Lotek-12345
 #'    \item{recvDepName} name assigned to the receiver deployment
+#'    \item{recvSiteName} name assigned to the site where the receiver deployment is located
 #'    \item{isRecvMobile} whether the receiver is mobile or not
 #'    \item{recvProjID} unique motus ID for project receiver was deployed by
 #'    \item{antType} character; antenna type; e.g. "omni", "yagi-5", ...
 #'    \item{antBearing} numeric; direction antenna main axis points in; degrees clockwise from local magnetic north
 #'    \item{antHeight} numeric; height (metres) of antenna main axis above ground
-#'    \item{cableLen} numeric; length (metres) of coaxial cable connecting antenna to radio
-#'    \item{cableType} character; type of coaxial cable
-#'    \item{mountDistance} numeric; distance (metres) between antenna mounting and receiver
-#'    \item{mountBearing} numeric; bearing from receiver to base of antenna mounting, in degrees clockwise from local magnetic north
-#'    \item{polarization1} numeric; antenna polarization angle: azimuth component (degrees clockwise from local magnetic north)
-#'    \item{polarization2} numeric; antenna polarization angle: elevation component (degrees above horizon)
 #'    \item{speciesEN} species name in english
 #'    \item{speciesFR} species name in french
 #'    \item{speciesSci} species scientific name
@@ -133,7 +126,7 @@ SELECT
    t2.done as done,
    CASE WHEN t12.motusTagID is null then t2.motusTagID else t12.motusTagID end as motusTagID,
    t12.ambigID as ambigID,
-   t2.ant as ant,
+   t2.ant as port,
    t2.len as runLen,
    t3.monoBN as bootnum,
    t4.projectID as tagProjID,
@@ -154,8 +147,6 @@ SELECT
    t5.longitude as tagDepLon,
    t5.elevation as tagDepAlt,
    t5.comments as tagDepComments,
-   t5.tsStartCode as startCode,
-   t5.tsEndCode as endCode,
    ifnull(t5.fullID, printf('?proj?-%d#%s:%.1f', t5.projectID, t4.mfgID, t4.bi)) as fullID,
    t6a.deviceID as deviceID,
    t6.deployID as recvDeployID,
@@ -164,17 +155,12 @@ SELECT
    t6.elevation as recvDeployAlt,
    t6a.serno as recv,
    t6.name as recvDepName,
+   t6.siteName as recvSiteName,
    t6.isMobile as isRecvMobile,
    t6.projectID as recvProjID,
    t7.antennaType as antType,
    t7.bearing as antBearing,
    t7.heightMeters as antHeight,
-   t7.cableLengthMeters as cableLen,
-   t7.cableType as cableType,
-   t7.mountDistanceMeters as mountDistance,
-   t7.mountBearing as mountBearing,
-   t7.polarization1 as polarization1,
-   t7.polarization2 as polarization2,
    t8.english as speciesEN,
    t8.french as speciesFR,
    t8.scientific as speciesSci,
