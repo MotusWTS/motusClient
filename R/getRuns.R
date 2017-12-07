@@ -1,4 +1,4 @@
-#' Returns a dataframe containing the runID and motusTagID, ambigID and timestamp range.
+#' Returns a dataframe containing the runID and motusTagID, ambigID and timestamp range
 #' of runs, filtered by optional parameters. The match.partial parameter (default = TRUE) determines how  
 #' timestamp filtering works. When match.partial is FALSE, runID's are only included when both 
 #' tsBegin and tsEnd falls between ts.min and ts.max (only includes runs when they entirely contained 
