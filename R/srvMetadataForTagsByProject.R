@@ -1,10 +1,10 @@
-#' get the metadata for some tags
+#' get the metadata for a project
 #'
 #' The basic tag and deployment metadata are returned for any
 #' deployments the user has project permissions to, or which have
 #' made their tag metadata public.
 #'
-#' @param motusTagIDs integer vector of motus tag IDs
+#' @param projID integer motus project ID
 #'
 #' @return a list with these items:
 #' \itemize{
@@ -59,8 +59,8 @@
 #'
 #' @author Denis Lepage, Bird Studies Canada
 
-srvMetadataForTagsByProject = function(projID) {
-    x = srvQuery(API=Motus$API_METADATA_FOR_TAGS_BY_PROJECT, params=list(projID=projID))
+srvMetadataForTags = function(motusTagIDs) {
+    x = srvQuery(API=Motus$API_METADATA_FOR_TAGS_FOR_PROJECT, params=list(projID=projID))
     return (list(
         tags = structure(x$tags, class = "data.frame", row.names=seq(along=x$tags[[1]])),
         tagDeps = structure(x$tagDeps, class = "data.frame", row.names=seq(along=x$tagDeps[[1]])),
