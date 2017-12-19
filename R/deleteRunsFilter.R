@@ -15,7 +15,7 @@
 #'
 #' @author Denis Lepage, Bird Studies Canada
 
-deleteRunsFilter <- function(src, filterName, motusProjID=NA, clearOnly=FALSE) {
+deleteRunsFilter = function(src, filterName, motusProjID=NA, clearOnly=FALSE) {
 
   sql = function(...) DBI::dbExecute(src$con, sprintf(...))
 

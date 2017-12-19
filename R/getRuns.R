@@ -23,7 +23,7 @@
 #'
 #' @author Denis Lepage, Bird Studies Canada
 
-getRuns <- function(src, ts.min=NA, ts.max=NA, match.partial=TRUE, motusTagID=c(), ambigID=c()) {
+getRuns = function(src, ts.min=NA, ts.max=NA, match.partial=TRUE, motusTagID=c(), ambigID=c()) {
 
   sqlq = function(...) DBI::dbGetQuery(src$con, sprintf(...))
 

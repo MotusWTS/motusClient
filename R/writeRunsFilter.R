@@ -21,7 +21,7 @@
 #'
 #' @author Denis Lepage, Bird Studies Canada
 
-writeRunsFilter <- function(src, filterName, motusProjID=NA, df, overwrite=TRUE, delete=FALSE) {
+writeRunsFilter = function(src, filterName, motusProjID=NA, df, overwrite=TRUE, delete=FALSE) {
 
   sql = function(...) DBI::dbExecute(src$con, sprintf(...))
   

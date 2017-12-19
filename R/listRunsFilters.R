@@ -8,7 +8,7 @@
 #'
 #' @author Denis Lepage, Bird Studies Canada
 
-listRunsFilters <- function(src) {
+listRunsFilters = function(src) {
   
   sqlq = function(...) DBI::dbGetQuery(src$con, sprintf(...))
   
