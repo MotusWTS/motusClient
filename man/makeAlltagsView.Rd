@@ -21,20 +21,21 @@ By default, the columns in the virtual table are:
    \item{batchID} unique motus ID for the processing batch this detection came from
    \item{ts} timestamp, in seconds since 1 Jan, 1970 GMT
    \item{sig} signal strength, in dB (max) for SG; raw value for Lotek receiver
-   \item{sigSD} sd among pulses of signal strength (SG); NA for Lotek
+   \item{sigsd} sd among pulses of signal strength (SG); NA for Lotek
    \item{noise} noise strength, in dB (max) for SG; NA for Lotek
    \item{freq} offset in kHz from listening frequency for SG; NA for Lotek
-   \item{freqSD} sd among pulses of offset in kHz from listening frequency for SG; NA for Lotek
+   \item{freqsd} sd among pulses of offset in kHz from listening frequency for SG; NA for Lotek
    \item{slop} total absolute difference (milliseconds) in intrer-pulse gaps between registration and detection for SG; NA for Lotek
    \item{burstSlop} signed difference (seconds) between detection and registration burst intervals
    \item{done} logical: is run finished?
    \item{motusTagID} unique motus ID for this physical tag
-   \item{ant} antenna number
+   \item{ambigID} unique ID linking ambiguous tag detections
+   \item{port} antenna port number
    \item{runLen} length of run (# of bursts detected)
    \item{bootnum} boot session of receiver for SG; NA for Lotek
    \item{tagProjID} unique motus ID for project tag was deployed by
-   \item{id} manufacturer ID
-   \item{tagType}
+   \item{mfgID} manufacturer ID printed on the tag
+   \item{tagType} type of tag
    \item{codeSet} for coded ID tags, the name of the codeset
    \item{mfg} tag manufacturer
    \item{tagModel} manufacturer's model name for tag
@@ -42,38 +43,37 @@ By default, the columns in the virtual table are:
    \item{nomFreq} nominal tag frequency (MHz)
    \item{tagBI} tag burst interval (seconds)
    \item{pulseLen} tag pulse length (milliseconds) if applicable
+   \item{tagDeployID} unique motusID for tag deployment
    \item{speciesID} unique motusID for species tag was deployed on
    \item{markerNumber} number for additional marker placed on organism (e.g. bird band #)
    \item{markerType} type of additional marker
-   \item{depLat} latitude of tag deployment, in decimal degrees N
-   \item{depLon} longitude of tag deployment, in decimal degrees E
-   \item{depAlt} altitude of tag deployment, in metres ASL
-   \item{comments} additional comments or unclassified metadata for tag (often in JSON format)
-   \item{startCode} integer code giving method for determining tag deployment start timestamp
-   \item{endCode} integer code giving method for determining tag deployment end timestamp
+   \item{tagDepLat} latitude of tag deployment, in decimal degrees N
+   \item{tagDepLon} longitude of tag deployment, in decimal degrees E
+   \item{tagDepAlt} altitude of tag deployment, in metres ASL
+   \item{tagDepComments} additional comments or unclassified metadata for tag (often in JSON format)
    \item{fullID} full tag ID as PROJECT#MFGID:BI@NOMFREQ (but this is not necessarily unique over time; see motusTagID for a unique tag id)
+   \item{deviceID} unique motusID for the device (normally matches with a unique receiver serial number)
+   \item{recvDeployID} unique motusID for the receiver deployment
+   \item{recvDeployLat} latitude of receiver deployment, in decimal degrees
+   \item{recvDeployLon} longitude of receiver deployment, in decimal degrees
+   \item{recvDeployAlt} altitude of receiver deployment, in metres ASL
    \item{recv} serial number of receiver; e.g. SG-1234BBBK5678 or Lotek-12345
-   \item{site} short name for receiver deployment location
-   \item{isMobile} logical; was this a mobile receiver deployment?
-   \item{projectID} integer; unique motus ID for the project that deployed this receiver
+   \item{recvDepName} name assigned to the receiver deployment
+   \item{recvSiteName} name assigned to the site where the receiver deployment is located
+   \item{isRecvMobile} whether the receiver is mobile or not
+   \item{recvProjID} unique motus ID for project receiver was deployed by
    \item{antType} character; antenna type; e.g. "omni", "yagi-5", ...
    \item{antBearing} numeric; direction antenna main axis points in; degrees clockwise from local magnetic north
    \item{antHeight} numeric; height (metres) of antenna main axis above ground
-   \item{cableLen} numeric; length (metres) of coaxial cable connecting antenna to radio
-   \item{cableType} character; type of coaxial cable
-   \item{mountDistance} numeric; distance (metres) between antenna mounting and receiver
-   \item{mountBearing} numeric; bearing from receiver to base of antenna mounting, in degrees clockwise from local magnetic north
-   \item{polarization1} numeric; antenna polarization angle: azimuth component (degrees clockwise from local magnetic north)
-   \item{polarization2} numeric; antenna polarization angle: elevation component (degrees above horizon)
-   \item{spEN} species name in english
-   \item{spFR} species name in french
-   \item{spSci} species scientific name
-   \item{spGroup} species group
-   \item{tagProj} short label of project that deployed tag
-   \item{proj} short label of project that deployed receiver
-   \item{lat} latitude of receiver at tag detection time (degrees North)
-   \item{lon} longitude of receiver at tag detection time (degrees East)
-   \item{alt} altitude of receiver at tag detection time (metres)
+   \item{speciesEN} species name in english
+   \item{speciesFR} species name in french
+   \item{speciesSci} species scientific name
+   \item{speciesGroup} species group
+   \item{tagProjName} short label of project that deployed tag
+   \item{recvProjName} short label of project that deployed receiver
+   \item{gpsLat} latitude of receiver at tag detection time (decimal degrees)
+   \item{gpsLon} longitude of receiver at tag detection time (decimal degrees)
+   \item{gpsAlt} altitude of receiver at tag detection time (metres)
 }
 }
 \description{

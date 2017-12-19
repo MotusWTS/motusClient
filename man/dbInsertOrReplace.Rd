@@ -5,14 +5,16 @@
 \title{Save records from a data frame into a db table, replacing
 existing records when primary keys collide.}
 \usage{
-dbInsertOrReplace(con, name, df)
+dbInsertOrReplace(con, name, df, replace = TRUE)
 }
 \arguments{
 \item{con}{DBI database connection}
 
 \item{name}{name of table to insert or replace records into}
 
-\item{df}{data from from which to write data.}
+\item{df}{data from which to write data.}
+
+\item{replace}{boolean that determines whether existing records are replaced or ignored.}
 }
 \value{
 no return value
