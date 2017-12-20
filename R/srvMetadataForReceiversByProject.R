@@ -51,8 +51,8 @@
 #'
 #' @author Denis Lepage, Bird Studies Canada
 
-srvMetadataForReceivers = function(projID) {
-    x = srvQuery(API=Motus$API_METADATA_FOR_RECEIVERS_FOR_PROJECT, params=list(projID=projID))
+srvMetadataForReceiversByProject = function(projID) {
+    x = srvQuery(API=Motus$API_METADATA_FOR_RECEIVERS_BY_PROJECT, params=list(projID=projID))
     return (list(
         recvDeps = structure(x$recvDeps, class = "data.frame", row.names=seq(along=x$recvDeps[[1]])),
         antDeps = structure(x$antDeps, class = "data.frame", row.names=seq(along=x$antDeps[[1]])),
