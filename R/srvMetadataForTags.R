@@ -57,10 +57,10 @@
 #'
 #' @export
 #'
-#' @author Denis Lepage, Bird Studies Canada
+#' @author John Brzustowski \email{jbrzusto@@REMOVE_THIS_PART_fastmail.fm}
 
-srvMetadataForTagsByProject = function(projID) {
-    x = srvQuery(API=Motus$API_METADATA_FOR_TAGS_BY_PROJECT, params=list(projID=projID))
+srvMetadataForTags = function(motusTagIDs) {
+    x = srvQuery(API=Motus$API_METADATA_FOR_TAGS, params=list(motusTagIDs=motusTagIDs))
     return (list(
         tags = structure(x$tags, class = "data.frame", row.names=seq(along=x$tags[[1]])),
         tagDeps = structure(x$tagDeps, class = "data.frame", row.names=seq(along=x$tagDeps[[1]])),
