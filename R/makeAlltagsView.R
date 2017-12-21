@@ -155,7 +155,6 @@ SELECT
    t6.elevation as recvDeployAlt,
    t6a.serno as recv,
    t6.name as recvDepName,
-   t6.siteName as recvSiteName,
    t6.isMobile as isRecvMobile,
    t6.projectID as recvProjID,
    t7.antennaType as antType,
