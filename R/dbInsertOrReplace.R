@@ -33,7 +33,12 @@ dbInsertOrReplace = function(con, name, df, replace=TRUE) {
 
     fields = query("PRAGMA table_info(%s)", name)
     df = df[names(df) %in% fields$name]
+    
+    refcols = subset(fields$name, fields$name %in% names(df))
 
+    ## reorder the fields in df to match the table
+    df = df[, subset(fields$name, fields$name %in% names(df))]
+    
     tmp = basename(tempfile("zztmp"))
 
     ## create a temporary table with the same structure as
