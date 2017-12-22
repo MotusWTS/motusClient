@@ -110,7 +110,7 @@
 #'
 #'
 makeAlltagsView = function(db, name="alltags") {
-    query = paste0("CREATE VIEW ", name, " AS
+    query = paste0("CREATE VIEW IF NOT EXISTS ", name, " AS
 SELECT
    t1.hitID as hitID,
    t1.runID as runID,
@@ -229,7 +229,7 @@ LEFT JOIN
              AND t11b.ts <= t1.ts
          )
 ")
-    DBI::dbExecute(db$con, paste0("DROP VIEW IF EXISTS ", name))
+    ## DBI::dbExecute(db$con, paste0("DROP VIEW IF EXISTS ", name))
     DBI::dbExecute(db$con, query)
     return(tbl(db, name))
 }
