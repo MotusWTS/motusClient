@@ -94,8 +94,9 @@ tagme = function(projRecv, update=TRUE, new=FALSE, dir=getwd(), countOnly=FALSE,
     } else {
         deviceID = NULL
     }
-
-    rv = dplyr::src_sqlite(dbname, create=new)
+	
+    #rv = dplyr::src_sqlite(dbname, create=new)
+	rv = DBI::dbConnect(RSQLite::SQLite(), dbname = dbname, create=new)
 
     ensureDBTables(rv, projRecv, deviceID)
 
