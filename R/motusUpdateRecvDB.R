@@ -144,7 +144,8 @@ motusUpdateRecvDB = function(src, countOnly, forceMeta=FALSE) {
             ## project, whereas the server's has hits from all
             ## projects's tags.
 
-            dbWriteTable(sql$con, "batches", b[bi,], append=TRUE, row.names=FALSE)
+            ## dbWriteTable(sql$con, "batches", b[bi,], append=TRUE, row.names=FALSE)
+            dbInsertOrReplace(sql$con, "batches", b[bi,], replace=FALSE)
         }
         batchID = max(b$batchID)
     }

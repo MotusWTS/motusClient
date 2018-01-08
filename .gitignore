@@ -3,5 +3,6 @@
 nohup.out
 .Rproj.user
 .Rhistory
+.RData
 .Rbuildignore
 *.Rproj

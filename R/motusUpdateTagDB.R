@@ -147,7 +147,8 @@ motusUpdateTagDB = function(src, countOnly=FALSE, forceMeta=FALSE) {
                 if (nrow(oldBatch) == 0) {
                     ## this is a new batch record, so write the whole thing
                     b$numHits[bi] = numHits
-                    dbWriteTable(sql$con, "batches", b[bi,], append=TRUE, row.names=FALSE)
+                    ## dbWriteTable(sql$con, "batches", b[bi,], append=TRUE, row.names=FALSE)
+                    dbInsertOrReplace(sql$con, "batches", b[bi,], replace=FALSE)
                 } else {
                     ## this is a batch record we already have, but we've fetched
                     ## additional hits due to ambiguous tags
