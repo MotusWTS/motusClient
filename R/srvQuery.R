@@ -65,6 +65,7 @@ srvQuery = function (API, params = NULL, requestType="post", show=FALSE, JSON=FA
         else
             resp = RCurl::getForm(URL, json=json, curl=curl)
         resp = memDecompress(structure(resp, `Content-Type`=NULL), "bzip2", asChar=TRUE)
+        
         if (JSON)
             return (resp)
         if (grepl("^[ \r\n]*$", resp))

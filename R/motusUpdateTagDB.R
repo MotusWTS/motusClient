@@ -19,7 +19,7 @@ motusUpdateTagDB = function(src, countOnly=FALSE, forceMeta=FALSE) {
     sql = safeSQL(src)
 
     projectID = sql("select val from meta where key='tagProject'")[[1]] %>% as.integer
-    batchID = sql("select max(batchID) from projBatch where tagDepProjectID=%d", projectID)
+    batchID = sql("select max(a.batchID) from projBatch a inner join batches b on a.batchID = b.batchID where tagDepProjectID=%d", projectID)
     if (countOnly)
         return (srvSizeOfUpdateForTagProject(projectID=projectID, batchID=batchID))
 
@@ -37,7 +37,7 @@ motusUpdateTagDB = function(src, countOnly=FALSE, forceMeta=FALSE) {
     devIDs = c()
 
     for (projectID in projectIDs) {
-        batchID = sql("select ifnull(max(batchID), 0) from projBatch where tagDepProjectID=%d", projectID)[[1]]
+        batchID = sql("select ifnull(max(a.batchID), 0) from projBatch a inner join batches b on a.batchID = b.batchID where tagDepProjectID=%d", projectID)[[1]]
 
         ## ----------------------------------------------------------------------------
         ## 1. get records for all new batches
@@ -63,7 +63,7 @@ motusUpdateTagDB = function(src, countOnly=FALSE, forceMeta=FALSE) {
                 ## a non-empty result if we're currently grabbing data for a
                 ## project with which the main project has an ambiguous tag.
                 oldBatch = sql("select * from batches where batchID=%d", batchID)
-                batchMsg = sprintf("batchID %8d (#%6d of %6d)", batchID, bi, nrow(b))
+                batchMsg = sprintf("\nbatchID %8d (#%6d of %6d)", batchID, bi, nrow(b))
 
                 ## To handle interruption of transfers, we save a record to the batches
                 ## table as the last step after acquiring runs and hits for that batch.
