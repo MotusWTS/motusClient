@@ -64,7 +64,8 @@ srvQuery = function (API, params = NULL, requestType="post", show=FALSE, JSON=FA
             resp = RCurl::postForm(URL, json=json, .encoding="utf-8", style="post", curl=curl, .contentEncodeFun=RCurl::curlPercentEncode)
         else
             resp = RCurl::getForm(URL, json=json, .encoding="utf-8", curl=curl)
-        resp = iconv(memDecompress(structure(resp, `Content-Type`=NULL), "bzip2", asChar=TRUE),"utf-8")
+        resp = memDecompress(resp, "bzip2", asChar=TRUE)
+		Encoding(resp) = "UTF-8"
         
         if (JSON)
             return (resp)
