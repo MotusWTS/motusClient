@@ -8,13 +8,15 @@
 #'
 #' @param descr optional filter description detailing what the filter is meant to do
 #'
+#' @param update whether the filter record gets updated when a filter with the same name already exists.
+#'
 #' @return an integer filterID
 #'
 #' @export
 #'
 #' @author Denis Lepage, Bird Studies Canada
 
-createRunsFilter = function(src, filterName, motusProjID=NA, descr=NA) {
+createRunsFilter = function(src, filterName, motusProjID=NA, descr=NA, update=FALSE) {
 
   sqlq = function(...) DBI::dbGetQuery(src$con, sprintf(...))
 
@@ -27,11 +29,17 @@ createRunsFilter = function(src, filterName, motusProjID=NA, descr=NA) {
     df = sqlq("select * from filters where filterName = '%s' and motusProjID = %d", filterName, motusProjID)
     return (df[1,]$filterID)
   } else if (nrow(df) == 1) {
-    warning("filter already exists. The description has been updated.")
-    df$descr = descr
-    df$lastModified=format(Sys.time(), "%Y-%m-%d %H:%M:%S")
-    dbInsertOrReplace(src$con, "filters", df);
-    return (df[1,]$filterID)
+    if (update) {
+		df$descr = descr
+		df$lastModified=format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+		dbInsertOrReplace(src$con, "filters", df);
+		warning("Filter already exists. The description has been updated.")	
+		return (df[1,]$filterID)
+	} else {
+		warning("Error: filter already exists. Use update=TRUE if you want to update the properties of the existing filter.")	
+		return ()
+	}
+
   } else {
     warning("There are more than 1 existing filters matching your request.")
     return()
