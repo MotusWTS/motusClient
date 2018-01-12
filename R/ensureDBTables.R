@@ -430,7 +430,7 @@ CREATE TABLE runsFilters (
    runID INTEGER NOT NULL,                  -- unique ID of the run record to which the filter applies
    motusTagID INTEGER NOT NULL,             -- unique ID of the Motus tag. Should match the actual motusTagID, not the negative ambigID in the case of ambiguous runs. 
    probability REAL NOT NULL,               -- probability (normally between 0 and 1) attached to the run record
-   PRIMARY KEY(filterID,runID)
+   PRIMARY KEY(filterID,runID,motusTagID)
 );
 ");
       sql("
