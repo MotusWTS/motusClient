@@ -22,7 +22,7 @@ receivers, even if we already have them.  Default: FALSE}
 update a motus tag detection database - receiver flavour (backend)
 }
 \seealso{
-\link{\code{tagme}}, which is intended for most users, and
+\code{\link{tagme}}, which is intended for most users, and
     indirectly calls this function.
 }
 \author{

@@ -21,7 +21,7 @@
 #' ## getDBFilename(5, "/home/me/mydbs") # get the path to the
 #' ##       database for project 5, which is in folder \code{/home/me/mydbs}
 #'
-#' @seealso \link{\code{tagme}}
+#' @seealso \code{\link{tagme}}
 #'
 #' @export
 #'

@@ -34,7 +34,7 @@ get the full filename for a tag project or receiver database
 
 }
 \seealso{
-\link{\code{tagme}}
+\code{\link{tagme}}
 }
 \author{
 John Brzustowski \email{jbrzusto@REMOVE_THIS_PART_fastmail.fm}

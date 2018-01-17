@@ -2,7 +2,8 @@
 % Please edit documentation in R/applyRunsFilter.R
 \name{applyRunsFilter}
 \alias{applyRunsFilter}
-\title{Write to the local database the probabilities associated with runs for a filter}
+\title{Returns a dataframe of all detections matching the filter conditions. Filters are a list of runID that the user can 
+build for the purpose of excluding specific runs from the resulting dataframe.}
 \usage{
 applyRunsFilter(src, filterName, motusProjID = NA, p.min = 0,
   where.stmt = NA)
@@ -14,20 +15,14 @@ applyRunsFilter(src, filterName, motusProjID = NA, p.min = 0,
 
 \item{motusProjID}{optional project ID attached to the filter in order to share with other users of the same project.}
 
-\item{df}{dataframe containing the runID and probability values to save in the local database}
-
-\item{overwrite}{boolean. When TRUE ensures that existing records matching the same filterName 
-and runID get replaced}
-
-\item{delete}{boolean. When TRUE, removes all existing filter records associated with the filterName 
-and re-inserts the ones contained in the dataframe. This option should be used if the dataframe 
-provided contains the entire set of filters you want to save.}
+\item{p.min}{the minimum probability returned (p.min = 0: no filter applied)}
 }
 \value{
-the integer filterID of the filter deleted
+a dataframe containing the results from alltags, matching the specified filter conditions
 }
 \description{
-Write to the local database the probabilities associated with runs for a filter
+Returns a dataframe of all detections matching the filter conditions. Filters are a list of runID that the user can 
+build for the purpose of excluding specific runs from the resulting dataframe.
 }
 \author{
 Denis Lepage, Bird Studies Canada

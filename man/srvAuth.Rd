@@ -17,7 +17,7 @@ token from the data server.
 if login is unsuccessful, execution stops with an error message
 }
 \seealso{
-\link{\code{Motus}}
+\code{\link{Motus}}
 }
 \author{
 John Brzustowski \email{jbrzusto@REMOVE_THIS_PART_fastmail.fm}

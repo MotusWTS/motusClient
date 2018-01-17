@@ -16,7 +16,7 @@
 #' @param force logical scalar; if TRUE, re-obtain metadata even if we
 #' already have it.
 #'
-#' @seealso \link{\code{tagme}}, which is intended for most users, and
+#' @seealso \code{\link{tagme}}, which is intended for most users, and
 #'     indirectly calls this function.
 #'
 #' @author John Brzustowski \email{jbrzusto@@REMOVE_THIS_PART_fastmail.fm}

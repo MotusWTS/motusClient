@@ -22,7 +22,7 @@ of counts items that would be transferred by the update.
 update a motus tag detection database - tag flavour (backend)
 }
 \seealso{
-\link{\code{tagme}}, which is intended for most users, and
+\code{\link{tagme}}, which is intended for most users, and
     indirectly calls this function.
 }
 \author{

@@ -16,7 +16,7 @@ the query will be written to the .rds file, but the query can
 include 'limit' and 'offset' phrases.}
 
 \item{bind.data}{values for query parameters, if any; see
-\link{\code{dbGetQuery}}.  Defaults to \code{data.frame(x=0L)},
+\code{\link{dbGetQuery}}.  Defaults to \code{data.frame(x=0L)},
 i.e. a trivial data.frame meant only to pass the sanity checks
 imposed by \code{dbGetQuery()}}
 

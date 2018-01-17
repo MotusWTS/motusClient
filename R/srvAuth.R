@@ -7,7 +7,7 @@
 #'
 #' @details if login is unsuccessful, execution stops with an error message
 #'
-#' @seealso \link{\code{Motus}}
+#' @seealso \code{\link{Motus}}
 #'
 #' @export
 #'

@@ -58,7 +58,7 @@
 #' @return a dplyr::src_sqlite for the (possibly updated) database, or a list
 #' of counts if \code{countOnly==TRUE}
 #'
-#' @seealso \link{\code{tellme}}, which is a synonym for \code{tagme(..., update=TRUE, countOnly=TRUE)}
+#' @seealso \code{\link{tellme}}, which is a synonym for \code{tagme(..., update=TRUE, countOnly=TRUE)}
 #'
 #' @export
 #'

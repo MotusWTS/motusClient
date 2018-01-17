@@ -4,7 +4,8 @@
 \alias{createRunsFilter}
 \title{Create a new filter records that can be applied to runs}
 \usage{
-createRunsFilter(src, filterName, motusProjID = NA, descr = NA)
+createRunsFilter(src, filterName, motusProjID = NA, descr = NA,
+  update = FALSE)
 }
 \arguments{
 \item{src}{dplyr sqlite src, as returned by \code{dplyr::src_sqlite()}}
@@ -14,6 +15,8 @@ createRunsFilter(src, filterName, motusProjID = NA, descr = NA)
 \item{motusProjID}{optional project ID attached to the filter in order to share with other users of the same project.}
 
 \item{descr}{optional filter description detailing what the filter is meant to do}
+
+\item{update}{whether the filter record gets updated when a filter with the same name already exists.}
 }
 \value{
 an integer filterID

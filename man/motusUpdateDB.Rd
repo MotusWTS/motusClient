@@ -32,7 +32,7 @@ This function does most of the work of fetching data and metadata from
 motus servers.  It is not intended to be called directly by users.
 }
 \seealso{
-\link{\code{tagme}}, which is intended for most users, and calls this function.
+\code{\link{tagme}}, which is intended for most users, and calls this function.
 }
 \author{
 John Brzustowski \email{jbrzusto@REMOVE_THIS_PART_fastmail.fm}

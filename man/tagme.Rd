@@ -72,7 +72,7 @@ update a motus tag detection database
 
 }
 \seealso{
-\link{\code{tellme}}, which is a synonym for \code{tagme(..., update=TRUE, countOnly=TRUE)}
+\code{\link{tellme}}, which is a synonym for \code{tagme(..., update=TRUE, countOnly=TRUE)}
 }
 \author{
 John Brzustowski \email{jbrzusto@REMOVE_THIS_PART_fastmail.fm}

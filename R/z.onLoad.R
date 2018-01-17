@@ -38,7 +38,7 @@
 #' \item{hooks}{named list of lists of hook functions, called at various points in processing}
 #' }
 #'
-#' @seealso \link{\code{Motus}}
+#' @seealso \code{\link{Motus}}
 #'
 #' @export
 #'

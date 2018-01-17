@@ -31,7 +31,7 @@
 #' @note if you specify \code{new=TRUE} and the database does not already exist,
 #' it will be created (but empty).
 #'
-#' @seealso \link{\code{tellme}}, which is a synonym for \code{tagme(..., countOnly=TRUE)}
+#' @seealso \code{\link{tellme}}, which is a synonym for \code{tagme(..., countOnly=TRUE)}
 #'
 #' @export
 #'

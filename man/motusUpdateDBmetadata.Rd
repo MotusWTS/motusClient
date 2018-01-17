@@ -27,7 +27,7 @@ already have it.}
 update the metadata for receivers and tags in a motus tag detection database
 }
 \seealso{
-\link{\code{tagme}}, which is intended for most users, and
+\code{\link{tagme}}, which is intended for most users, and
     indirectly calls this function.
 }
 \author{
