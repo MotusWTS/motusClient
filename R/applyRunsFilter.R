@@ -9,7 +9,7 @@
 #'
 #' @param p.min the minimum probability returned (p.min = 0: no filter applied)
 #'
-#' @where.stmt where statement in SQL format (e.g. where.stmt="motusTagID = 12345 AND runLen >= 4")
+#' @param where.stmt where statement in SQL format (e.g. where.stmt="motusTagID = 12345 AND runLen >= 4")
 #'
 #' @return a dataframe containing the results from alltags, matching the specified filter conditions
 #'
