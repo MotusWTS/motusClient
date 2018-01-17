@@ -16,6 +16,8 @@ applyRunsFilter(src, filterName, motusProjID = NA, p.min = 0,
 \item{motusProjID}{optional project ID attached to the filter in order to share with other users of the same project.}
 
 \item{p.min}{the minimum probability returned (p.min = 0: no filter applied)}
+
+\item{where.stmt}{where statement in SQL format (e.g. where.stmt="motusTagID = 12345 AND runLen >= 4")}
 }
 \value{
 a dataframe containing the results from alltags, matching the specified filter conditions

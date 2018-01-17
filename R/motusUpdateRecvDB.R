@@ -44,7 +44,7 @@ motusUpdateRecvDB = function(src, countOnly, forceMeta=FALSE) {
         ## to span multiple deployments.
         b = subset(b, ! duplicated(batchID))
 
-        cat(sprintf("Got %d batch records\n", nrow(b)), file=stderr())
+        cat(sprintf("\r\nGot %d batch records\n", nrow(b)), file=stderr())
         for (bi in 1:nrow(b)) {
             batchID = b$batchID[bi]
             ## To handle interruption of transfers, we save a record to the batches
@@ -70,7 +70,7 @@ motusUpdateRecvDB = function(src, countOnly, forceMeta=FALSE) {
 
                 dbInsertOrReplace(sql$con, "runs", r)
                 dbWriteTable(sql$con, "batchRuns", data.frame(batchID=batchID, runID=r$runID), append=TRUE, row.names=FALSE)
-                cat(sprintf("Got %d runs starting at %.0f for batch %d                 \r", nrow(r), runID, batchID), file=stderr())
+                cat(sprintf("\r\nGot %d runs starting at %.0f for batch %d                 \r", nrow(r), runID, batchID), file=stderr())
                 runID = max(r$runID)
             }
 
@@ -87,7 +87,7 @@ motusUpdateRecvDB = function(src, countOnly, forceMeta=FALSE) {
                 h = srvHitsForReceiver(batchID=batchID, hitID=hitID)
                 if (! isTRUE(nrow(h) > 0))
                     break
-                cat(sprintf("Got %d hits starting at %.0f for batch %d                \r", nrow(h), hitID, batchID), file=stderr())
+                cat(sprintf("\r\nGot %d hits starting at %.0f for batch %d                \r", nrow(h), hitID, batchID), file=stderr())
                 ## add these hit records to the DB
                 dbWriteTable(sql$con, "hits", h, append=TRUE, row.names=FALSE)
                 hitID = max(h$hitID)
@@ -103,7 +103,7 @@ motusUpdateRecvDB = function(src, countOnly, forceMeta=FALSE) {
                 g = srvGPSforReceiver(batchID=batchID, ts=ts)
                 if (! isTRUE(nrow(g) > 0))
                     break
-                cat(sprintf("Got %d GPS fixes for batch %d                \r", nrow(g), batchID), file=stderr())
+                cat(sprintf("\r\nGot %d GPS fixes for batch %d                \r", nrow(g), batchID), file=stderr())
                 dbInsertOrReplace(sql$con, "gps", g[, c("batchID", "ts", "gpsts", "lat", "lon", "alt")])
                 ts = max(g$ts)
             }
@@ -127,7 +127,7 @@ motusUpdateRecvDB = function(src, countOnly, forceMeta=FALSE) {
                 pc = srvPulseCountsforReceiver(batchID=batchID, ant=ant, hourBin=hourBin)
                 if (! isTRUE(nrow(pc) > 0))
                     break
-                cat(sprintf("Got %d pulse counts for batch %d                \r", nrow(pc), batchID), file=stderr())
+                cat(sprintf("\r\nGot %d pulse counts for batch %d                \r", nrow(pc), batchID), file=stderr())
                 dbInsertOrReplace(sql$con, "pulseCounts", pc[, c("batchID", "ant", "hourBin", "count")])
                 ant = tail(pc$ant, 1)
                 hourBin = tail(pc$hourBin, 1)
@@ -146,6 +146,7 @@ motusUpdateRecvDB = function(src, countOnly, forceMeta=FALSE) {
 
             ## dbWriteTable(sql$con, "batches", b[bi,], append=TRUE, row.names=FALSE)
             dbInsertOrReplace(sql$con, "batches", b[bi,], replace=FALSE)
+            cat(sprintf("\r\nBatch %d completed \r", batchID), file=stderr())
         }
         batchID = max(b$batchID)
     }
