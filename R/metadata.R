@@ -13,6 +13,8 @@
 #' @seealso \code{\link{tagme}} provides an option to update only the metadata relevant to a specific 
 #' project or receiver file.
 #'
+#' @export
+#'
 #' @author Denis Lepage, Bird Studies Canada
 
 metadata = function(src, projectIDs=NULL, replace=TRUE) {
