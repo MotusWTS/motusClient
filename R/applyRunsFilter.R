@@ -11,7 +11,7 @@
 #'
 #' @param where.stmt where statement in SQL format (e.g. where.stmt="motusTagID = 12345 AND runLen >= 4")
 #'
-#' @return a dataframe containing the results from alltags, matching the specified filter conditions
+#' @return a dplyr tbl object referencing the results from alltags, and including the probability from the specified filter
 #'
 #' @export
 #'
@@ -19,7 +19,7 @@
 
 applyRunsFilter = function(src, filterName, motusProjID=NA, p.min=0, where.stmt=NA) {
 
-  sqlq = function(...) DBI::dbGetQuery(src$con, sprintf(...))
+  # sqlq = function(...) DBI::dbGetQuery(src$con, sprintf(...))
   
   # determines the filterID
   filterID = getRunsFilterID(src, filterName, motusProjID)
@@ -28,9 +28,9 @@ applyRunsFilter = function(src, filterName, motusProjID=NA, p.min=0, where.stmt=
     if (is.na(where.stmt)) where.stmt = ""
     else where.stmt = paste(" AND ", where.stmt, sep="")
     
-    return (sqlq("select * from (select a.*, (SELECT probability from runsFilters b where a.runID = 
-        b.runID and a.motusTagID = b.motusTagID and filterID = %d) as probability from alltags a) tbl where IFNULL(probability,1) >= %f %s", 
-        filterID, p.min, where.stmt))
+	return(dplry::tbl(src, sql("select * from (select a.*, (SELECT probability from runsFilters b where a.runID = 
+    b.runID and a.motusTagID = b.motusTagID and filterID = %d) as probability from alltags a) tbl where IFNULL(probability,1) >= %f %s", 
+    filterID, p.min, where.stmt)))
                                  
   }
   
