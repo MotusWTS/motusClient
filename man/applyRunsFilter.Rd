@@ -20,7 +20,7 @@ applyRunsFilter(src, filterName, motusProjID = NA, p.min = 0,
 \item{where.stmt}{where statement in SQL format (e.g. where.stmt="motusTagID = 12345 AND runLen >= 4")}
 }
 \value{
-a dataframe containing the results from alltags, matching the specified filter conditions
+a dplyr tbl object referencing the results from alltags, and including the probability from the specified filter
 }
 \description{
 Returns a dataframe of all detections matching the filter conditions. Filters are a list of runID that the user can 

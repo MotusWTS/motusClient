@@ -16,8 +16,7 @@
 #'     extracted from the JSON return value.
 #'
 #' @note If you have not already entered your motus login credentials
-#'     in this R session, e.g. by calling \code{\link{motusLogin()}},
-#'     this function will prompt you for them.
+#'     in this R session, this function will prompt you for them.
 #'
 #' @author John Brzustowski
 #'     \email{jbrzusto@@REMOVE_THIS_PART_fastmail.fm}

@@ -21,6 +21,8 @@
 #' \item{API_PULSE_COUNTS_FOR_RECEIVER}{URL to call for getting antenna pulse counts for a receiver}
 #' \item{API_METADATA_FOR_TAGS}{URL to call for getting metadata for tags}
 #' \item{API_METADATA_FOR_RECEIVERS}{URL to call for getting metadata for receivers}
+#' \item{API_RECV_METADATA_FOR_PROJECTS}{URL to call for getting receiver metadata by projects}
+#' \item{API_TAG_METADATA_FOR_PROJECTS}{URL to call for getting tag metadata by projects}
 #' \item{API_TAGS_FOR_AMBIGIUITIES}{URL to call for getting motus tagIDs represented by an ambiguity ID}
 #' \item{API_PROJECT_AMBIGUITIES_FOR_TAG_PROJECT}{URL to call for getting list of ambiguous project IDs for a project}
 #' \item{FLOAT_FIELDS}{list of API fieldnames requiring floating point values}
@@ -79,6 +81,8 @@
         API_PULSE_COUNTS_FOR_RECEIVER           = "custom/pulse_counts_for_receiver"
         API_METADATA_FOR_TAGS                   = "custom/metadata_for_tags"
         API_METADATA_FOR_RECEIVERS              = "custom/metadata_for_receivers"
+        API_RECV_METADATA_FOR_PROJECTS          = "custom/recv_metadata_for_projects"
+        API_TAG_METADATA_FOR_PROJECTS           = "custom/tag_metadata_for_projects"
         API_TAGS_FOR_AMBIGUITIES                = "custom/tags_for_ambiguities"
         API_SIZE_OF_UPDATE_FOR_TAG_PROJECT      = "custom/size_of_update_for_tag_project"
         API_SIZE_OF_UPDATE_FOR_RECEIVER         = "custom/size_of_update_for_receiver"

@@ -90,7 +90,8 @@ one copy.
 ## clarify(s)  ## report on the ambiguous tag detections in s
 ## clarify(all.mine=TRUE) ## claim all ambiguous tag detections as mine
 ## clarify(id = -57) ## claim all detections of ambiguous tag -57 as mine
-## clarify(id = c(-72, -88, -91), from=("2017-01-02"), to=("2017-05-06")) ## claim all detections of ambiguous tags -72, -88, and -91 from
+## clarify(id = c(-72, -88, -91), from=("2017-01-02"), to=("2017-05-06")) 
+## claim all detections of ambiguous tags -72, -88, and -91 from
 ##   January 2 through May 6, 2017, as mine
 
 }

@@ -1,5 +1,5 @@
 Package: motusClient
-Version: 0.1.2
+Version: 0.2
 Title: fetch data from the motus data server
 Description: Functions to retrieve telemetry data from motus.  Allows incremental build of tag project and receiver databases.  Most users will want the `motus` package to actually work with the fetched data.
 Author: John Brzustowski <jbrzusto@fastmail.fm>
@@ -13,6 +13,6 @@ Imports:
     jsonlite,
     RCurl
 License: GPL-2+
-Date: 2017-09-22
+Date: 2018-01-22
 RoxygenNote: 6.0.1
 LazyData: true
