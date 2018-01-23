@@ -28,9 +28,9 @@ applyRunsFilter = function(src, filterName, motusProjID=NA, p.min=0, where.stmt=
     if (is.na(where.stmt)) where.stmt = ""
     else where.stmt = paste(" AND ", where.stmt, sep="")
     
-	return(dplry::tbl(src, sql("select * from (select a.*, (SELECT probability from runsFilters b where a.runID = 
+	return(dplyr::tbl(src, sql(sprintf("select * from (select a.*, (SELECT probability from runsFilters b where a.runID = 
     b.runID and a.motusTagID = b.motusTagID and filterID = %d) as probability from alltags a) tbl where IFNULL(probability,1) >= %f %s", 
-    filterID, p.min, where.stmt)))
+    filterID, p.min, where.stmt))))
                                  
   }
   
