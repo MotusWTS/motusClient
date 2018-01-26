@@ -27,7 +27,7 @@ of parameters, then stops with an error
 add a hook function to customize motusClient behaviour
 }
 \note{
-: \code{\link{addHook()}} adds functions to the end of a hook, so the
+: \code{\link{addHook}} adds functions to the end of a hook, so the
 functions on a hook are in order of being added, from earliest to latest.
 You can get the list of functions on each hook by examining the global
 variable \code{Motus$hooks}.
@@ -39,7 +39,8 @@ variable \code{Motus$hooks}.
 
 # addHook("ensureDBTables",
 #    function(rv, src, projRecv, deviceID) {
-#      DBI::dbExecute(src$con, "CREATE TABLE IF NOT EXISTS myNewTable (motusTagID INTEGER PRIMARY KEY NOT NULL, userLabel TEXT)")
+#      DBI::dbExecute(src$con, "CREATE TABLE IF NOT EXISTS myNewTable 
+#      (motusTagID INTEGER PRIMARY KEY NOT NULL, userLabel TEXT)")
 #      return(rv)
 # })
 

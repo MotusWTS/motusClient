@@ -6,7 +6,7 @@
 build for the purpose of excluding specific runs from the resulting dataframe.}
 \usage{
 applyRunsFilter(src, filterName, motusProjID = NA, p.min = 0,
-  where.stmt = NA)
+  where.stmt = NA, p.default = 1)
 }
 \arguments{
 \item{src}{dplyr sqlite src, as returned by \code{dplyr::src_sqlite()}}
@@ -18,9 +18,13 @@ applyRunsFilter(src, filterName, motusProjID = NA, p.min = 0,
 \item{p.min}{the minimum probability returned (p.min = 0: no filter applied)}
 
 \item{where.stmt}{where statement in SQL format (e.g. where.stmt="motusTagID = 12345 AND runLen >= 4")}
+
+\item{p.default}{default probability (default: 1.0) used and returned by this function for detection records with 
+runID's not referenced in the filter. When p.default >= p.min, all records not listed in your filter will be returned.
+When p.default < p.min, all records not listed in your filter will be excluded.}
 }
 \value{
-a dataframe containing the results from alltags, matching the specified filter conditions
+a dplyr tbl object referencing the results from alltags, and including the probability from the specified filter
 }
 \description{
 Returns a dataframe of all detections matching the filter conditions. Filters are a list of runID that the user can 

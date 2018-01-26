@@ -29,8 +29,7 @@ Send a query to the motus API
 }
 \note{
 If you have not already entered your motus login credentials
-    in this R session, e.g. by calling \code{\link{motusLogin()}},
-    this function will prompt you for them.
+    in this R session, this function will prompt you for them.
 }
 \author{
 John Brzustowski
