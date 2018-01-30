@@ -24,7 +24,7 @@ and re-inserts the ones contained in the dataframe. This option should be used i
 provided contains the entire set of filters you want to save.}
 }
 \value{
-the integer filterID of the filter deleted
+a dplyr sqlite object refering to the filter created
 }
 \description{
 Write to the local database the probabilities associated with runs for a filter
