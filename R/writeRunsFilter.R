@@ -15,7 +15,7 @@
 #' and re-inserts the ones contained in the dataframe. This option should be used if the dataframe 
 #' provided contains the entire set of filters you want to save.
 #'
-#' @return the integer filterID of the filter deleted
+#' @return a dplyr sqlite object refering to the filter created
 #'
 #' @export
 #'
@@ -26,16 +26,17 @@ writeRunsFilter = function(src, filterName, motusProjID=NA, df, overwrite=TRUE, 
   sql = function(...) DBI::dbExecute(src$con, sprintf(...))
   
   # determines the filterID
-  filterID = getRunsFilterID(src, filterName, motusProjID)
-  if (!is.null(filterID)) {
+  id = createRunsFilter(src, filterName, motusProjID, update=FALSE)
+    
+  if (!is.null(id)) {
     if (delete) {
       deleteRunsFilter(src, filterName, motusProjID, clearOnly = TRUE)
     }
-    df$filterID = filterID
+    df$filterID = id
 
     dbInsertOrReplace(src$con, "runsFilters", df, replace=overwrite)
   }
   
-  return(filterID)
+  return(tbl(src, "runsFilter") %>% filter(filterID == id))
 
 }

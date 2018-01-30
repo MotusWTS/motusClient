@@ -21,7 +21,7 @@
 #'
 #' @author Denis Lepage, Bird Studies Canada
 
-applyRunsFilter = function(src, filterName, motusProjID=NA, p.min=0, where.stmt=NA, p.default=1.0) {
+applyRunsFilter = function(src, filterNames, motusProjID=NA, p.min=0, where.stmt=NA, p.default=1.0) {
 
   # sqlq = function(...) DBI::dbGetQuery(src$con, sprintf(...))
   

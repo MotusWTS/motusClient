@@ -30,16 +30,15 @@ createRunsFilter = function(src, filterName, motusProjID=NA, descr=NA, update=FA
     return (df[1,]$filterID)
   } else if (nrow(df) == 1) {
     if (update) {
-		df$descr = descr
-		df$lastModified=format(Sys.time(), "%Y-%m-%d %H:%M:%S")
-		dbInsertOrReplace(src$con, "filters", df);
-		warning("Filter already exists. The description has been updated.")	
-		return (df[1,]$filterID)
-	} else {
-		warning("Error: filter already exists. Use update=TRUE if you want to update the properties of the existing filter.")	
-		return ()
-	}
-
+		  df$descr = descr
+		  df$lastModified=format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+		  dbInsertOrReplace(src$con, "filters", df);
+		  warning("Filter already exists. The description has been updated.")	
+	  } else {
+	  	warning("Warning: filter already exists. Use createRunsFilter function with update=TRUE if you want to update the properties (e.g. name) of the existing filter.")	
+  	}
+    return (df[1,]$filterID)
+    
   } else {
     warning("There are more than 1 existing filters matching your request.")
     return()
