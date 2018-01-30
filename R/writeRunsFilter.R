@@ -37,6 +37,6 @@ writeRunsFilter = function(src, filterName, motusProjID=NA, df, overwrite=TRUE, 
     dbInsertOrReplace(src$con, "runsFilters", df, replace=overwrite)
   }
   
-  return(tbl(src, "runsFilter") %>% filter(filterID == id))
+  return(tbl(src, "runsFilters") %>% filter(filterID == id))
 
 }

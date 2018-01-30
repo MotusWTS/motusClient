@@ -8,7 +8,7 @@
 #' @param motusProjID optional project ID attached to the filter in order to share with other users of the 
 #' same project.
 #'
-#' @return a dataframe 
+#' @return a dplyr sqlite object 
 #'
 #' @export
 #'
@@ -16,11 +16,9 @@
 
 getRunsFilters = function(src, filterName, motusProjID=NA) {
   
-  sqlq = function(...) DBI::dbGetQuery(src$con, sprintf(...))
-
-  filterID = getRunsFilterID(src, filterName, motusProjID)
-  if (!is.null(filterID)) {
-      return (sqlq("select * from runsFilters where filterID = '%d'", filterID))
+  id = getRunsFilterID(src, filterName, motusProjID)
+  if (!is.null(id)) {
+      return(tbl(src, "runsFilters") %>% filter(filterID == id))
   }
   return()
   
