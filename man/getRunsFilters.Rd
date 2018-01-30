@@ -16,7 +16,7 @@ getRunsFilters(src, filterName, motusProjID = NA)
 same project.}
 }
 \value{
-a dataframe
+a dplyr sqlite object
 }
 \description{
 Returns a dataframe of the runFilters records matching a filter name (and optionally a project ID) stored 
