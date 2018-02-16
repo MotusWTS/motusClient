@@ -8,7 +8,9 @@
 #' be obtained; default: NULL, meaning obtain metadata for all tags and receivers that your permissions 
 #' allow.  
 #'
-#' @param replace logical scalar; if TRUE (default), replace the existing metadata with the newly acquired ones.
+#' @param replace logical scalar; if TRUE (default), existing data replace the existing metadata with the newly acquired ones. 
+#'
+#' @param delete logical scalar; Defaut = FALSE. if TRUE, the entire metadata tables are cleared (for all projects) before re-importing the metadata. 
 #'
 #' @seealso \code{\link{tagme}} provides an option to update only the metadata relevant to a specific 
 #' project or receiver file.
@@ -17,9 +19,23 @@
 #'
 #' @author Denis Lepage, Bird Studies Canada
 
-metadata = function(src, projectIDs=NULL, replace=TRUE) {
+metadata = function(src, projectIDs=NULL, replace=TRUE, delete=FALSE) {
 
+    sql = function(...) DBI::dbExecute(src$con, sprintf(...))
+    if (delete) {
+      cat("Deleting local copy of Motus metadata\r\n")
+      sql("delete from species")
+      sql("delete from projs")
+      sql("delete from tagDeps")
+      sql("delete from tags")
+      sql("delete from antDeps")
+      sql("delete from recvDeps")
+      sql("delete from recvs")
+    }
+    
     cat("Loading complete Motus metadata\r\n")
+    if (!is.null(projectIDs))
+      cat(sprintf("Project # %s\r\n", paste(projectIDs,collapse=", ")))
     
     ## get metadata for tags, their deployments, and species names
     tmeta = srvTagMetadataForProjects(projectIDs=projectIDs)

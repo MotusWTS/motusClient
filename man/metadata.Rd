@@ -6,7 +6,7 @@
 this function retrieves the entire set of metadata for tags and receivers, and not only those 
 pertinent to the detections of your local file.}
 \usage{
-metadata(src, projectIDs = NULL, replace = TRUE)
+metadata(src, projectIDs = NULL, replace = TRUE, delete = TRUE)
 }
 \arguments{
 \item{src}{src_sqlite object representing the database (either tag or receiver)}
@@ -15,7 +15,9 @@ metadata(src, projectIDs = NULL, replace = TRUE)
 be obtained; default: NULL, meaning obtain metadata for all tags and receivers that your permissions 
 allow.}
 
-\item{replace}{logical scalar; if TRUE (default), replace the existing metadata with the newly acquired ones.}
+\item{replace}{logical scalar; if TRUE (default), existing data replace the existing metadata with the newly acquired ones.}
+
+\item{delete}{logical scalar; Defaut = FALSE. if TRUE, the entire metadata tables are cleared (for all projects) before re-importing the metadata.}
 }
 \description{
 update entire metadata for receivers and tags from Motus server. Contrary to tagme, 
