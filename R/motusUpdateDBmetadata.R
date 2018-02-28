@@ -66,6 +66,7 @@ motusUpdateDBmetadata = function(sql, tagIDs=NULL, deviceIDs=NULL, force=FALSE) 
         tmeta = srvMetadataForTags(motusTagIDs=realTagIDs)
         dbInsertOrReplace(sql$con, "tags", tmeta$tags)
         dbInsertOrReplace(sql$con, "tagDeps", tmeta$tagDeps)
+        dbInsertOrReplace(sql$con, "tagProps", tmeta$tagProps)
         dbInsertOrReplace(sql$con, "species", tmeta$species)
         dbInsertOrReplace(sql$con, "projs", tmeta$projs)
         ## update tagDeps.fullID

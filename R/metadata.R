@@ -27,6 +27,7 @@ metadata = function(src, projectIDs=NULL, replace=TRUE, delete=FALSE) {
       sql("delete from species")
       sql("delete from projs")
       sql("delete from tagDeps")
+      sql("delete from tagProps")
       sql("delete from tags")
       sql("delete from antDeps")
       sql("delete from recvDeps")
@@ -41,6 +42,7 @@ metadata = function(src, projectIDs=NULL, replace=TRUE, delete=FALSE) {
     tmeta = srvTagMetadataForProjects(projectIDs=projectIDs)
   	dbInsertOrReplace(src$con, "tags", tmeta$tags, replace)
   	dbInsertOrReplace(src$con, "tagDeps", tmeta$tagDeps, replace)
+  	dbInsertOrReplace(src$con, "tagProps", tmeta$tagProps, replace)
   	dbInsertOrReplace(src$con, "species", tmeta$species, replace)
   	dbInsertOrReplace(src$con, "projs", tmeta$projs, replace)
   	## update tagDeps.fullID

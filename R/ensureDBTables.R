@@ -271,6 +271,19 @@ CREATE TABLE tagDeps (
         sql("CREATE INDEX IF NOT EXISTS tagDeps_projectID on tagDeps(projectID)")
         sql("CREATE INDEX IF NOT EXISTS tagDeps_deployID on tagDeps(deployID)")
 }
+    if (! "tagProps" %in% tables) {
+        sql("
+CREATE TABLE IF NOT EXISTS tagProps (
+    tagID INTEGER NOT NULL,
+    deployID INTEGER NOT NULL,
+    propID INTEGER PRIMARY KEY,
+    propName TEXT NOT NULL,
+    propValue TEXT NULL
+);
+")
+        sql("CREATE INDEX IF NOT EXISTS tagProps_deployID ON tagProps (deployID ASC)")
+}
+
     if (! "tags" %in% tables) {
         sql('
 CREATE TABLE "tags" (

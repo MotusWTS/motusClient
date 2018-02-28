@@ -39,6 +39,14 @@
 #' \item elevation; numeric deployment location, metres ASL
 #' \item comments; character possibly JSON-formatted list of additional metadata
 #' }
+#' \item tagProps; a list with these columns:
+#' \itemize{
+#' \item tagID; integer motus tagID
+#' \item deployID; integer tag deployment ID (internal to motus)
+#' \item propID; integer property ID 
+#' \item propName; character name of the custom property value provided by the user
+#' \item propValue; character value of the custom property provided by the user
+#' }
 #' \item species; a list with these columns:
 #' \itemize{
 #' \item id; integer species ID,
@@ -64,6 +72,7 @@ srvTagMetadataForProjects = function(projectIDs) {
     return (list(
         tags = structure(x$tags, class = "data.frame", row.names=seq(along=x$tags[[1]])),
         tagDeps = structure(x$tagDeps, class = "data.frame", row.names=seq(along=x$tagDeps[[1]])),
+        tagProps = structure(x$tagProps, class = "data.frame", row.names=seq(along=x$tagProps[[1]])),
         species = structure(x$species, class = "data.frame", row.names=seq(along=x$species[[1]])),
         projs = structure(x$projs, class = "data.frame", row.names=seq(along=x$projs[[1]]))
     ))
