@@ -6,7 +6,7 @@
 this function retrieves the entire set of metadata for tags and receivers, and not only those 
 pertinent to the detections of your local file.}
 \usage{
-metadata(src, projectIDs = NULL, replace = TRUE, delete = TRUE)
+metadata(src, projectIDs = NULL, replace = TRUE, delete = FALSE)
 }
 \arguments{
 \item{src}{src_sqlite object representing the database (either tag or receiver)}
