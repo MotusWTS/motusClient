@@ -50,9 +50,9 @@
     ## interim location of unprotected local data server
 
     dataServerURL = "https://sandbox.motus.org/api/sgdata"
-	cat("Server: ", dataServerURL, "\n", sep="")
+	  cat("Server: ", dataServerURL, "\n", sep="")
 
-    ## Assign constants
+	    ## Assign constants
 
     with(Motus,
     {
