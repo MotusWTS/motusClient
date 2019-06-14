@@ -27,6 +27,6 @@ srvAuth = function() {
     }, error = function(e) {
         Motus$userLogin = NULL
         Motus$userPassword = NULL
-        stop("The motus data server rejected your login credentials")
+        stop(paste("Motus login failed with error message:", e))
     })
 }
