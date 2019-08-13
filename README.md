@@ -1,20 +1,23 @@
 # motus
 R package to fetch telemetry data from http://motus.org
 
-Core client for the `motus` package; most users should use the motus R package provided by motus.org,
-which uses `motusClient` to fetch data.
+**IMPORTANT:** The functionalities of motusClient have now been incorporated into the `motus` package. This package will no longer be maintained.
 
 ## Installation ##
 ```R
     install.packages("devtools")              ## if you haven't already done this
     library(devtools)
-    install_github("jbrzusto/motusClient")
+    install_github("motusWTS/motusClient")
 ```
 ## Usage vignette ##
 
-A brief sketch is [here](https://github.com/jbrzusto/motusClient/blob/master/inst/doc/motusClient_R_package_usage.md)
+A brief sketch is [here](https://github.com/motuswts/motusClient/blob/master/inst/doc/motusClient_R_package_usage.md)
 
 ## What's working so far:
+
+### 2019 Aug 12 - package deprecated
+
+- the package has been deprecated and its functionalities have been incorporated into the `motus` package: https://www.github.com/MotusWTS/motus.
 
 ### 2017 Oct 13 - version 0.1.2
 
