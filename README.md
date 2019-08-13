@@ -5,9 +5,9 @@ R package to fetch telemetry data from http://motus.org
 
 ## Installation ##
 ```R
-    install.packages("devtools")              ## if you haven't already done this
-    library(devtools)
-    install_github("motusWTS/motusClient")
+    install.packages("remotes")              ## if you haven't already done this
+    library(remotes)
+    install_github("motusWTS/motus")
 ```
 ## Usage vignette ##
 
