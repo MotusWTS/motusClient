@@ -579,6 +579,8 @@ returns an empty list.
          - polarization2: double; angle giving tilt from "normal" position, in degrees
          - polarization1: double; angle giving rotation of antenna about own axis, in degrees.
 
+      - nodeDeps; an object with CTT node metadata fields as arrays (field list to be updated)
+      
       - projs; a object with these array fields:
          - id: integer; motus project id
          - name; string; full name of motus project
