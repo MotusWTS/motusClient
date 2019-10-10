@@ -16,6 +16,7 @@ it is to work with this package.
 - **runs:** [for tag project](#runs-for-tag-project); [for receiver](#runs-for-receiver)
 - **hits:** [for tag project](#hits-for-tag-project); [for receiver](#hits-for-receiver)
 - **gps:** [for tag project](#gps-for-tag-project); [for receiver](#gps-for-receiver)
+- **nodes:** [for tag project](#nodes-for-tag-project); [for receiver](#nodes-for-receiver)
 - **pulse counts:** [for_receiver](#pulse-counts-for-receiver)
 - **metadata:** [for tags](#metadata-for-tags); [for receivers](#metadata-for-receivers)
 - **ambiguities:** [among tags](#tags-for-ambiguities); [among projects](#project-ambiguities-for-tag-project)
