@@ -435,8 +435,8 @@ returns an empty list.
       e.g.
       curl --data-urlencode json='{"projectID":123,"batchID":111,"nodeDataID":0,"authToken":"XXX"}' https://sgdata.motus.org/data/custom/nodes_for_tag_project
 
-   - return all CTT node data  from batch `batchID` whose nodeDataID is grater than
-     passed nodeDataID attribute and "relevant to" detections of a tag deployment
+   - return all CTT node data  from batch `batchID` whose nodeDataID is greater than
+     passed `nodeDataID` attribute and "relevant to" detections of a tag deployment
      from project `projectID. 
 
    - fields in the returned object are arrays:
@@ -462,7 +462,7 @@ returns an empty list.
       e.g.
       curl --data-urlencode json='{"batchID":111,"nodeDataID":0,"authToken":"XXX"}' https://sgdata.motus.org/data/custom/nodes_for_receiver
 
-   - return all CTT node records associated with batch batchID whose nodedataID is greater than `nodedataID`
+   - return all CTT node records associated with batch batchID whose nodeDataID is greater than `nodedataID`
 
    - fields in the returned object are arrays:
      - nodeDataID
@@ -471,8 +471,8 @@ returns an empty list.
      - lat
      - lon
 
-Paging for this query is achieved by using the last returned value of `ts`
-as `ts` on subsequent calls.  When there are no further GPS fixes, the API
+Paging for this query is achieved by using the last returned value of `nodeDataID`
+as `nodeDataID` on subsequent calls.  When there are no further node records, the API
 returns an empty list.
 
 ### metadata for tags ###
